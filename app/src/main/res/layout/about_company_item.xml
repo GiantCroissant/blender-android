@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:measureWithLargestChild="true">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/company_item_icon"
+        android:layout_weight="1.4"
+        android:src="@drawable/itemicon"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="磨豆機"
+        android:id="@+id/company_item_name"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textSize="24dp"
+        android:paddingLeft="20dp"
+        android:layout_toRightOf="@+id/company_item_icon"
+        android:layout_toEndOf="@+id/company_item_icon" />
+</RelativeLayout>

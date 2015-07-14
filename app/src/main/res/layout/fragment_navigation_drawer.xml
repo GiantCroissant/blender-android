@@ -1,0 +1,52 @@
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:divider="@android:color/transparent"
+android:dividerHeight="0dp"
+tools:context="com.giantcroissant.blender.NavigationDrawerFragment">
+
+<!-- TODO: Update blank fragment layout -->
+
+<ListView
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:choiceMode="singleChoice"
+    android:background="#ff4a4d50"
+    android:id="@+id/navigationlistView"
+    android:layout_below="@+id/linearLayout" />
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:background="#ff464c4f"
+        android:paddingLeft="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:src="@drawable/usericon"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="USER"
+            android:id="@+id/textView3"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_toRightOf="@+id/imageView3"
+            android:layout_toEndOf="@+id/imageView3"
+            android:layout_alignParentTop="true"
+            android:layout_alignBottom="@+id/imageView3"
+            android:layout_alignTop="@+id/imageView3"
+            android:paddingLeft="20dp"
+            android:textColor="@color/White" />
+    </RelativeLayout>
+
+</RelativeLayout>
+

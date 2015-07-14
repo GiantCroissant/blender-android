@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <style name="AppTheme" parent="Theme.AppCompat.Light">
+                <!-- Customize your theme here. -->
+                <item name="android:homeAsUpIndicator">@drawable/ic_action</item>
+        </style>
+
+        <style name="Theme.MyFancyTheme" parent="android:Theme.Light">
+                <item name="android:textColorPrimary">@color/primary_dark_material_dark</item>
+                <item name="android:homeAsUpIndicator">@drawable/ic_action</item>
+        </style>
+</resources>

@@ -7,9 +7,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".SideMenuActivity"
+            android:label="@string/title_activity_side_menu" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

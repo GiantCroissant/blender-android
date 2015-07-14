@@ -1,6 +1,27 @@
 <resources>
-    <string name="app_name">Blender</string>
+    <string name="app_name"> </string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_side_navigation">SideNavigationActivity</string>
+
+    <string name="title_section1">食譜預覽</string>
+    <string name="title_section2">個人專區</string>
+    <string name="title_section3">果汁機測試</string>
+    <string name="title_section4">廠商介面</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_side_menu">SideMenuActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment1">Hello blank 1 fragment</string>
+    <string name="hello_blank_fragment2">Hello blank 2 fragment</string>
+    <string name="hello_blank_fragment3">Hello blank 3 fragment</string>
+    <string name="hello_blank_fragment4">Hello blank 4 fragment</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
