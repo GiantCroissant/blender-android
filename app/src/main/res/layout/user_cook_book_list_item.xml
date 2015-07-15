@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/cookbookicon"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:src="@drawable/videoshort" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.7"
+        android:paddingTop="20dp"
+        android:layout_toRightOf="@+id/cookbookicon"
+        android:layout_toEndOf="@+id/cookbookicon">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="葡萄檸檬汁"
+            android:id="@+id/cookbooknameTextView"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:textSize="20dp"
+            android:paddingLeft="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="葡萄、檸檬、蜂蜜"
+            android:id="@+id/ingredientTextView"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:paddingLeft="20dp"
+            android:gravity="top"
+            android:paddingTop="5dp" />
+    </LinearLayout>
+</RelativeLayout>

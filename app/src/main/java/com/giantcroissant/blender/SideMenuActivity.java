@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +27,8 @@ public class SideMenuActivity extends AppCompatActivity
         CookBooksFragment.OnCookBooksFragmentInteractionListener,
         UserDataFragment.OnUserDataFragmentInteractionListener,
         AutoTestFragment.OnAutoTestFragmentInteractionListener,
-        AboutCompanyFragment.OnAboutCompanyFragmentInteractionListener
+        AboutCompanyFragment.OnAboutCompanyFragmentInteractionListener,
+        View.OnClickListener
 {
 
     /**
@@ -129,6 +131,36 @@ public class SideMenuActivity extends AppCompatActivity
         actionBar.setTitle(mTitle);
     }
 
+    @Override
+    public void onClick(View view)
+    {
+        if (view.getId() == R.id.newCookBookButton) {
+            FragmentManager fm = getSupportFragmentManager();//if added by xml
+            CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.container);
+            fragment.setCurrentCookBooks(0);
+//            Log.e("XXX","OOO");
+        }
+        else if (view.getId() == R.id.hotCookBookButton) {
+            FragmentManager fm = getSupportFragmentManager();//if added by xml
+            CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.container);
+            fragment.setCurrentCookBooks(1);
+//            Log.e("OOO","XXX");
+        }
+        else if (view.getId() == R.id.userRecordCookBookButton) {
+            FragmentManager fm = getSupportFragmentManager();//if added by xml
+            UserDataFragment fragment = (UserDataFragment)fm.findFragmentById(R.id.container);
+            fragment.setCurrentCookBooks(0);
+//            Log.e("XXX","OOO");
+        }
+        else if (view.getId() == R.id.userLikeCookBookButton) {
+            FragmentManager fm = getSupportFragmentManager();//if added by xml
+            UserDataFragment fragment = (UserDataFragment)fm.findFragmentById(R.id.container);
+            fragment.setCurrentCookBooks(1);
+//            Log.e("OOO","XXX");
+
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

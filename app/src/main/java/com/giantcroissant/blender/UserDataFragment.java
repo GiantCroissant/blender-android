@@ -1,12 +1,18 @@
 package com.giantcroissant.blender;
 
 import android.app.Activity;
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 
 /**
@@ -19,20 +25,18 @@ import android.view.ViewGroup;
  */
 public class UserDataFragment extends Fragment {
 
+    CookBookAdapter mCookBookAdapter;
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ListView cookbookListView;
+    private View rootView;
+    private ArrayList<CookBook> userRecordCookBooks;
+    private ArrayList<CookBook> userLikeCookBooks;
+    private ArrayList<CookBook> currentCookBooks;
+    private int tabIndex = 0;
 
     private OnUserDataFragmentInteractionListener mListener;
 
@@ -53,17 +57,26 @@ public class UserDataFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_user_data, container, false);
+        cookbookListView = (ListView) rootView.findViewById(R.id.usercookbooklistView);
+        cookbookListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectItem(position);
+            }
+        });
+        createFakeData();
+
+
+        setCurrentCookBooks(0);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_data, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -71,6 +84,81 @@ public class UserDataFragment extends Fragment {
         if (mListener != null) {
             mListener.onUserDataFragmentInteraction(string);
         }
+    }
+
+    private void createFakeData()
+    {
+        ArrayList<String> newSteps = new ArrayList<String>();
+        newSteps.add("步驟1");
+        newSteps.add("步驟2");
+        newSteps.add("步驟3");
+        newSteps.add("步驟4");
+        newSteps.add("步驟5");
+
+        userRecordCookBooks = new ArrayList<CookBook>();
+        userRecordCookBooks.add(new CookBook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "Http://xd.com", "葡萄、蜂蜜、檸檬",newSteps, 100, 100, true));
+        userRecordCookBooks.add(new CookBook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "Http://xd.com", "葡萄、蜂蜜、草莓",newSteps, 100, 100, true));
+        userRecordCookBooks.add(new CookBook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "Http://xd.com", "水蜜桃、蜂蜜、芒果",newSteps, 100, 100, true));
+
+
+        userLikeCookBooks = new ArrayList<CookBook>();
+        userLikeCookBooks.add(new CookBook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "Http://xd.com", "水蜜桃、蜂蜜、芒果",newSteps, 100, 100, true));
+        userLikeCookBooks.add(new CookBook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "Http://xd.com", "葡萄、蜂蜜、草莓",newSteps, 100, 100, true));
+        userLikeCookBooks.add(new CookBook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "Http://xd.com", "葡萄、蜂蜜、檸檬",newSteps, 100, 100, true));
+
+//        currentCookBooks = userRecordCookBooks;
+    }
+
+    public void setCurrentCookBooks(int tabIndex) {
+        if (tabIndex == 0)
+        {
+            currentCookBooks = userRecordCookBooks;
+            mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.user_cook_book_list_item, currentCookBooks);
+            cookbookListView.setAdapter(mCookBookAdapter);
+
+            ImageButton recordCookBookButton = (ImageButton) rootView.findViewById(R.id.userRecordCookBookButton);
+//            recordCookBookButton.setImageResource(R.drawable.newcookbook_true);
+
+            ImageButton likeCookBookButton = (ImageButton) rootView.findViewById(R.id.userLikeCookBookButton);
+//            likeCookBookButton.setImageResource(R.drawable.hotcookbook_false);
+
+            this.tabIndex = 0;
+        }
+        else if(tabIndex == 1)
+        {
+            currentCookBooks = userLikeCookBooks;
+            mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.user_cook_book_list_item, currentCookBooks);
+            cookbookListView.setAdapter(mCookBookAdapter);
+
+            ImageButton recordCookBookButton = (ImageButton) rootView.findViewById(R.id.userRecordCookBookButton);
+//            recordCookBookButton.setImageResource(R.drawable.newcookbook_false);
+
+            ImageButton likeCookBookButton = (ImageButton) rootView.findViewById(R.id.userLikeCookBookButton);
+//            likeCookBookButton.setImageResource(R.drawable.hotcookbook_true);
+
+            this.tabIndex = 1;
+        }
+
+    }
+
+    private void selectItem(int position) {
+
+        Intent intent = new Intent(this.getActivity(), CookBookDetailActivity.class);
+
+        intent.putExtra("position", position);
+        intent.putExtra("cookBookListViewID", currentCookBooks.get(position).getId());
+        intent.putExtra("cookBookListViewName", currentCookBooks.get(position).getName());
+        intent.putExtra("cookBookListViewDescription", currentCookBooks.get(position).getDescription());
+        intent.putExtra("cookBookListViewUrl", currentCookBooks.get(position).getUrl());
+        intent.putExtra("cookBookListViewImageUrl", currentCookBooks.get(position).getImageUrl());
+        intent.putExtra("cookBookListViewIngredient", currentCookBooks.get(position).getIngredient());
+        intent.putExtra("cookBookListViewSteps", currentCookBooks.get(position).getSteps());
+        intent.putExtra("cookBookListViewViewPeople", currentCookBooks.get(position).getViewedPeopleCount());
+        intent.putExtra("cookBookListViewCollectedPeople", currentCookBooks.get(position).getCollectedPeopleCount());
+        intent.putExtra("cookBookListIsCollected", currentCookBooks.get(position).getIsCollected());
+
+        startActivityForResult(intent, 0);
+
     }
 
     @Override
@@ -85,6 +173,7 @@ public class UserDataFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
 
     @Override
     public void onDetach() {

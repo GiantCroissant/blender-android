@@ -1,6 +1,7 @@
 package com.giantcroissant.blender;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -86,8 +87,33 @@ public class AboutCompanyFragment extends Fragment {
     }
 
     private void selectItem(int position) {
+
+        Intent intent = new Intent(this.getActivity(), CompanyItemActivity.class);
+
+        intent.putExtra("position", position);
+        intent.putExtra("itemListViewID", companyItems.get(position).getId());
+        intent.putExtra("itemListViewTitle", companyItems.get(position).getTitle());
+        intent.putExtra("itemListViewContent", companyItems.get(position).getContent());
+        intent.putExtra("itemListViewIconUrl", companyItems.get(position).getIconUrl());
+
+        startActivityForResult(intent, 0);
+
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // 如果被啟動的Activity元件傳回確定的結果
+        if (resultCode == Activity.RESULT_OK) {
+
+            // 讀取標題
+//            String titleText = data.getStringExtra("titleText");
+            // 加入標題項目
+//            this.data.add(titleText);
+
+            // 通知資料已經改變，ListView元件才會重新顯示
+            mAboutCompanyAdapter.notifyDataSetChanged();
+        }
+    }
 
     @Override
     public void onAttach(Activity activity) {

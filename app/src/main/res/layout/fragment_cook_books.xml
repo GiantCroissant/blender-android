@@ -1,10 +1,54 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.giantcroissant.blender.CookBooksFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment1" />
 
-</FrameLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2"
+        android:background="@color/White"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/newCookBookButton"
+            android:layout_weight="1"
+            android:src="@drawable/newcookbook_true"
+            android:background="@color/White"
+            android:scaleType="centerCrop"
+            android:layout_gravity="bottom"
+            android:paddingLeft="20dp"
+            android:onClick="onClick" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/hotCookBookButton"
+            android:layout_weight="1"
+            android:src="@drawable/hotcookbook_false"
+            android:layout_toEndOf="@+id/newCookBookButton"
+            android:layout_toRightOf="@+id/newCookBookButton"
+            android:background="@color/White"
+            android:scaleType="centerCrop"
+            android:layout_gravity="bottom"
+            android:paddingRight="20dp"
+            android:onClick="onClick" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayout2">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cookbooklistView" />
+    </RelativeLayout>
+</RelativeLayout>

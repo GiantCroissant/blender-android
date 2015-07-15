@@ -10,4 +10,9 @@
         <item name="android:homeAsUpIndicator">@drawable/ic_action</item>
     </style>
 
+    <style name="ActionBarTitle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_gravity">center_horizontal</item>   <!-- Can't get this padding to work :( -->
+    </style>
+
 </resources>

@@ -69,11 +69,11 @@ public class CompanyItem {
         this.content = content;
     }
 
-    public String getOwnerIconUrl() {
+    public String getIconUrl() {
         return iconUrl;
     }
 
-    public void setOwnerIconUrl(String ownerIconUrl) {
+    public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
     }
 

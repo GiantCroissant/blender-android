@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/cookBookIcon"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="false"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/itemicon"
+        android:scaleType="fitCenter"
+        android:layout_weight="1.3"
+        android:background="#ffd2d5da" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="水蜜桃汁"
+            android:id="@+id/cookBookNameText"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:gravity="bottom"
+            android:layout_toLeftOf="@+id/likeCookBookButton"
+            android:layout_toStartOf="@+id/likeCookBookButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/likeCookBookButton"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/likebutton"
+            android:background="@color/White" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="材料 ：水蜜桃1 個、蜂蜜50克。"
+                android:id="@+id/cookBookIngredientText"
+                android:layout_weight="1"
+                android:minLines="3"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/cookBookStepsText"
+                android:layout_weight="1"
+                android:minLines="8"
+                android:text="步驟 ： \n 1. 洗水蜜桃 \n 2. 消水蜜桃皮 \n 3. 去水蜜桃籽 \n 4. 把水蜜桃與蜂蜜一同加入果汁機中 \n 5. 可口水蜜桃汁上桌"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="美味的水蜜桃。好吃好吃。做成果汁也很棒喔。"
+                android:id="@+id/cookBookDescriptionText"
+                android:layout_weight="1"
+                android:minLines="3"
+                android:textSize="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

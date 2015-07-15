@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/linearLayout2"
+            android:layout_weight="8">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cook_book_Info_button"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:background="@color/White"
+                android:src="@drawable/cook_book_info_true"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_gravity="center_vertical" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cook_book_video_button"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:background="@color/White"
+                android:src="@drawable/cook_book_video"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_gravity="center_vertical" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cook_book_to_do_button"
+                android:layout_weight="1"
+                android:scaleType="centerCrop"
+                android:background="@color/White"
+                android:src="@drawable/cook_book_to_do_false"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_gravity="center_vertical" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:id="@+id/contentfragment"
+            android:background="@color/White">
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
