@@ -120,22 +120,27 @@ public class CookBookDetailActivity extends AppCompatActivity
         }
 
         else if (view.getId() == R.id.cook_book_video_button) {
+//            if (cookBookDetailVideoFragment == null)
+//            {
+//                cookBookDetailVideoFragment = new CookBookDetailVideoFragment();
+//            }
+//
+//            fragmentTransaction.replace(R.id.contentfragment, cookBookDetailVideoFragment);
+//
+//            ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button);
+//            infoButton.setImageResource(R.drawable.cook_book_info_false);
+//
+//            ImageButton videoButton = (ImageButton) findViewById(R.id.cook_book_video_button);
+////            videoButton.setImageResource(R.drawable.hotcookbook_false);
+//
+//            ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button);
+//            toDoButton.setImageResource(R.drawable.cook_book_to_do_false);
 
-            if (cookBookDetailVideoFragment == null)
-            {
-                cookBookDetailVideoFragment = new CookBookDetailVideoFragment();
-            }
+            Intent intent = new Intent(this, CookBookDetailVideoActivity.class);
 
-            fragmentTransaction.replace(R.id.contentfragment, cookBookDetailVideoFragment);
+            intent.putExtra("cookBookID", cookBook.getId());
 
-            ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button);
-            infoButton.setImageResource(R.drawable.cook_book_info_false);
-
-            ImageButton videoButton = (ImageButton) findViewById(R.id.cook_book_video_button);
-//            videoButton.setImageResource(R.drawable.hotcookbook_false);
-
-            ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button);
-            toDoButton.setImageResource(R.drawable.cook_book_to_do_false);
+            startActivityForResult(intent, 0);
         }
 
         else if (view.getId() == R.id.cook_book_to_do_button) {

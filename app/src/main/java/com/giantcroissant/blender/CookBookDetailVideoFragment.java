@@ -3,9 +3,15 @@ package com.giantcroissant.blender;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 
 /**
@@ -16,17 +22,18 @@ import android.view.ViewGroup;
  * Use the {@link CookBookDetailVideoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CookBookDetailVideoFragment extends Fragment {
+public class CookBookDetailVideoFragment extends YouTubePlayerSupportFragment implements YouTubePlayer.OnInitializedListener{
 
     private OnCookBookDetailToDoFragmentInteractionListener mListener;
 
-    public static CookBookDetailVideoFragment newInstance(String param1, String param2) {
-        CookBookDetailVideoFragment fragment = new CookBookDetailVideoFragment();
-        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    private CookBook cookBook;
+    private View rootView;
+    public String YOUTUBE_VIDEO_ID = "pKbac2kh0nM";
+
+    public static CookBookDetailVideoFragment newInstance(CookBook cookBook) {
+        CookBookDetailVideoFragment cookBookVideoTeachingFragment = new CookBookDetailVideoFragment();
+        cookBookVideoTeachingFragment.cookBook = cookBook;
+        return cookBookVideoTeachingFragment;
     }
 
     public CookBookDetailVideoFragment() {
@@ -41,8 +48,16 @@ public class CookBookDetailVideoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_cook_book_detial_video, container, false);
+
+        YouTubePlayerSupportFragment youTubeFragment = new YouTubePlayerSupportFragment();
+        youTubeFragment.initialize(Config.DEVELOPER_KEY, this);
+
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.YOUTUBE_PLAYER, youTubeFragment);
+        fragmentTransaction.commit();
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cook_book_detial_video, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -83,5 +98,18 @@ public class CookBookDetailVideoFragment extends Fragment {
         // TODO: Update argument type and name
         public void onCookBookDetailToDoFragmentInteraction(String string);
     }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+        if (!wasRestored) {
+            player.cueVideo(YOUTUBE_VIDEO_ID);
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+        Toast.makeText(getActivity(), "Failured to Initialize!", Toast.LENGTH_LONG).show();
+    }
+
 
 }

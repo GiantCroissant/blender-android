@@ -1,10 +1,47 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.giantcroissant.blender.CookBookDetailToDoFragment">
+    tools:context="com.giantcroissant.blender.CookBookDetailToDoFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="水蜜桃汁"
+        android:layout_weight="1.8"
+        android:background="@color/White"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:gravity="bottom"
+        android:paddingBottom="10dp"
+        android:paddingLeft="40dp" />
 
-</FrameLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/checkListView"
+        android:layout_weight="1"
+        android:background="@color/White" />
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageButton"
+        android:src="@drawable/start"
+        android:layout_weight="1.8"
+        android:background="@color/White" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.8"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/checkProgressBar" />
+    </FrameLayout>
+
+</LinearLayout>

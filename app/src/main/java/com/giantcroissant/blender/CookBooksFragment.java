@@ -25,7 +25,7 @@ import java.util.UUID;
  */
 public class CookBooksFragment extends Fragment {
 
-    CookBookAdapter mCookBookAdapter;
+    private CookBookAdapter mCookBookAdapter;
     /**
      * The fragment argument representing the section number for this
      * fragment.
