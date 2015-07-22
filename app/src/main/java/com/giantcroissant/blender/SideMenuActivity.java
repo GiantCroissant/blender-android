@@ -129,6 +129,9 @@ public class SideMenuActivity extends AppCompatActivity
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
+//        actionBar.show();
+//        actionBar.hide();
+//        actionBar.setShowHideAnimationEnabled(false);
     }
 
     @Override

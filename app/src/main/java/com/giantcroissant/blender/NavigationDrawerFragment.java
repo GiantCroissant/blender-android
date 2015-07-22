@@ -1,5 +1,6 @@
 package com.giantcroissant.blender;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.support.v7.app.ActionBar;
@@ -20,6 +21,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -94,6 +98,26 @@ public class NavigationDrawerFragment extends Fragment {
 
 //        mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer_back, container, false);
         rootView = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+
+        initDrawer();
+
+//        return mDrawerListView;
+        return rootView;
+
+    }
+
+    public boolean isDrawerOpen() {
+        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    }
+
+
+    private void initActionBar() {
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+    }
+
+    private void initDrawer() {
         mDrawerListView = (ListView) rootView.findViewById(R.id.navigationlistView);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -112,13 +136,10 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section4)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-//        return mDrawerListView;
-        return rootView;
-
     }
 
-    public boolean isDrawerOpen() {
-        return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
+    private int getContentIdResource() {
+        return getResources().getIdentifier("content", "id", "android");
     }
 
     /**
@@ -135,9 +156,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
 
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
+        initActionBar();
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
@@ -193,6 +212,7 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
     }
 
     private void selectItem(int position) {
@@ -245,6 +265,7 @@ public class NavigationDrawerFragment extends Fragment {
             inflater.inflate(R.menu.global, menu);
             showGlobalContextActionBar();
         }
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -271,6 +292,10 @@ public class NavigationDrawerFragment extends Fragment {
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setTitle(R.string.app_name);
+
+//        actionBar.setShowHideAnimationEnabled(false);
+//        actionBar.hide();
+//        actionBar.show();
     }
 
     private ActionBar getActionBar() {

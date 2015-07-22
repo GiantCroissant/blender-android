@@ -11,7 +11,7 @@
         android:layout_weight="1"
         android:id="@+id/YOUTUBE_PLAYER"
         android:layout_alignParentTop="true"
-        android:gravity="fill_horizontal">
+        android:gravity="center_horizontal">
 
     </RelativeLayout>
 

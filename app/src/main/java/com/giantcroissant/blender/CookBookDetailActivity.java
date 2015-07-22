@@ -8,19 +8,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 
 
 public class CookBookDetailActivity extends AppCompatActivity
         implements CookBookDetailInfoFragment.OnCookBookDetailInfoFragmentInteractionListener,
-        CookBookDetailVideoFragment.OnCookBookDetailToDoFragmentInteractionListener,
         CookBookDetailToDoFragment.OnCookBookDetailVideoFragmentInteractionListener,
         View.OnClickListener {
 
     private ActionBar actionBar;                              // Declaring the Toolbar Object
     private CookBook cookBook;
     private CookBookDetailInfoFragment cookBookDetailInfoFragment;
-    private CookBookDetailVideoFragment cookBookDetailVideoFragment;
     private CookBookDetailToDoFragment cookBookDetailToDoFragment;
 
     @Override
@@ -48,6 +47,9 @@ public class CookBookDetailActivity extends AppCompatActivity
         actionBar.setHomeButtonEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         actionBar.setTitle(cookBook.getName());
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setValueToView();
         setDefaultFragment();
@@ -137,8 +139,16 @@ public class CookBookDetailActivity extends AppCompatActivity
 //            toDoButton.setImageResource(R.drawable.cook_book_to_do_false);
 
             Intent intent = new Intent(this, CookBookDetailVideoActivity.class);
-
-            intent.putExtra("cookBookID", cookBook.getId());
+            intent.putExtra("cookBookListViewID", cookBook.getId());
+            intent.putExtra("cookBookListViewName", cookBook.getName());
+            intent.putExtra("cookBookListViewDescription", cookBook.getDescription());
+            intent.putExtra("cookBookListViewUrl", cookBook.getUrl());
+            intent.putExtra("cookBookListViewImageUrl", cookBook.getImageUrl());
+            intent.putExtra("cookBookListViewIngredient", cookBook.getIngredient());
+            intent.putExtra("cookBookListViewSteps", cookBook.getSteps());
+            intent.putExtra("cookBookListViewViewPeople", cookBook.getViewedPeopleCount());
+            intent.putExtra("cookBookListViewCollectedPeople", cookBook.getCollectedPeopleCount());
+            intent.putExtra("cookBookListIsCollected", cookBook.getIsCollected());
 
             startActivityForResult(intent, 0);
         }
@@ -168,11 +178,6 @@ public class CookBookDetailActivity extends AppCompatActivity
 
     @Override
     public void onCookBookDetailInfoFragmentInteraction(String string) {
-
-    }
-
-    @Override
-    public void onCookBookDetailToDoFragmentInteraction(String string) {
 
     }
 

@@ -16,9 +16,8 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 
-public class CookBookDetailVideoActivity extends AppCompatActivity implements CookBookDetailVideoFragment.OnCookBookDetailToDoFragmentInteractionListener, YouTubePlayer.OnInitializedListener {
+public class CookBookDetailVideoActivity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
 
-    CookBookDetailVideoFragment cookBookDetailVideoFragment;
 
     private String cookBookID;
     public CookBook cookBook;
@@ -37,7 +36,17 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Co
         Intent intent = getIntent();
         getView();
 
-        cookBookID = intent.getStringExtra("cookBookID");
+        cookBook = new CookBook();
+        cookBook.setId(intent.getStringExtra("cookBookListViewID"));
+        cookBook.setName(intent.getStringExtra("cookBookListViewName"));
+        cookBook.setDescription(intent.getStringExtra("cookBookListViewDescription"));
+        cookBook.setUrl(intent.getStringExtra("cookBookListViewUrl"));
+        cookBook.setImageUrl(intent.getStringExtra("cookBookListViewImageUrl"));
+        cookBook.setIngredient(intent.getStringExtra("cookBookListViewIngredient"));
+        cookBook.setStep(intent.getStringArrayListExtra("cookBookListViewSteps"));
+        cookBook.setViewedPeopleCount(intent.getIntExtra("cookBookListViewViewPeople", 0));
+        cookBook.setCollectedPeopleCount(intent.getIntExtra("cookBookListViewCollectedPeople", 0));
+        cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
         getRealm();
 
 
@@ -58,7 +67,9 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Co
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-        actionBar.setDisplayShowTitleEnabled(false);
+//        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setTitle(cookBook.getName());
+
     }
 
 
@@ -126,11 +137,6 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Co
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    public void onCookBookDetailToDoFragmentInteraction(String string) {
-
-    }
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
