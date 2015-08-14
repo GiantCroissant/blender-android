@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,6 +116,10 @@ public class NavigationDrawerFragment extends Fragment {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
+
+//        View navigationdrawer = (View) getActivity().findViewById(R.id.navigation_drawer);
+//        navigationdrawer.setPadding(0, -100 , 0, 0);
+//        Log.e("XXX", String.valueOf(actionBar.getHeight()));
     }
 
     private void initDrawer() {

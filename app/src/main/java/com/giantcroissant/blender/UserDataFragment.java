@@ -164,7 +164,7 @@ public class UserDataFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((SideMenuActivity) activity).onSectionAttached(
+        ((MainActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
         try {
             mListener = (OnUserDataFragmentInteractionListener) activity;

@@ -12,11 +12,6 @@
         <activity
             android:name=".SideMenuActivity"
             android:label="@string/title_activity_side_menu" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".CompanyItemActivity"
@@ -29,7 +24,16 @@
         <activity
             android:name=".CookBookDetailVideoActivity"
             android:label="@string/title_activity_cook_book_detail_video"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

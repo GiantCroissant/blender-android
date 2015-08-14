@@ -2,12 +2,17 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="android:homeAsUpIndicator">@drawable/ic_action</item>
+        <item name="android:homeAsUpIndicator">@drawable/icon_main_menu</item>
+        <item name="colorPrimary">@color/ColorPrimary</item>
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/White</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
     <style name="Theme.MyFancyTheme" parent="android:Theme.Light">
-        <item name="android:textColorPrimary">@color/primary_dark_material_dark</item>
-        <item name="android:homeAsUpIndicator">@drawable/ic_action</item>
+        <item name="android:homeAsUpIndicator">@drawable/icon_main_menu</item>
+        <item name="android:textColorPrimary">@color/White</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
     <style name="ActionBarTitle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">

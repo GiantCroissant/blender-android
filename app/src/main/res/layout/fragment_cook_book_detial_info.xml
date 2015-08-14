@@ -17,7 +17,7 @@
         android:layout_alignParentBottom="false"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/itemicon"
+        android:src="@drawable/pictures_01"
         android:scaleType="fitCenter"
         android:layout_weight="1.3"
         android:background="#ffd2d5da" />
