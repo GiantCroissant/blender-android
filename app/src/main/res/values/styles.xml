@@ -7,6 +7,11 @@
         <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/White</item>
         <item name="android:textSize">20dp</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- remove shadow below action bar -->
+        <!-- <item name="android:elevation">0dp</item> -->
+        <!-- Support library compatibility -->
+        <item name="elevation">0dp</item>
     </style>
 
     <style name="Theme.MyFancyTheme" parent="android:Theme.Light">

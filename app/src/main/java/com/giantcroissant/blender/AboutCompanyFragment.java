@@ -13,6 +13,8 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import io.realm.Realm;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,7 +24,7 @@ import java.util.UUID;
  * Use the {@link AboutCompanyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AboutCompanyFragment extends Fragment {
+public class AboutCompanyFragment extends Fragment implements CookBooksDataFragment {
 
     AboutCompanyAdapter mAboutCompanyAdapter;
     /**
@@ -147,6 +149,11 @@ public class AboutCompanyFragment extends Fragment {
     public interface OnAboutCompanyFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onAboutCompanyFragmentInteraction(String String);
+    }
+
+
+    public void upDateListView(Realm realm){
+
     }
 
 }

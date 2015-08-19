@@ -25,7 +25,8 @@
             android:choiceMode="singleChoice"
             android:background="@color/White"
             android:id="@+id/navigationlistView"
-            android:layout_below="@+id/linearLayout" />
+            android:layout_below="@+id/linearLayout"
+            android:listSelector="#dceec8" />
 
         <RelativeLayout
             android:orientation="horizontal"

@@ -11,8 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
+import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 
 /**
@@ -23,7 +29,7 @@ import java.util.UUID;
  * Use the {@link CookBooksFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CookBooksFragment extends Fragment {
+public class CookBooksFragment extends Fragment implements CookBooksDataFragment {
 
     private CookBookAdapter mCookBookAdapter;
     /**
@@ -36,16 +42,23 @@ public class CookBooksFragment extends Fragment {
     private ArrayList<CookBook> newCookBooks;
     private ArrayList<CookBook> hotCookBooks;
     private ArrayList<CookBook> currentCookBooks;
+//    private ArrayList<CookBook> cookBooks;
     private int tabIndex = 0;
 
     private OnCookBooksFragmentInteractionListener mListener;
+    private Realm realm;
+//    private RealmQuery<CookBookRealm> cookBookRealmQuery;
+    private RealmResults<CookBookRealm> newCookBooksRealmResult;
+    private RealmResults<CookBookRealm> hotCookBooksRealmResult;
 
-    public static CookBooksFragment newInstance(int sectionNumber) {
-        CookBooksFragment fragment = new CookBooksFragment();
+    public static CookBooksFragment newInstance(int sectionNumber,  Realm realm) {
+        CookBooksFragment cookBooksFragment = new CookBooksFragment();
+        cookBooksFragment.realm = realm;
+//        cookBooksFragment.cookBookRealmQuery = cookBookRealmQuery;
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-        return fragment;
+        cookBooksFragment.setArguments(args);
+        return cookBooksFragment;
     }
 
     public CookBooksFragment() {
@@ -68,9 +81,10 @@ public class CookBooksFragment extends Fragment {
                 selectItem(position);
             }
         });
-        createFakeData();
-
-        setCurrentCookBooks(0);
+//        createFakeData();
+//        getNewCookBooks();
+//        getHotCookBooks();
+        setCurrentCookBooks(realm, 0);
 
         // Inflate the layout for this fragment
         return rootView;
@@ -83,40 +97,53 @@ public class CookBooksFragment extends Fragment {
         }
     }
 
-    private void createFakeData()
+    private void getNewCookBooks(Realm realm)
     {
-        ArrayList<String> newSteps = new ArrayList<String>();
-        newSteps.add("步驟1");
-        newSteps.add("步驟2");
-        newSteps.add("步驟3");
-        newSteps.add("步驟4");
-        newSteps.add("步驟5");
-
+        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
+        newCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("createTime",false);
         newCookBooks = new ArrayList<CookBook>();
-        newCookBooks.add(new CookBook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "Http://xd.com", "葡萄、蜂蜜、檸檬",newSteps, 100, 100, true));
-        newCookBooks.add(new CookBook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "Http://xd.com", "葡萄、蜂蜜、草莓",newSteps, 100, 100, true));
-        newCookBooks.add(new CookBook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "Http://xd.com", "水蜜桃、蜂蜜、芒果",newSteps, 100, 100, true));
-
-
-        hotCookBooks = new ArrayList<CookBook>();
-        hotCookBooks.add(new CookBook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "Http://xd.com", "水蜜桃、蜂蜜、芒果",newSteps, 100, 100, true));
-        hotCookBooks.add(new CookBook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "Http://xd.com", "葡萄、蜂蜜、草莓",newSteps, 100, 100, true));
-        hotCookBooks.add(new CookBook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "Http://xd.com", "葡萄、蜂蜜、檸檬", newSteps, 100, 100, true));
-
-
+        for (CookBookRealm cookBookRealm : newCookBooksRealmResult) {
+            ArrayList<String> tmpSteps = new ArrayList<String>();
+            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+            for (String tmpStepPart : tmpStepParts) {
+                tmpSteps.add(tmpStepPart);
+            }
+            CookBook newCookBook = new CookBook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected());
+            newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
+            newCookBooks.add(newCookBook);
+        }
     }
 
-    public void setCurrentCookBooks(int tabIndex) {
+    private void getHotCookBooks(Realm realm)
+    {
+        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
+        hotCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("viewedPeopleCount",false);
+        hotCookBooks = new ArrayList<CookBook>();
+        for (CookBookRealm cookBookRealm : hotCookBooksRealmResult) {
+            ArrayList<String> tmpSteps = new ArrayList<String>();
+            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+            for (String tmpStepPart : tmpStepParts) {
+                tmpSteps.add(tmpStepPart);
+            }
+            CookBook newCookBook = new CookBook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected());
+            newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
+            hotCookBooks.add(newCookBook);
+        }
+    }
+
+    public void setCurrentCookBooks(Realm realm,int tabIndex) {
+        getNewCookBooks(realm);
+        getHotCookBooks(realm);
         if (tabIndex == 0) {
             currentCookBooks = newCookBooks;
                 mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
                 cookbookListView.setAdapter(mCookBookAdapter);
 
-                ImageButton newCookBookButton = (ImageButton) rootView.findViewById(R.id.newCookBookButton);
-                newCookBookButton.setImageResource(R.drawable.newcookbook_true);
+                ImageButton newCookBookButton = (ImageButton) rootView.findViewById(R.id.newCookBookButton_SelectColor);
+                newCookBookButton.setImageResource(R.color.TabSelectColor);
 
-                ImageButton hotCookBookButton = (ImageButton) rootView.findViewById(R.id.hotCookBookButton);
-                hotCookBookButton.setImageResource(R.drawable.hotcookbook_false);
+                ImageButton hotCookBookButton = (ImageButton) rootView.findViewById(R.id.hotCookBookButton_SelectColor);
+                hotCookBookButton.setImageResource(R.color.TabNoSelectColor);
 
                 this.tabIndex = 0;
             }
@@ -126,15 +153,31 @@ public class CookBooksFragment extends Fragment {
                 mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
                 cookbookListView.setAdapter(mCookBookAdapter);
 
-                ImageButton newCookBookButton = (ImageButton) rootView.findViewById(R.id.newCookBookButton);
-                newCookBookButton.setImageResource(R.drawable.newcookbook_false);
+                ImageButton newCookBookButton = (ImageButton) rootView.findViewById(R.id.newCookBookButton_SelectColor);
+                newCookBookButton.setImageResource(R.color.TabNoSelectColor);
 
-                ImageButton hotCookBookButton = (ImageButton) rootView.findViewById(R.id.hotCookBookButton);
-                hotCookBookButton.setImageResource(R.drawable.hotcookbook_true);
+                ImageButton hotCookBookButton = (ImageButton) rootView.findViewById(R.id.hotCookBookButton_SelectColor);
+                hotCookBookButton.setImageResource(R.color.TabSelectColor);
 
                 this.tabIndex = 1;
             }
 
+    }
+
+    public void upDateListView(Realm realm) {
+
+        if(currentCookBooks == newCookBooks)
+        {
+            getNewCookBooks(realm);
+            currentCookBooks = newCookBooks;
+        }
+        else if(currentCookBooks == hotCookBooks)
+        {
+            getHotCookBooks(realm);
+            currentCookBooks = hotCookBooks;
+        }
+        mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
+        cookbookListView.setAdapter(mCookBookAdapter);
     }
 
     private void selectItem(int position) {
@@ -198,5 +241,6 @@ public class CookBooksFragment extends Fragment {
         // TODO: Update argument type and name
         public void onCookBookFragmentInteraction(String string);
     }
+
 
 }

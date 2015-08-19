@@ -74,7 +74,7 @@ public class SideMenuActivity extends AppCompatActivity
                     {
                         cookBooksFragment = new CookBooksFragment();
                     }
-                    fragmentTransaction.replace(R.id.container, cookBooksFragment.newInstance(position + 1));
+//                    fragmentTransaction.replace(R.id.container, cookBooksFragment.newInstance(position + 1));
                     fragmentTransaction.commit();
                     break;
                 case 1:
@@ -82,7 +82,7 @@ public class SideMenuActivity extends AppCompatActivity
                     {
                         userDataFragment = new UserDataFragment();
                     }
-                    fragmentTransaction.replace(R.id.container, userDataFragment.newInstance(position + 1));
+//                    fragmentTransaction.replace(R.id.container, userDataFragment.newInstance(position + 1));
                     fragmentTransaction.commit();
                     break;
                 case 2:
@@ -141,25 +141,25 @@ public class SideMenuActivity extends AppCompatActivity
         if (view.getId() == R.id.newCookBookButton) {
             FragmentManager fm = getSupportFragmentManager();//if added by xml
             CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.container);
-            fragment.setCurrentCookBooks(0);
+//            fragment.setCurrentCookBooks(0);
 //            Log.e("XXX","OOO");
         }
         else if (view.getId() == R.id.hotCookBookButton) {
             FragmentManager fm = getSupportFragmentManager();//if added by xml
             CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.container);
-            fragment.setCurrentCookBooks(1);
+//            fragment.setCurrentCookBooks(1);
 //            Log.e("OOO","XXX");
         }
         else if (view.getId() == R.id.userRecordCookBookButton) {
             FragmentManager fm = getSupportFragmentManager();//if added by xml
             UserDataFragment fragment = (UserDataFragment)fm.findFragmentById(R.id.container);
-            fragment.setCurrentCookBooks(0);
+//            fragment.setCurrentCookBooks(0);
 //            Log.e("XXX","OOO");
         }
         else if (view.getId() == R.id.userLikeCookBookButton) {
             FragmentManager fm = getSupportFragmentManager();//if added by xml
             UserDataFragment fragment = (UserDataFragment)fm.findFragmentById(R.id.container);
-            fragment.setCurrentCookBooks(1);
+//            fragment.setCurrentCookBooks(1);
 //            Log.e("OOO","XXX");
 
         }

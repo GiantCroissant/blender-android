@@ -11,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -32,18 +35,15 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     private CheckListAdapter mCheckListAdapter;
     private OnCookBookDetailVideoFragmentInteractionListener mListener;
-
+    private CookBook cookBook;
     private ProgressBar checkProgressBar;
     private ListView checkListListView;
     private View rootView;
     private ArrayList<CheckListItem> newCheckListItems;
 
-    public static CookBookDetailToDoFragment newInstance(String param1, String param2) {
+    public static CookBookDetailToDoFragment newInstance(CookBook cookBook) {
         CookBookDetailToDoFragment fragment = new CookBookDetailToDoFragment();
-        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.cookBook = cookBook;
         return fragment;
     }
 
@@ -69,8 +69,9 @@ public class CookBookDetailToDoFragment extends Fragment {
         });
 
         checkProgressBar = (ProgressBar) rootView.findViewById(R.id.checkProgressBar);
-        createFakeData();
-
+//        createFakeData();
+        setUIValue();
+        setStepsList();
         CompoundButton.OnCheckedChangeListener newOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -127,6 +128,24 @@ public class CookBookDetailToDoFragment extends Fragment {
             newCheckListItems.add(new CheckListItem(UUID.randomUUID().toString(), newStep, false));
         }
 
+    }
+
+    private void setUIValue()
+    {
+        TextView cookBookNameText = (TextView) rootView.findViewById(R.id.cookBookNameText);
+        cookBookNameText.setText(cookBook.getName());
+    }
+
+    private void setStepsList()
+    {
+
+        ArrayList<String> newSteps = cookBook.getSteps();
+
+        newCheckListItems = new ArrayList<CheckListItem>();
+
+        for (int i = 0; i < newSteps.size(); i++) {
+            newCheckListItems.add(new CheckListItem(UUID.randomUUID().toString(), i+")."+ newSteps.get(i)+"。", false));
+        }
     }
 
     private void selectItem(int position) {

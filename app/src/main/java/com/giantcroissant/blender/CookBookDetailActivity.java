@@ -11,6 +11,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import java.util.Date;
+
+import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+
 
 public class CookBookDetailActivity extends AppCompatActivity
         implements CookBookDetailInfoFragment.OnCookBookDetailInfoFragmentInteractionListener,
@@ -21,6 +27,9 @@ public class CookBookDetailActivity extends AppCompatActivity
     private CookBook cookBook;
     private CookBookDetailInfoFragment cookBookDetailInfoFragment;
     private CookBookDetailToDoFragment cookBookDetailToDoFragment;
+    private Realm realm;
+    private RealmQuery<CookBookRealm> cookBookRealmQuery;
+    private RealmResults<CookBookRealm> cookBookRealmResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class CookBookDetailActivity extends AppCompatActivity
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setElevation(0);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         actionBar.setTitle(cookBook.getName());
@@ -53,14 +63,40 @@ public class CookBookDetailActivity extends AppCompatActivity
 
         setValueToView();
         setDefaultFragment();
+        getRealm();
+        setRealmData();
     }
 
+    private void getRealm()
+    {
+        realm = Realm.getInstance(this);
+        cookBookRealmQuery = realm.where(CookBookRealm.class);
+        cookBookRealmQuery = cookBookRealmQuery.contains("Id", cookBook.getId());
+        cookBookRealmResult = cookBookRealmQuery.findAll();
+    }
+
+    private void setRealmData()
+    {
+        realm.beginTransaction();
+        CookBookRealm cookBookRealm = cookBookRealmResult.first();
+        cookBookRealm.setUploadTimestamp(new Date(System.currentTimeMillis()));
+        cookBook.setUploadTimestamp(new Date(System.currentTimeMillis()));
+        cookBookRealm.setViewedPeopleCount(cookBook.getViewedPeopleCount() + 1);
+        cookBook.setViewedPeopleCount(cookBook.getViewedPeopleCount() + 1);
+        realm.commitTransaction();
+    }
 
     private void setDefaultFragment()
     {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.contentfragment, new CookBookDetailInfoFragment());
+        fragmentTransaction.add(R.id.contentfragment, new CookBookDetailInfoFragment().newInstance(cookBook));
         fragmentTransaction.commit();
+
+        ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button_SelectColor);
+        infoButton.setImageResource(R.color.TabSelectColor);
+
+        ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
+        toDoButton.setImageResource(R.color.TabNoSelectColor);
     }
 
     private void getView()
@@ -89,6 +125,7 @@ public class CookBookDetailActivity extends AppCompatActivity
 
         switch (id) {
             case android.R.id.home:
+
                 finish();
 //                return true;
             default:
@@ -106,37 +143,22 @@ public class CookBookDetailActivity extends AppCompatActivity
 
             if (cookBookDetailInfoFragment == null)
             {
-                cookBookDetailInfoFragment = new CookBookDetailInfoFragment();
+                cookBookDetailInfoFragment = new CookBookDetailInfoFragment().newInstance(cookBook);
             }
             fragmentTransaction.replace(R.id.contentfragment, cookBookDetailInfoFragment);
 
-            ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button);
-            infoButton.setImageResource(R.drawable.cook_book_info_true);
+            ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button_SelectColor);
+            infoButton.setImageResource(R.color.TabSelectColor);
 
-            ImageButton videoButton = (ImageButton) findViewById(R.id.cook_book_video_button);
+//            ImageButton videoButton = (ImageButton) findViewById(R.id.cook_book_video_button_SelectColor);
 //            videoButton.setImageResource(R.drawable.hotcookbook_false);
 
-            ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button);
-            toDoButton.setImageResource(R.drawable.cook_book_to_do_false);
+            ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
+            toDoButton.setImageResource(R.color.TabNoSelectColor);
 
         }
 
         else if (view.getId() == R.id.cook_book_video_button) {
-//            if (cookBookDetailVideoFragment == null)
-//            {
-//                cookBookDetailVideoFragment = new CookBookDetailVideoFragment();
-//            }
-//
-//            fragmentTransaction.replace(R.id.contentfragment, cookBookDetailVideoFragment);
-//
-//            ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button);
-//            infoButton.setImageResource(R.drawable.cook_book_info_false);
-//
-//            ImageButton videoButton = (ImageButton) findViewById(R.id.cook_book_video_button);
-////            videoButton.setImageResource(R.drawable.hotcookbook_false);
-//
-//            ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button);
-//            toDoButton.setImageResource(R.drawable.cook_book_to_do_false);
 
             Intent intent = new Intent(this, CookBookDetailVideoActivity.class);
             intent.putExtra("cookBookListViewID", cookBook.getId());
@@ -157,23 +179,60 @@ public class CookBookDetailActivity extends AppCompatActivity
 
             if (cookBookDetailToDoFragment == null)
             {
-                cookBookDetailToDoFragment = new CookBookDetailToDoFragment();
+                cookBookDetailToDoFragment = new CookBookDetailToDoFragment().newInstance(cookBook);
             }
 
             fragmentTransaction.replace(R.id.contentfragment, cookBookDetailToDoFragment);
 
-            ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button);
-            infoButton.setImageResource(R.drawable.cook_book_info_false);
+            ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button_SelectColor);
+            infoButton.setImageResource(R.color.TabNoSelectColor);
 
-            ImageButton videoButton = (ImageButton) findViewById(R.id.cook_book_video_button);
+//            ImageButton videoButton = (ImageButton) findViewById(R.id.cook_book_video_button_SelectColor);
 //            videoButton.setImageResource(R.drawable.hotcookbook_false);
 
-            ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button);
-            toDoButton.setImageResource(R.drawable.cook_book_to_do_true);
+            ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
+            toDoButton.setImageResource(R.color.TabSelectColor);
+
+        }
+        else if (view.getId() == R.id.likeCookBookButton) {
+
+            realm.beginTransaction();
+            CookBookRealm cookBookRealm = cookBookRealmResult.first();
+
+            cookBookRealm.setBeCollected(!cookBook.getIsCollected());
+            cookBook.setIsCollected(!cookBook.getIsCollected());
+            if(cookBook.getIsCollected())
+            {
+                cookBookRealm.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() + 1);
+                cookBook.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() + 1);
+            }
+            else
+            {
+                cookBookRealm.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() - 1);
+                cookBook.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() - 1);
+            }
+            realm.commitTransaction();
+
+            setLikeCookBookButton();
+
         }
 
         fragmentTransaction.commit();
 
+    }
+
+    private void setLikeCookBookButton()
+    {
+        ImageButton likeCookbookButton = (ImageButton) findViewById(R.id.likeCookBookButton);
+        if(cookBook.getIsCollected())
+        {
+            likeCookbookButton.setImageResource(R.drawable.icon_collect_y) ;
+        }
+        else
+        {
+
+            likeCookbookButton.setImageResource(R.drawable.icon_collect_n) ;
+        }
     }
 
     @Override

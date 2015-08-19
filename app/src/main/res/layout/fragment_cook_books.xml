@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.giantcroissant.blender.CookBooksFragment">
+    tools:context="com.giantcroissant.blender.CookBooksFragment"
+    android:background="#EEEEEE">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -10,45 +11,80 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2"
-        android:background="@color/White"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:background="@color/White">
 
-        <ImageButton
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/newCookBookButton"
             android:layout_weight="1"
-            android:src="@drawable/newcookbook_true"
-            android:background="@color/White"
-            android:scaleType="centerCrop"
-            android:layout_gravity="bottom"
-            android:paddingLeft="20dp"
-            android:onClick="onClick" />
+            android:background="#EEEEEE">
 
-        <ImageButton
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="最近食譜"
+                android:id="@+id/newCookBookButton"
+                android:background="@color/ColorPrimary"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:id="@+id/newCookBookButton_SelectColor"
+                android:layout_weight="1"
+                android:src="@drawable/newcookbook_true"
+                android:background="@color/BackgroundColor"
+                android:scaleType="matrix"
+                android:layout_gravity="bottom"
+                android:onClick="onClick" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/hotCookBookButton"
             android:layout_weight="1"
-            android:src="@drawable/hotcookbook_false"
-            android:layout_toEndOf="@+id/newCookBookButton"
-            android:layout_toRightOf="@+id/newCookBookButton"
-            android:background="@color/White"
-            android:scaleType="centerCrop"
-            android:layout_gravity="bottom"
-            android:paddingRight="20dp"
-            android:onClick="onClick" />
+            android:background="#EEEEEE">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="熱門食譜"
+                android:id="@+id/hotCookBookButton"
+                android:background="@color/ColorPrimary"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:id="@+id/hotCookBookButton_SelectColor"
+                android:layout_weight="1"
+                android:src="@drawable/hotcookbook_false"
+                android:layout_toEndOf="@+id/newCookBookButton"
+                android:layout_toRightOf="@+id/newCookBookButton"
+                android:background="@color/BackgroundColor"
+                android:scaleType="matrix"
+                android:layout_gravity="bottom"
+                android:onClick="onClick" />
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/linearLayout2">
+        android:layout_below="@+id/linearLayout2"
+        android:background="#EEEEEE">
 
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cookbooklistView" />
+            android:id="@+id/cookbooklistView"
+            android:dividerHeight="0dp"
+            android:divider="@color/BackgroundColor" />
     </RelativeLayout>
 </RelativeLayout>

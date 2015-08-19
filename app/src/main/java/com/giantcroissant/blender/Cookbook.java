@@ -1,5 +1,8 @@
 package com.giantcroissant.blender;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -18,13 +21,16 @@ public class CookBook {
     private String ingredient;
     private ArrayList<String> steps;
     private Date uploadTimestamp;
+    private Date createTime;
     private int viewedPeople;
     private int collectedPeople;
     private boolean beCollected;
+    private Bitmap image;
 
     public CookBook()
     {
         this.uploadTimestamp = new Date(System.currentTimeMillis());
+        this.createTime = new Date(System.currentTimeMillis());
     }
 
     public CookBook(String id, String name, String description, String url, String image_url, String ingredient, ArrayList<String> steps, int viewedPeople, int collectedPeople,boolean beCollected)
@@ -37,6 +43,7 @@ public class CookBook {
         this.ingredient = ingredient;
         this.steps = steps;
         this.uploadTimestamp = new Date(System.currentTimeMillis());
+        this.createTime = new Date(System.currentTimeMillis());
         this.viewedPeople = viewedPeople;
         this.collectedPeople = collectedPeople;
         this.beCollected = beCollected;
@@ -71,6 +78,14 @@ public class CookBook {
 
     public void setUploadTimestamp(Date uploadTimestamp) {
         this.uploadTimestamp = uploadTimestamp;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getName() {
@@ -142,4 +157,13 @@ public class CookBook {
     public void setIsCollected(boolean beCollected) {
         this.beCollected = beCollected;
     }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
 }

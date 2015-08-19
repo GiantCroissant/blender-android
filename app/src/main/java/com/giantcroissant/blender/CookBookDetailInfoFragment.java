@@ -1,11 +1,15 @@
 package com.giantcroissant.blender;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
 /**
@@ -20,13 +24,12 @@ public class CookBookDetailInfoFragment extends Fragment {
 
 
     private OnCookBookDetailInfoFragmentInteractionListener mListener;
+    private CookBook cookBook;
+    private View rootView;
 
-    public static CookBookDetailInfoFragment newInstance(String param1, String param2) {
+    public static CookBookDetailInfoFragment newInstance(CookBook cookBook) {
         CookBookDetailInfoFragment fragment = new CookBookDetailInfoFragment();
-        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.cookBook = cookBook;
         return fragment;
     }
 
@@ -41,7 +44,45 @@ public class CookBookDetailInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cook_book_detial_info, container, false);
+        rootView = inflater.inflate(R.layout.fragment_cook_book_detial_info, container, false);
+        setUIValue();
+        return rootView;
+    }
+
+    private void setUIValue()
+    {
+        TextView cookBookNameText = (TextView) rootView.findViewById(R.id.cookBookNameText);
+        cookBookNameText.setText(cookBook.getName());
+
+        TextView cookBookIngredientText = (TextView) rootView.findViewById(R.id.cookBookIngredientText);
+        cookBookIngredientText.setText("材料： " + cookBook.getIngredient());
+
+
+        TextView cookBookStepsText = (TextView) rootView.findViewById(R.id.cookBookStepsText);
+        String tmpSteps = "";
+        for (int i = 0; i < cookBook.getSteps().size(); i++) {
+
+            tmpSteps += i+")."+cookBook.getSteps().get(i) + "。\n";
+        }
+
+        cookBookStepsText.setText("作法 : \n" + tmpSteps);
+
+        TextView cookBookDescriptionText = (TextView) rootView.findViewById(R.id.cookBookDescriptionText);
+        cookBookDescriptionText.setText("描述 :"+ cookBook.getDescription());
+
+        ImageButton likeCookbookButton = (ImageButton) rootView.findViewById(R.id.likeCookBookButton);
+        if(cookBook.getIsCollected())
+        {
+            likeCookbookButton.setImageResource(R.drawable.icon_collect_y) ;
+        }
+        else
+        {
+
+            likeCookbookButton.setImageResource(R.drawable.icon_collect_n) ;
+        }
+
+        ImageView cookbookicon = (ImageView) rootView.findViewById(R.id.cookbookicon);
+//        cookbookicon.setImageURI(Uri.parse(cookBook.getImageUrl()));
     }
 
     // TODO: Rename method, update argument and hook method into UI event

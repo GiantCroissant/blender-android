@@ -22,4 +22,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'io.realm:realm-android:0.80.3'
+    compile 'com.google.apis:google-api-services-youtube:v3-rev139-1.20.0'
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
 }

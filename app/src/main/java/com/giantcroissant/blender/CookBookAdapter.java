@@ -1,6 +1,9 @@
 package com.giantcroissant.blender;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.entity.BufferedHttpEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -20,6 +33,7 @@ public class CookBookAdapter extends ArrayAdapter<CookBook> {
     private int resource;
     // 包裝的記事資料
     private List<CookBook> cookBooks;
+
 
     public CookBookAdapter(Context context, int resource, List<CookBook> cookBooks) {
         super(context, resource, cookBooks);
@@ -49,10 +63,14 @@ public class CookBookAdapter extends ArrayAdapter<CookBook> {
         TextView ingredientTextView = (TextView) itemView.findViewById(R.id.ingredientTextView);
         ImageView cookbookImage = (ImageView) itemView.findViewById(R.id.cookbookicon);
 
+//        new loadImageAsync().execute(cookBook.getImageUrl());
         // 設定標題
         cookBookNameTextView.setText(cookBook.getName());
         ingredientTextView.setText(cookBook.getIngredient());
-//        companyItemIcon.setImageResource();
+        if(cookBook.getImage() != null)
+        {
+            cookbookImage.setImageBitmap(cookBook.getImage());
+        }
 
         return itemView;
     }

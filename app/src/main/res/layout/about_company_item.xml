@@ -15,6 +15,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
+        android:elevation="2dp"
         android:text="磨豆機"
         android:id="@+id/company_item_name"
         android:layout_weight="1"
@@ -23,4 +25,5 @@
         android:paddingLeft="20dp"
         android:layout_toRightOf="@+id/company_item_icon"
         android:layout_toEndOf="@+id/company_item_icon" />
+
 </RelativeLayout>

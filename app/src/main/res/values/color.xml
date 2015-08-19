@@ -7,4 +7,8 @@
     <color name="NameColor">#FF5522</color>
     <color name="Green">#00FF00</color>
     <color name="Pink">#FF5555</color>
+    <color name="TabSelectColor">#FFFF0A</color>
+    <color name="TabNoSelectColor">#EEEEEE</color>
+
+    <color name="BackgroundColor">#EEEEEE</color>
 </resources>
