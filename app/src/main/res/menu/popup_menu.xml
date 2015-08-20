@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <item
+            android:id="@+id/menu_read"
+            app:showAsAction="withText|ifRoom"
+            android:title="Read"
+            android:visible="true"/>
+        <item
+            android:id="@+id/menu_write"
+            app:showAsAction="withText|ifRoom"
+            android:title="Write"
+            android:visible="true"/>
+</menu>

@@ -1,6 +1,7 @@
 package com.giantcroissant.blender;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -146,11 +147,11 @@ public class MainActivity extends AppCompatActivity
         getCookBooks();
 
         FragmentManager fm = getSupportFragmentManager();//if added by xml
-//        if((CookBooksDataFragment)fm.findFragmentById(R.id.main_content) != null)
-//        {
+        if((CookBooksDataFragment)fm.findFragmentById(R.id.main_content) != null)
+        {
             CookBooksDataFragment fragment = (CookBooksDataFragment)fm.findFragmentById(R.id.main_content);
             fragment.upDateListView(realm);
-//        }
+        }
 
     }
 
@@ -507,6 +508,12 @@ public class MainActivity extends AppCompatActivity
             fragment.setCurrentCookBooks(realm,1);
 //            Log.e("OOO","XXX");
 
+        }
+        else if (view.getId() == R.id.connectbutton) {
+
+            Intent intent = new Intent(this, DeviceScanActivity.class);
+
+            startActivity(intent);
         }
 
     }

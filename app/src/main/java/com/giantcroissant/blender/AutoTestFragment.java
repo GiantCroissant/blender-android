@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import io.realm.Realm;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,7 +19,7 @@ import android.view.ViewGroup;
  * Use the {@link AutoTestFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AutoTestFragment extends Fragment {
+public class AutoTestFragment extends Fragment implements CookBooksDataFragment {
 
     /**
      * The fragment argument representing the section number for this
@@ -89,6 +91,11 @@ public class AutoTestFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void upDateListView(Realm realm) {
+
     }
 
     /**

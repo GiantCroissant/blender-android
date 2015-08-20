@@ -31,4 +31,25 @@
     <string name="title_activity_cook_book_detial">CookBookDetialActivity</string>
     <string name="title_activity_cook_book_detail_video">CookBookDetailVideoActivity</string>
     <string name="title_activity_main">MainActivity</string>
+
+
+    <string name="ble_not_supported">此手機不支援blender藍芽</string>
+    <string name="label_data">資料:</string>
+    <string name="label_device_address">連接地址:</string>
+    <string name="label_state">狀態:</string>
+    <string name="no_data">沒有資料</string>
+    <string name="connected">已連接</string>
+    <string name="disconnected">未連接</string>
+    <string name="title_devices">可連接裝置</string>
+    <string name="error_bluetooth_not_supported">此手機不支援藍芽功能</string>
+
+    <string name="unknown_device">未知的裝置</string>
+    <string name="unknown_characteristic">未知的用戶</string>
+    <string name="unknown_service">未知伺服器</string>
+
+    <!-- Menu items -->
+    <string name="menu_connect">連接</string>
+    <string name="menu_disconnect">取消連接</string>
+    <string name="menu_scan">開始掃描</string>
+    <string name="menu_stop">停止掃描</string>
 </resources>
