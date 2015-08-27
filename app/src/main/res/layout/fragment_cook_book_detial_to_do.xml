@@ -23,13 +23,85 @@
         android:layout_weight="1"
         android:background="@color/White" />
 
-    <ImageButton
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageButton"
-        android:src="@drawable/start"
-        android:layout_weight="1.8"
-        android:background="@color/White" />
+        android:layout_weight="1.8">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageButton"
+            android:src="@drawable/start"
+            android:layout_weight="1.8"
+            android:background="@color/White"
+            android:visibility="invisible" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Confrim"
+            android:id="@+id/ConfrimButton"
+            android:textColor="#ff030303"
+            android:background="@color/ColorPrimary"
+            android:visibility="visible"
+            android:clickable="true"
+            android:onClick="onClick" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/StartOrSkip"
+            android:visibility="visible">
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Start"
+                android:id="@+id/StartBlenderButton"
+                android:textColor="#ff030303"
+                android:background="@color/ColorPrimary"
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:clickable="true"
+                android:onClick="onClick" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Skip"
+                android:id="@+id/SkipBlenderButton"
+                android:textColor="#ff030303"
+                android:background="@color/ColorPrimary"
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:clickable="true"
+                android:onClick="onClick" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Finish"
+            android:id="@+id/FinishButton"
+            android:textColor="#ff030303"
+            android:background="@color/ColorPrimary"
+            android:visibility="visible"
+            android:clickable="true"
+            android:onClick="onClick" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="Connect"
+            android:id="@+id/connectBlueToothButton"
+            android:textColor="#ff030303"
+            android:background="@color/ColorPrimary"
+            android:visibility="visible"
+            android:clickable="true"
+            android:onClick="onClick" />
+    </RelativeLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

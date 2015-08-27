@@ -3,12 +3,10 @@ package com.giantcroissant.blender;
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -20,7 +18,7 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Yo
 
 
     private String cookBookID;
-    public CookBook cookBook;
+    public Cookbook cookBook;
     private ActionBar actionBar;
     public String YOUTUBE_VIDEO_ID = "pKbac2kh0nM";                            // Declaring the Toolbar Object
 
@@ -36,7 +34,7 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Yo
         Intent intent = getIntent();
         getView();
 
-        cookBook = new CookBook();
+        cookBook = new Cookbook();
         cookBook.setId(intent.getStringExtra("cookBookListViewID"));
         cookBook.setName(intent.getStringExtra("cookBookListViewName"));
         cookBook.setDescription(intent.getStringExtra("cookBookListViewDescription"));

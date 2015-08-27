@@ -1,7 +1,6 @@
 package com.giantcroissant.blender;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,13 +22,17 @@ import android.widget.TextView;
 public class CookBookDetailInfoFragment extends Fragment {
 
 
+    private static final String ARG_SECTION_NUMBER = "section_number";
     private OnCookBookDetailInfoFragmentInteractionListener mListener;
-    private CookBook cookBook;
+    private Cookbook cookBook;
     private View rootView;
 
-    public static CookBookDetailInfoFragment newInstance(CookBook cookBook) {
+    public static CookBookDetailInfoFragment newInstance(int sectionNumber ,Cookbook cookBook) {
         CookBookDetailInfoFragment fragment = new CookBookDetailInfoFragment();
         fragment.cookBook = cookBook;
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
         return fragment;
     }
 

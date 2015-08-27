@@ -11,4 +11,5 @@
     <color name="TabNoSelectColor">#EEEEEE</color>
 
     <color name="BackgroundColor">#EEEEEE</color>
+    <color name="SearchBackgroundColor">#66000000</color>
 </resources>

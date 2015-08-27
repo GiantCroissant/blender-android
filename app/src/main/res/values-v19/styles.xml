@@ -40,10 +40,9 @@
         </style>
 
 
-        <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
-                <!-- Search button icon -->
-                <item name="searchIcon">@drawable/ic_search</item>
-                <item name="closeIcon">@drawable/ic_clear</item>
-                <item name="searchHintIcon">@drawable/ic_search</item>
+        <style name="MySearchViewStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+                <item name="android:searchIcon">@drawable/ic_search</item>
+                <item name="android:searchHintIcon">@drawable/ic_search</item>
+                <item name="android:closeIcon">@drawable/ic_clear</item>
         </style>
 </resources>

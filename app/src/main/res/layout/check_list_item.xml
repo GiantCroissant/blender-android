@@ -8,5 +8,7 @@
         android:layout_height="match_parent"
         android:text="New CheckBox"
         android:id="@+id/checkBoxItem"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:checked="false"
+        android:clickable="false" />
 </LinearLayout>

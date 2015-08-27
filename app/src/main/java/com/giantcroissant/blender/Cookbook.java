@@ -10,7 +10,7 @@ import java.util.Locale;
 /**
  * Created by liyihao on 15/7/14.
  */
-public class CookBook {
+public class Cookbook {
 
     private String id;
 
@@ -27,13 +27,13 @@ public class CookBook {
     private boolean beCollected;
     private Bitmap image;
 
-    public CookBook()
+    public Cookbook()
     {
         this.uploadTimestamp = new Date(System.currentTimeMillis());
         this.createTime = new Date(System.currentTimeMillis());
     }
 
-    public CookBook(String id, String name, String description, String url, String image_url, String ingredient, ArrayList<String> steps, int viewedPeople, int collectedPeople,boolean beCollected)
+    public Cookbook(String id, String name, String description, String url, String image_url, String ingredient, ArrayList<String> steps, int viewedPeople, int collectedPeople, boolean beCollected)
     {
         this.id = id;
         this.name = name;

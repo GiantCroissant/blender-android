@@ -5,10 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
@@ -17,9 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,27 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.BufferedHttpEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import io.realm.Realm;
@@ -90,8 +69,9 @@ public class MainActivity extends AppCompatActivity
     private Realm realm;
     private RealmQuery<CookBookRealm> cookBookRealmQuery;
     private RealmResults<CookBookRealm> cookBookRealmResult;
+    private Intent searchIntent;
 
-    private ArrayList<CookBook> cookBooks;
+    private ArrayList<Cookbook> cookBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,10 +201,15 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        int id = item.getItemId();
+        if (id == R.id.action_search) {
+            if(searchIntent == null)
+            {
+                searchIntent  = new Intent(this, SearchActivity.class);
+            }
+            startActivity(searchIntent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -430,14 +415,14 @@ public class MainActivity extends AppCompatActivity
         String newStep = "步驟1;步驟2;步驟3;步驟4;步驟5;";
 
 
-        cookBooks = new ArrayList<CookBook>();
-        cookBooks.add(new CookBook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "https://www.dropbox.com/s/xm0pw3kw78orzg5/pictures_01.png?dl=0", "葡萄、蜂蜜、檸檬",newSteps, 20, 100, true));
-        cookBooks.add(new CookBook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "https://www.dropbox.com/s/6r3vdhrxqvot47d/pictures_02.png?dl=0", "葡萄、蜂蜜、草莓",newSteps, 40, 80, true));
-        cookBooks.add(new CookBook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "https://www.dropbox.com/s/pw4fyjhfs1kqsxa/pictures_03.png?dl=0", "水蜜桃、蜂蜜、芒果",newSteps, 60, 60, true));
-        cookBooks.add(new CookBook(UUID.randomUUID().toString(), "水蜜桃汁", "好喝到不行", "Http://xd.com", "https://www.dropbox.com/s/1u136gj6nvu8mjw/pictures_04.png?dl=0", "水蜜桃、蜂蜜",newSteps, 80, 40, true));
-        cookBooks.add(new CookBook(UUID.randomUUID().toString(), "芒果汁", "好好喝", "Http://xd.com", "https://www.dropbox.com/s/gqvvaquqaqs978s/pictures_05.png?dl=0", "芒果、蜂蜜",newSteps, 100, 20, true));
+        cookBooks = new ArrayList<Cookbook>();
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "https://www.dropbox.com/s/xm0pw3kw78orzg5/pictures_01.png?dl=0", "葡萄、蜂蜜、檸檬",newSteps, 20, 100, true));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "https://www.dropbox.com/s/6r3vdhrxqvot47d/pictures_02.png?dl=0", "葡萄、蜂蜜、草莓",newSteps, 40, 80, true));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "https://www.dropbox.com/s/pw4fyjhfs1kqsxa/pictures_03.png?dl=0", "水蜜桃、蜂蜜、芒果",newSteps, 60, 60, true));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃汁", "好喝到不行", "Http://xd.com", "https://www.dropbox.com/s/1u136gj6nvu8mjw/pictures_04.png?dl=0", "水蜜桃、蜂蜜",newSteps, 80, 40, true));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "芒果汁", "好好喝", "Http://xd.com", "https://www.dropbox.com/s/gqvvaquqaqs978s/pictures_05.png?dl=0", "芒果、蜂蜜",newSteps, 100, 20, true));
 
-        for (CookBook cookBook : cookBooks) {
+        for (Cookbook cookBook : cookBooks) {
             String tmpStep = "";
             for (String s : cookBook.getSteps()) {
                 tmpStep += s;
@@ -465,7 +450,7 @@ public class MainActivity extends AppCompatActivity
 
     private void getCookBooks()
     {
-        cookBooks = new ArrayList<CookBook>();
+        cookBooks = new ArrayList<Cookbook>();
         for (CookBookRealm cookBookRealm : cookBookRealmResult) {
             ArrayList<String> tmpSteps = new ArrayList<String>();
             String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
@@ -473,7 +458,7 @@ public class MainActivity extends AppCompatActivity
                 tmpSteps.add(tmpStepPart);
 //            Log.e("XXX", tmpStepPart);
             }
-            CookBook newCookBook = new CookBook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected());
+            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             cookBooks.add(newCookBook);
         }

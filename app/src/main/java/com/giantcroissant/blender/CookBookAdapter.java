@@ -1,9 +1,6 @@
 package com.giantcroissant.blender;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,30 +9,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.BufferedHttpEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
 import java.util.List;
 
 /**
  * Created by liyihao on 15/7/14.
  */
-public class CookBookAdapter extends ArrayAdapter<CookBook> {
+public class CookBookAdapter extends ArrayAdapter<Cookbook> {
 
     // 畫面資源編號
     private int resource;
     // 包裝的記事資料
-    private List<CookBook> cookBooks;
+    private List<Cookbook> cookBooks;
 
 
-    public CookBookAdapter(Context context, int resource, List<CookBook> cookBooks) {
+    public CookBookAdapter(Context context, int resource, List<Cookbook> cookBooks) {
         super(context, resource, cookBooks);
         this.resource = resource;
         this.cookBooks = cookBooks;
@@ -45,7 +32,7 @@ public class CookBookAdapter extends ArrayAdapter<CookBook> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LinearLayout itemView;
         // 讀取目前位置的記事物件
-        final CookBook cookBook = getItem(position);
+        final Cookbook cookBook = getItem(position);
         if (convertView == null) {
             // 建立項目畫面元件
             itemView = new LinearLayout(getContext());
@@ -76,7 +63,7 @@ public class CookBookAdapter extends ArrayAdapter<CookBook> {
     }
 
     // 設定指定編號的記事資料
-    public void set(int index, CookBook cookBook) {
+    public void set(int index, Cookbook cookBook) {
         if (index >= 0 && index < cookBooks.size()) {
             cookBooks.set(index, cookBook);
             notifyDataSetChanged();

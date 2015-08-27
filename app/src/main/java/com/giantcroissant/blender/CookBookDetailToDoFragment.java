@@ -1,23 +1,18 @@
 package com.giantcroissant.blender;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -33,17 +28,21 @@ import java.util.UUID;
  */
 public class CookBookDetailToDoFragment extends Fragment {
 
+    private static final String ARG_SECTION_NUMBER = "section_number";
     private CheckListAdapter mCheckListAdapter;
     private OnCookBookDetailVideoFragmentInteractionListener mListener;
-    private CookBook cookBook;
+    private Cookbook cookBook;
     private ProgressBar checkProgressBar;
     private ListView checkListListView;
     private View rootView;
     private ArrayList<CheckListItem> newCheckListItems;
 
-    public static CookBookDetailToDoFragment newInstance(CookBook cookBook) {
+    public static CookBookDetailToDoFragment newInstance(int sectionNumber ,Cookbook cookBook) {
         CookBookDetailToDoFragment fragment = new CookBookDetailToDoFragment();
         fragment.cookBook = cookBook;
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -94,6 +93,7 @@ public class CookBookDetailToDoFragment extends Fragment {
         return rootView;
     }
 
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(String string) {
         if (mListener != null) {
@@ -101,7 +101,7 @@ public class CookBookDetailToDoFragment extends Fragment {
         }
     }
 
-    private  void checkAllcheckBox()
+    private void checkAllcheckBox()
     {
         checkProgressBar.setMax(newCheckListItems.size());
         int currentCheckIndex = 0;
@@ -152,9 +152,18 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     }
 
+    public Button getButtonView(int id)
+    {
+        return (Button)rootView.findViewById(id);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+        ((CookBookDetailActivity) activity).onFragmentAttached(
+                getArguments().getInt(ARG_SECTION_NUMBER));
+
         try {
             mListener = (OnCookBookDetailVideoFragmentInteractionListener) activity;
         } catch (ClassCastException e) {

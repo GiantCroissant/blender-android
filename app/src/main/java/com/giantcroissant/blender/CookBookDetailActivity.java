@@ -5,10 +5,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.util.Date;
@@ -24,12 +26,21 @@ public class CookBookDetailActivity extends AppCompatActivity
         View.OnClickListener {
 
     private ActionBar actionBar;                              // Declaring the Toolbar Object
-    private CookBook cookBook;
+    private Cookbook cookBook;
     private CookBookDetailInfoFragment cookBookDetailInfoFragment;
     private CookBookDetailToDoFragment cookBookDetailToDoFragment;
     private Realm realm;
     private RealmQuery<CookBookRealm> cookBookRealmQuery;
     private RealmResults<CookBookRealm> cookBookRealmResult;
+    private boolean isConnected = false;
+    private boolean isNeedStartBlender = false;
+    private boolean isFinished = false;
+
+    Button connectBlueToothbutton;
+    Button confrimhbutton;
+    Button startBlenderbutton;
+    Button skipBlenderhbutton;
+    Button finishhbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +50,7 @@ public class CookBookDetailActivity extends AppCompatActivity
         Intent intent = getIntent();
         getView();
 
-        cookBook = new CookBook();
+        cookBook = new Cookbook();
         cookBook.setId(intent.getStringExtra("cookBookListViewID"));
         cookBook.setName(intent.getStringExtra("cookBookListViewName"));
         cookBook.setDescription(intent.getStringExtra("cookBookListViewDescription"));
@@ -89,7 +100,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     private void setDefaultFragment()
     {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.contentfragment, new CookBookDetailInfoFragment().newInstance(cookBook));
+        fragmentTransaction.add(R.id.contentfragment, new CookBookDetailInfoFragment().newInstance(1,cookBook));
         fragmentTransaction.commit();
 
         ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button_SelectColor);
@@ -137,13 +148,12 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     public void onClick(View view)
     {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
         if (view.getId() == R.id.cook_book_Info_button) {
 
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             if (cookBookDetailInfoFragment == null)
             {
-                cookBookDetailInfoFragment = new CookBookDetailInfoFragment().newInstance(cookBook);
+                cookBookDetailInfoFragment = new CookBookDetailInfoFragment().newInstance(1,cookBook);
             }
             fragmentTransaction.replace(R.id.contentfragment, cookBookDetailInfoFragment);
 
@@ -156,6 +166,7 @@ public class CookBookDetailActivity extends AppCompatActivity
             ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
             toDoButton.setImageResource(R.color.TabNoSelectColor);
 
+            fragmentTransaction.commit();
         }
 
         else if (view.getId() == R.id.cook_book_video_button) {
@@ -177,9 +188,10 @@ public class CookBookDetailActivity extends AppCompatActivity
 
         else if (view.getId() == R.id.cook_book_to_do_button) {
 
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             if (cookBookDetailToDoFragment == null)
             {
-                cookBookDetailToDoFragment = new CookBookDetailToDoFragment().newInstance(cookBook);
+                cookBookDetailToDoFragment = new CookBookDetailToDoFragment().newInstance(2,cookBook);
             }
 
             fragmentTransaction.replace(R.id.contentfragment, cookBookDetailToDoFragment);
@@ -192,6 +204,8 @@ public class CookBookDetailActivity extends AppCompatActivity
 
             ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
             toDoButton.setImageResource(R.color.TabSelectColor);
+
+            fragmentTransaction.commit();
 
         }
         else if (view.getId() == R.id.likeCookBookButton) {
@@ -216,8 +230,97 @@ public class CookBookDetailActivity extends AppCompatActivity
             setLikeCookBookButton();
 
         }
+        else if(view.getId() == R.id.connectBlueToothButton)
+        {
+            connectBlueToothbutton = (Button) findViewById(R.id.connectBlueToothButton);
+            confrimhbutton = (Button)findViewById(R.id.ConfrimButton);
+            startBlenderbutton = (Button) findViewById(R.id.StartBlenderButton);
+            skipBlenderhbutton = (Button) findViewById(R.id.SkipBlenderButton);
+            finishhbutton = (Button) findViewById(R.id.FinishButton);
 
-        fragmentTransaction.commit();
+//            Log.e("xxx", String.valueOf(connectBlueToothbutton == null));
+
+            Intent intent = new Intent(this, DeviceScanActivity.class);
+            startActivity(intent);
+            isConnected = true;
+            checkButtonState();
+
+        }
+        else if(view.getId() == R.id.ConfrimButton)
+        {
+            confrimhbutton = (Button)findViewById(R.id.ConfrimButton);
+            isNeedStartBlender = true;
+            checkButtonState();
+        }
+        else if(view.getId() == R.id.StartBlenderButton)
+        {
+            startBlenderbutton = (Button) findViewById(R.id.StartBlenderButton);
+            isFinished = true;
+            checkButtonState();
+
+        }
+        else if(view.getId() == R.id.SkipBlenderButton)
+        {
+            skipBlenderhbutton = (Button) findViewById(R.id.SkipBlenderButton);
+            isFinished = true;
+            checkButtonState();
+
+        }
+        else if(view.getId() == R.id.FinishButton)
+        {
+            finishhbutton = (Button) findViewById(R.id.FinishButton);
+            isConnected = false;
+            isNeedStartBlender = false;
+            isFinished = false;
+            checkButtonState();
+
+        }
+
+
+    }
+
+    void checkButtonState()
+    {
+
+        if(isFinished == true)
+        {
+            connectBlueToothbutton.setVisibility(View.INVISIBLE);
+            confrimhbutton.setVisibility(View.INVISIBLE);
+            startBlenderbutton.setVisibility(View.INVISIBLE);
+            skipBlenderhbutton.setVisibility(View.INVISIBLE);
+            finishhbutton.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            if(isConnected == false)
+            {
+                connectBlueToothbutton.setVisibility(View.VISIBLE);
+                confrimhbutton.setVisibility(View.INVISIBLE);
+                startBlenderbutton.setVisibility(View.INVISIBLE);
+                skipBlenderhbutton.setVisibility(View.INVISIBLE);
+                finishhbutton.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                if(isNeedStartBlender == true)
+                {
+                    connectBlueToothbutton.setVisibility(View.INVISIBLE);
+                    confrimhbutton.setVisibility(View.INVISIBLE);
+                    startBlenderbutton.setVisibility(View.VISIBLE);
+                    skipBlenderhbutton.setVisibility(View.VISIBLE);
+                    finishhbutton.setVisibility(View.INVISIBLE);
+                }
+                else
+                {
+                    connectBlueToothbutton.setVisibility(View.INVISIBLE);
+                    confrimhbutton.setVisibility(View.VISIBLE);
+                    startBlenderbutton.setVisibility(View.INVISIBLE);
+                    skipBlenderhbutton.setVisibility(View.INVISIBLE);
+                    finishhbutton.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+
 
     }
 
@@ -243,5 +346,17 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     public void onCookBookDetailVideoFragmentInteraction(String string) {
 
+    }
+
+    public void onFragmentAttached(int number)
+    {
+        switch (number) {
+        case 1:
+
+        break;
+
+        case 2:
+        break;
+        }
     }
 }
