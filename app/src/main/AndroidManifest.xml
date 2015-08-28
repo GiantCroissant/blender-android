@@ -41,7 +41,7 @@
             android:name=".CookBookDetailVideoActivity"
             android:label="@string/title_activity_cook_book_detail_video"
             android:screenOrientation="landscape"
-            android:theme="@style/FullscreenTheme"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
         <activity

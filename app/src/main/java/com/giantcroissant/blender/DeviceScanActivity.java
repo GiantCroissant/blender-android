@@ -20,10 +20,10 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -43,6 +43,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import static android.bluetooth.BluetoothAdapter.*;
 
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
@@ -79,11 +81,16 @@ public class DeviceScanActivity extends AppCompatActivity{
             finish();
         }
 
-        // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
-        // BluetoothAdapter through BluetoothManager.
-        final BluetoothManager bluetoothManager =
-                (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        mBluetoothAdapter = bluetoothManager.getAdapter();
+
+//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+//        {
+            // Initializes a Bluetooth adapter.  For API level 18 and above, get a reference to
+            // BluetoothAdapter through BluetoothManager.
+            final android.bluetooth.BluetoothManager bluetoothManager =
+                    (android.bluetooth.BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            mBluetoothAdapter = bluetoothManager.getAdapter();
+//        }
 
         // Checks if Bluetooth is supported on the device.
         if (mBluetoothAdapter == null) {
@@ -136,7 +143,7 @@ public class DeviceScanActivity extends AppCompatActivity{
         // fire an intent to display a dialog asking the user to grant permission to enable it.
         if (!mBluetoothAdapter.isEnabled()) {
             if (!mBluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                Intent enableBtIntent = new Intent(ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
@@ -277,8 +284,8 @@ public class DeviceScanActivity extends AppCompatActivity{
     }
 
     // Device scan callback.
-    private BluetoothAdapter.LeScanCallback mLeScanCallback =
-            new BluetoothAdapter.LeScanCallback() {
+    private LeScanCallback mLeScanCallback =
+            new LeScanCallback() {
 
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
