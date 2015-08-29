@@ -26,7 +26,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1.8">
+        android:layout_weight="1.8"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp">
 
         <ImageButton
             android:layout_width="match_parent"
@@ -56,8 +60,8 @@
             android:visibility="visible">
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Start"
                 android:id="@+id/StartBlenderButton"
                 android:textColor="#ff030303"
@@ -65,11 +69,12 @@
                 android:layout_weight="1"
                 android:visibility="visible"
                 android:clickable="true"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:layout_marginRight="2.5dp" />
 
             <Button
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="Skip"
                 android:id="@+id/SkipBlenderButton"
                 android:textColor="#ff030303"
@@ -77,7 +82,8 @@
                 android:layout_weight="1"
                 android:visibility="visible"
                 android:clickable="true"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:layout_marginLeft="2.5dp" />
         </LinearLayout>
 
         <Button

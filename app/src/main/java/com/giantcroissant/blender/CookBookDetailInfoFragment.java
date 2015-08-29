@@ -65,8 +65,14 @@ public class CookBookDetailInfoFragment extends Fragment {
         String tmpSteps = "";
         for (int i = 0; i < cookBook.getSteps().size(); i++) {
 
-            tmpSteps += i+")."+cookBook.getSteps().get(i) + "。\n";
+            tmpSteps += (i+1)+")."+cookBook.getSteps().get(i) + "。";
+            if(Integer.parseInt(cookBook.getTimeOfSteps().get(i)) > 0 && Integer.parseInt(cookBook.getSpeedOfSteps().get(i))> 0)
+            {
+                tmpSteps = tmpSteps + " 啟動果汁機，轉速 " + cookBook.getSpeedOfSteps().get(i) + "，" + cookBook.getTimeOfSteps().get(i) + "秒。";
+            }
+            tmpSteps +="\n";
         }
+
 
         cookBookStepsText.setText("作法 : \n" + tmpSteps);
 

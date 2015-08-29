@@ -50,7 +50,7 @@ public class CheckListAdapter extends ArrayAdapter<CheckListItem> {
 
         // 讀取記事顏色、已選擇、標題與日期時間元件
         CheckBox checkBoxView = (CheckBox) itemView.findViewById(R.id.checkBoxItem);
-
+        checkListItem.checkBox = checkBoxView;
         // 設定標題
         checkBoxView.setText(checkListItem.getTitle());
         checkBoxView.setOnCheckedChangeListener(newOnCheckedChangeListener);

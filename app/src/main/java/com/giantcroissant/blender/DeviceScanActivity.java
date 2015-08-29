@@ -193,7 +193,7 @@ public class DeviceScanActivity extends AppCompatActivity{
             mScanning = false;
         }
         startActivity(intent);
-
+//        finish();
     }
 
     private void scanLeDevice(final boolean enable) {

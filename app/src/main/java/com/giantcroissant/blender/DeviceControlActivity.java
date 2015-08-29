@@ -137,6 +137,9 @@ public class DeviceControlActivity extends AppCompatActivity {
                     if (mGattCharacteristics != null) {
                         final BluetoothGattCharacteristic characteristic =
                                 mGattCharacteristics.get(groupPosition).get(childPosition);
+                        BlueToothManager.getInstance().mClickCharacteristic = characteristic;
+
+
                         if(UUID_BLENDER.equals(characteristic.getUuid())){
                             AlertDialog.Builder alert = new AlertDialog.Builder(DeviceControlActivity.this);
                             alert.setTitle("Blender果汁機 設定");
@@ -264,7 +267,12 @@ public class DeviceControlActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(mDeviceName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+
+        BlueToothManager.getInstance().gattServiceIntent = gattServiceIntent;
+        BlueToothManager.getInstance().bluetoothLeService = mBluetoothLeService;
     }
 
     @Override
@@ -314,6 +322,7 @@ public class DeviceControlActivity extends AppCompatActivity {
                 return true;
             case android.R.id.home:
                 onBackPressed();
+//                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

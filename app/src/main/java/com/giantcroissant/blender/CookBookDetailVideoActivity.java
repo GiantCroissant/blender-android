@@ -81,6 +81,8 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Yo
         cookBook.setViewedPeopleCount(intent.getIntExtra("cookBookListViewViewPeople", 0));
         cookBook.setCollectedPeopleCount(intent.getIntExtra("cookBookListViewCollectedPeople", 0));
         cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
+        cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
+        cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
         getRealm();
 
 

@@ -10,5 +10,6 @@
         android:id="@+id/checkBoxItem"
         android:layout_weight="1"
         android:checked="false"
-        android:clickable="false" />
+        android:clickable="false"
+        android:textSize="16dp" />
 </LinearLayout>

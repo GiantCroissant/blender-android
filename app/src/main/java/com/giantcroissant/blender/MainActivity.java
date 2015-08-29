@@ -412,20 +412,43 @@ public class MainActivity extends AppCompatActivity
         newSteps.add("步驟4;");
         newSteps.add("步驟5;");
 
-        String newStep = "步驟1;步驟2;步驟3;步驟4;步驟5;";
+        ArrayList<String> newTimeOfSteps = new ArrayList<String>();
+        newTimeOfSteps.add("0;");
+        newTimeOfSteps.add("0;");
+        newTimeOfSteps.add("1;");
+        newTimeOfSteps.add("0;");
+        newTimeOfSteps.add("2;");
+
+        ArrayList<String> newSpeedOfSteps = new ArrayList<String>();
+        newSpeedOfSteps.add("0;");
+        newSpeedOfSteps.add("0;");
+        newSpeedOfSteps.add("1;");
+        newSpeedOfSteps.add("0;");
+        newSpeedOfSteps.add("1;");
 
 
         cookBooks = new ArrayList<Cookbook>();
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "https://www.dropbox.com/s/xm0pw3kw78orzg5/pictures_01.png?dl=0", "葡萄、蜂蜜、檸檬",newSteps, 20, 100, true));
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "https://www.dropbox.com/s/6r3vdhrxqvot47d/pictures_02.png?dl=0", "葡萄、蜂蜜、草莓",newSteps, 40, 80, true));
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "https://www.dropbox.com/s/pw4fyjhfs1kqsxa/pictures_03.png?dl=0", "水蜜桃、蜂蜜、芒果",newSteps, 60, 60, true));
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃汁", "好喝到不行", "Http://xd.com", "https://www.dropbox.com/s/1u136gj6nvu8mjw/pictures_04.png?dl=0", "水蜜桃、蜂蜜",newSteps, 80, 40, true));
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "芒果汁", "好好喝", "Http://xd.com", "https://www.dropbox.com/s/gqvvaquqaqs978s/pictures_05.png?dl=0", "芒果、蜂蜜",newSteps, 100, 20, true));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "https://www.dropbox.com/s/xm0pw3kw78orzg5/pictures_01.png?dl=0", "葡萄、蜂蜜、檸檬",newSteps, 20, 100, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "https://www.dropbox.com/s/6r3vdhrxqvot47d/pictures_02.png?dl=0", "葡萄、蜂蜜、草莓",newSteps, 40, 80, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "https://www.dropbox.com/s/pw4fyjhfs1kqsxa/pictures_03.png?dl=0", "水蜜桃、蜂蜜、芒果",newSteps, 60, 60, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃汁", "好喝到不行", "Http://xd.com", "https://www.dropbox.com/s/1u136gj6nvu8mjw/pictures_04.png?dl=0", "水蜜桃、蜂蜜",newSteps, 80, 40, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "芒果汁", "好好喝", "Http://xd.com", "https://www.dropbox.com/s/gqvvaquqaqs978s/pictures_05.png?dl=0", "芒果、蜂蜜",newSteps, 100, 20, true,newTimeOfSteps,newSpeedOfSteps));
 
         for (Cookbook cookBook : cookBooks) {
             String tmpStep = "";
             for (String s : cookBook.getSteps()) {
                 tmpStep += s;
+            }
+
+
+            String tmpTimeOfStep = "";
+            for (String timeofstep : cookBook.getTimeOfSteps()) {
+                tmpTimeOfStep = tmpTimeOfStep + timeofstep;
+            }
+
+            String tmpSpeedOfStep = "";
+            for (String speedofstep : cookBook.getSpeedOfSteps()) {
+                tmpSpeedOfStep = tmpSpeedOfStep + speedofstep;
             }
 
             realm.beginTransaction();
@@ -442,6 +465,8 @@ public class MainActivity extends AppCompatActivity
             cookBookRealm.setBeCollected(cookBook.getIsCollected());
             cookBookRealm.setUploadTimestamp(cookBook.getUploadTimestamp());
             cookBookRealm.setCreateTime(cookBook.getCreateTime());
+            cookBookRealm.setTimeOfSteps(tmpTimeOfStep);
+            cookBookRealm.setSpeedOfSteps(tmpSpeedOfStep);
 
             realm.commitTransaction();
         }
@@ -458,7 +483,19 @@ public class MainActivity extends AppCompatActivity
                 tmpSteps.add(tmpStepPart);
 //            Log.e("XXX", tmpStepPart);
             }
-            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected());
+            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+                tmpSteps.add(tmpTimeOfStepPart);
+//            Log.e("XXX", tmpStepPart);
+            }
+            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+                tmpSteps.add(tmpSpeedOfStepPart);
+//            Log.e("XXX", tmpStepPart);
+            }
+            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             cookBooks.add(newCookBook);
         }

@@ -105,7 +105,19 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
             for (String tmpStepPart : tmpStepParts) {
                 tmpSteps.add(tmpStepPart);
             }
-            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected());
+            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+                tmpTimeOfSteps.add(tmpTimeOfStepPart);
+//            Log.e("XXX", tmpStepPart);
+            }
+            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+//            Log.e("XXX", tmpStepPart);
+            }
+            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             newCookBooks.add(newCookBook);
         }
@@ -122,7 +134,19 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
             for (String tmpStepPart : tmpStepParts) {
                 tmpSteps.add(tmpStepPart);
             }
-            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected());
+            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+                tmpSteps.add(tmpTimeOfStepPart);
+//            Log.e("XXX", tmpStepPart);
+            }
+            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+                tmpSteps.add(tmpSpeedOfStepPart);
+//            Log.e("XXX", tmpStepPart);
+            }
+            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             hotCookBooks.add(newCookBook);
         }
@@ -192,6 +216,8 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
         intent.putExtra("cookBookListViewViewPeople", currentCookBooks.get(position).getViewedPeopleCount());
         intent.putExtra("cookBookListViewCollectedPeople", currentCookBooks.get(position).getCollectedPeopleCount());
         intent.putExtra("cookBookListIsCollected", currentCookBooks.get(position).getIsCollected());
+        intent.putExtra("cookBookListViewTimeOfSteps", currentCookBooks.get(position).getTimeOfSteps());
+        intent.putExtra("cookBookListViewSpeedOfSteps", currentCookBooks.get(position).getSpeedOfSteps());
 
         startActivityForResult(intent, 0);
 

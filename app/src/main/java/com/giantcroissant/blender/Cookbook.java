@@ -26,6 +26,8 @@ public class Cookbook {
     private int collectedPeople;
     private boolean beCollected;
     private Bitmap image;
+    private ArrayList<String> timeofsteps;
+    private ArrayList<String> speedofsteps;
 
     public Cookbook()
     {
@@ -33,7 +35,7 @@ public class Cookbook {
         this.createTime = new Date(System.currentTimeMillis());
     }
 
-    public Cookbook(String id, String name, String description, String url, String image_url, String ingredient, ArrayList<String> steps, int viewedPeople, int collectedPeople, boolean beCollected)
+    public Cookbook(String id, String name, String description, String url, String image_url, String ingredient, ArrayList<String> steps, int viewedPeople, int collectedPeople, boolean beCollected,ArrayList<String> timeofsteps,ArrayList<String> speedofsteps)
     {
         this.id = id;
         this.name = name;
@@ -47,6 +49,8 @@ public class Cookbook {
         this.viewedPeople = viewedPeople;
         this.collectedPeople = collectedPeople;
         this.beCollected = beCollected;
+        this.timeofsteps = timeofsteps;
+        this.speedofsteps = speedofsteps;
     }
 
 
@@ -164,6 +168,22 @@ public class Cookbook {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public ArrayList<String> getTimeOfSteps() {
+        return timeofsteps;
+    }
+
+    public void setTimeOfStep(ArrayList<String> timeofsteps) {
+        this.timeofsteps = timeofsteps;
+    }
+
+    public ArrayList<String> getSpeedOfSteps() {
+        return speedofsteps;
+    }
+
+    public void setSpeedOfStep(ArrayList<String> speedofsteps) {
+        this.speedofsteps = speedofsteps;
     }
 
 }

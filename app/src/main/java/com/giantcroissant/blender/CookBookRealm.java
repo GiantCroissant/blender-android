@@ -29,6 +29,9 @@ public class CookBookRealm extends RealmObject {
     private int collectedPeopleCount;
     private boolean beCollected;
 
+    private String timeOfSteps;
+    private String speedOfSteps;
+
     public String getId() { return Id; }
     public void   setId(String Id) { this.Id = Id; }
     public String getUrl() { return url; }
@@ -80,6 +83,20 @@ public class CookBookRealm extends RealmObject {
 
     public void setBeCollected(boolean beCollected) {
         this.beCollected = beCollected;
+    }
+
+    public String getTimeOfSteps() {
+        return timeOfSteps;
+    }
+    public void setTimeOfSteps(String timeOfSteps) {
+        this.timeOfSteps = timeOfSteps;
+    }
+
+    public String getSpeedOfSteps() {
+        return speedOfSteps;
+    }
+    public void setSpeedOfSteps(String speedOfSteps) {
+        this.speedOfSteps = speedOfSteps;
     }
 }
 

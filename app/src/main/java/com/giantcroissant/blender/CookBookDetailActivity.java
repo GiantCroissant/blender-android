@@ -1,5 +1,6 @@
 package com.giantcroissant.blender;
 
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -36,6 +37,8 @@ public class CookBookDetailActivity extends AppCompatActivity
     private boolean isNeedStartBlender = false;
     private boolean isFinished = false;
 
+    private BluetoothLeService mBluetoothLeService;
+    private BluetoothGattCharacteristic mClickCharacteristic;
     Button connectBlueToothbutton;
     Button confrimhbutton;
     Button startBlenderbutton;
@@ -61,6 +64,8 @@ public class CookBookDetailActivity extends AppCompatActivity
         cookBook.setViewedPeopleCount(intent.getIntExtra("cookBookListViewViewPeople", 0));
         cookBook.setCollectedPeopleCount(intent.getIntExtra("cookBookListViewCollectedPeople", 0));
         cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
+        cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
+        cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -76,6 +81,9 @@ public class CookBookDetailActivity extends AppCompatActivity
         setDefaultFragment();
         getRealm();
         setRealmData();
+
+        mBluetoothLeService = BlueToothManager.getInstance().bluetoothLeService;
+        mClickCharacteristic = BlueToothManager.getInstance().mClickCharacteristic;
     }
 
     private void getRealm()
@@ -182,6 +190,8 @@ public class CookBookDetailActivity extends AppCompatActivity
             intent.putExtra("cookBookListViewViewPeople", cookBook.getViewedPeopleCount());
             intent.putExtra("cookBookListViewCollectedPeople", cookBook.getCollectedPeopleCount());
             intent.putExtra("cookBookListIsCollected", cookBook.getIsCollected());
+            intent.putExtra("cookBookListViewTimeOfSteps", cookBook.getTimeOfSteps());
+            intent.putExtra("cookBookListViewSpeedOfSteps", cookBook.getSpeedOfSteps());
 
             startActivityForResult(intent, 0);
         }
@@ -206,6 +216,25 @@ public class CookBookDetailActivity extends AppCompatActivity
             toDoButton.setImageResource(R.color.TabSelectColor);
 
             fragmentTransaction.commit();
+            mClickCharacteristic = BlueToothManager.getInstance().mClickCharacteristic;
+
+            byte[] sendmsg = new byte[10];
+            sendmsg[0] = (byte) 0xA5;
+            sendmsg[1] = (byte) 0x5A;
+            sendmsg[9] = (byte) 0xB3;
+            sendmsg[2] = (byte) 0x07;
+            sendmsg[3] = (byte) 0x01;
+            sendmsg[4] = (byte) ((1+1)*5 % 256);//((npTime.getValue()+1)*5 % 256);
+            sendmsg[5] = (byte) ((1+1)*5 / 256);//((npTime.getValue()+1)*5 / 256);
+            sendmsg[6] = (byte) (1 % 256);//(npSpeed.getValue() % 256);
+            sendmsg[7] = (byte) (1 / 256);//(npSpeed.getValue() / 256);
+            sendmsg[8] = (byte) 0x01;
+            if(mClickCharacteristic != null && mBluetoothLeService != null)
+            {
+                mClickCharacteristic.setValue(sendmsg);
+                mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                mBluetoothLeService.writeCharacteristic(mClickCharacteristic);
+            }
 
         }
         else if (view.getId() == R.id.likeCookBookButton) {
@@ -249,20 +278,26 @@ public class CookBookDetailActivity extends AppCompatActivity
         else if(view.getId() == R.id.ConfrimButton)
         {
             confrimhbutton = (Button)findViewById(R.id.ConfrimButton);
-            isNeedStartBlender = true;
+            cookBookDetailToDoFragment.setConfrim();
+            isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
+            isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
         }
         else if(view.getId() == R.id.StartBlenderButton)
         {
             startBlenderbutton = (Button) findViewById(R.id.StartBlenderButton);
-            isFinished = true;
+            cookBookDetailToDoFragment.setConfrim();
+            isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
+            isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
 
         }
         else if(view.getId() == R.id.SkipBlenderButton)
         {
             skipBlenderhbutton = (Button) findViewById(R.id.SkipBlenderButton);
-            isFinished = true;
+            isFinished = cookBookDetailToDoFragment.getFinished();
+            cookBookDetailToDoFragment.setConfrim();
+            isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             checkButtonState();
 
         }
@@ -270,8 +305,9 @@ public class CookBookDetailActivity extends AppCompatActivity
         {
             finishhbutton = (Button) findViewById(R.id.FinishButton);
             isConnected = false;
-            isNeedStartBlender = false;
-            isFinished = false;
+            cookBookDetailToDoFragment.setReStart();
+            isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
+            isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
 
         }

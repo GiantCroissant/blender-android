@@ -36,6 +36,7 @@ public class CookBookDetailToDoFragment extends Fragment {
     private ListView checkListListView;
     private View rootView;
     private ArrayList<CheckListItem> newCheckListItems;
+    private int currentIndex;
 
     public static CookBookDetailToDoFragment newInstance(int sectionNumber ,Cookbook cookBook) {
         CookBookDetailToDoFragment fragment = new CookBookDetailToDoFragment();
@@ -140,11 +141,18 @@ public class CookBookDetailToDoFragment extends Fragment {
     {
 
         ArrayList<String> newSteps = cookBook.getSteps();
+        ArrayList<String> newTimeOfSteps = cookBook.getTimeOfSteps();
+        ArrayList<String> newSpeedOfSteps = cookBook.getSpeedOfSteps();
 
         newCheckListItems = new ArrayList<CheckListItem>();
 
         for (int i = 0; i < newSteps.size(); i++) {
-            newCheckListItems.add(new CheckListItem(UUID.randomUUID().toString(), i+")."+ newSteps.get(i)+"。", false));
+            String tmpStep = (i+1)+")."+ newSteps.get(i)+"。";
+            if(Integer.parseInt(newTimeOfSteps.get(i)) > 0 && Integer.parseInt(newSpeedOfSteps.get(i))> 0)
+            {
+                tmpStep = tmpStep + " 啟動果汁機，轉速 " + newSpeedOfSteps.get(i) + "，" + newTimeOfSteps.get(i) + "秒。";
+            }
+            newCheckListItems.add(new CheckListItem(UUID.randomUUID().toString(), tmpStep, false));
         }
     }
 
@@ -152,9 +160,38 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     }
 
-    public Button getButtonView(int id)
+    public void setConfrim()
     {
-        return (Button)rootView.findViewById(id);
+        if(getFinished())
+        {
+            return;
+        }
+        newCheckListItems.get(currentIndex).checkBox.setChecked(true);
+        currentIndex++;
+    }
+
+    public void setReStart()
+    {
+        for (CheckListItem newCheckListItem : newCheckListItems) {
+            newCheckListItem.checkBox.setChecked(false);
+        }
+        currentIndex = 0;
+    }
+
+    public boolean getIsNeedStartBlender()
+    {
+        if(getFinished())
+        {
+            return false;
+        }
+        ArrayList<String> newTimeOfSteps = cookBook.getTimeOfSteps();
+        ArrayList<String> newSpeedOfSteps = cookBook.getSpeedOfSteps();
+        return Integer.parseInt(newTimeOfSteps.get(currentIndex)) > 0 && Integer.parseInt(newSpeedOfSteps.get(currentIndex))> 0;
+    }
+
+    public boolean getFinished()
+    {
+        return currentIndex >= newCheckListItems.size();
     }
 
     @Override
