@@ -59,7 +59,7 @@ public class DeviceScanActivity extends AppCompatActivity{
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after 10 seconds.
     private static final long SCAN_PERIOD = 10000;
-
+    private String preActivityName;
     private ActionBar actionBar;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,11 @@ public class DeviceScanActivity extends AppCompatActivity{
         actionBar.setHomeButtonEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         mHandler = new Handler();
+
+
+        final Intent intent = getIntent();
+        preActivityName = intent.getStringExtra("Name");
+//        Log.e("XXX",preActivityName);
 
 
 
@@ -192,8 +197,14 @@ public class DeviceScanActivity extends AppCompatActivity{
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
             mScanning = false;
         }
-        startActivity(intent);
-//        finish();
+
+        BlueToothData.getInstance().mDeviceName = device.getName();
+        BlueToothData.getInstance().mDeviceAddress = device.getAddress();
+        if(preActivityName.compareTo("BlueToothTest") == 0)
+        {
+            startActivity(intent);
+        }
+        finish();
     }
 
     private void scanLeDevice(final boolean enable) {

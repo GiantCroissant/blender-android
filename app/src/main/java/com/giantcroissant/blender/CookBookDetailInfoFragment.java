@@ -3,6 +3,7 @@ package com.giantcroissant.blender;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class CookBookDetailInfoFragment extends Fragment {
 
         TextView cookBookStepsText = (TextView) rootView.findViewById(R.id.cookBookStepsText);
         String tmpSteps = "";
+//        Log.e("XXX",String.valueOf(cookBook.getSteps().size()));
         for (int i = 0; i < cookBook.getSteps().size(); i++) {
 
             tmpSteps += (i+1)+")."+cookBook.getSteps().get(i) + "。";

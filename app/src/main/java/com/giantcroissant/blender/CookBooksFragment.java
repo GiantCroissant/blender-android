@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,14 +138,14 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
             ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
             String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
             for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                tmpSteps.add(tmpTimeOfStepPart);
-//            Log.e("XXX", tmpStepPart);
+                tmpTimeOfSteps.add(tmpTimeOfStepPart);
+//            Log.e("XXX", tmpTimeOfStepPart);
             }
             ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
             String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
             for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                tmpSteps.add(tmpSpeedOfStepPart);
-//            Log.e("XXX", tmpStepPart);
+                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+//            Log.e("XXX", tmpSpeedOfStepPart);
             }
             Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());

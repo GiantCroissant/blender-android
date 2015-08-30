@@ -113,13 +113,13 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
             ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
             String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
             for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                tmpSteps.add(tmpTimeOfStepPart);
+                tmpTimeOfSteps.add(tmpTimeOfStepPart);
 //            Log.e("XXX", tmpStepPart);
             }
             ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
             String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
             for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                tmpSteps.add(tmpSpeedOfStepPart);
+                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
 //            Log.e("XXX", tmpStepPart);
             }
             Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
@@ -143,13 +143,13 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
             ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
             String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
             for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                tmpSteps.add(tmpTimeOfStepPart);
+                tmpTimeOfSteps.add(tmpTimeOfStepPart);
 //            Log.e("XXX", tmpStepPart);
             }
             ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
             String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
             for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                tmpSteps.add(tmpSpeedOfStepPart);
+                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
 //            Log.e("XXX", tmpStepPart);
             }
             Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);

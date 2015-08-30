@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -137,7 +138,9 @@ public class DeviceControlActivity extends AppCompatActivity {
                     if (mGattCharacteristics != null) {
                         final BluetoothGattCharacteristic characteristic =
                                 mGattCharacteristics.get(groupPosition).get(childPosition);
-                        BlueToothManager.getInstance().mClickCharacteristic = characteristic;
+//                        Log.e("XXX",String.valueOf(groupPosition));
+//                        Log.e("XXX",String.valueOf(childPosition));
+                        BlueToothData.getInstance().mClickCharacteristic = characteristic;
 
 
                         if(UUID_BLENDER.equals(characteristic.getUuid())){
@@ -266,13 +269,13 @@ public class DeviceControlActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle(mDeviceName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-
-        BlueToothManager.getInstance().gattServiceIntent = gattServiceIntent;
-        BlueToothManager.getInstance().bluetoothLeService = mBluetoothLeService;
+        BlueToothData.getInstance().mDeviceName = mDeviceName;
+        BlueToothData.getInstance().mDeviceAddress = mDeviceAddress;
+//        BlueToothManager.getInstance().bluetoothLeService = mBluetoothLeService;
     }
 
     @Override

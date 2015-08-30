@@ -189,6 +189,24 @@ public class CookBookDetailToDoFragment extends Fragment {
         return Integer.parseInt(newTimeOfSteps.get(currentIndex)) > 0 && Integer.parseInt(newSpeedOfSteps.get(currentIndex))> 0;
     }
 
+    public int getCookBoookTimeOfSteps()
+    {
+        if(getFinished())
+        {
+            return 0;
+        }
+        return Integer.parseInt(cookBook.getTimeOfSteps().get(currentIndex));
+    }
+
+    public int getCookBoookSpeedOfSteps()
+    {
+        if(getFinished())
+        {
+            return 0;
+        }
+        return Integer.parseInt(cookBook.getSpeedOfSteps().get(currentIndex));
+    }
+
     public boolean getFinished()
     {
         return currentIndex >= newCheckListItems.size();
