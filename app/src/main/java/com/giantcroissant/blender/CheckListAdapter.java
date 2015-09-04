@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -49,11 +50,17 @@ public class CheckListAdapter extends ArrayAdapter<CheckListItem> {
         }
 
         // 讀取記事顏色、已選擇、標題與日期時間元件
-        CheckBox checkBoxView = (CheckBox) itemView.findViewById(R.id.checkBoxItem);
-        checkListItem.checkBox = checkBoxView;
+//        CheckBox checkBoxView = (CheckBox) itemView.findViewById(R.id.checkBoxItem);
+//        checkListItem.checkBox = checkBoxView;
+
+        RadioButton radioButtonView = (RadioButton) itemView.findViewById(R.id.radioButtonItem);
+        checkListItem.radioButton = radioButtonView;
         // 設定標題
-        checkBoxView.setText(checkListItem.getTitle());
-        checkBoxView.setOnCheckedChangeListener(newOnCheckedChangeListener);
+//        checkBoxView.setText(checkListItem.getTitle());
+//        checkBoxView.setOnCheckedChangeListener(newOnCheckedChangeListener);
+
+        radioButtonView.setText(checkListItem.getTitle());
+        radioButtonView.setOnCheckedChangeListener(newOnCheckedChangeListener);
 //        checkListItemIcon.setImageResource();
 
         return itemView;

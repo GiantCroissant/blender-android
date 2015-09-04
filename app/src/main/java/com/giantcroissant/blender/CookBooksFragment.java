@@ -41,7 +41,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
     private ArrayList<Cookbook> hotCookBooks;
     private ArrayList<Cookbook> currentCookBooks;
 //    private ArrayList<CookBook> cookBooks;
-    private int tabIndex = 0;
+//    private int tabIndex = 0;
 
     private OnCookBooksFragmentInteractionListener mListener;
     private Realm realm;
@@ -167,7 +167,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 ImageButton hotCookBookButton = (ImageButton) rootView.findViewById(R.id.hotCookBookButton_SelectColor);
                 hotCookBookButton.setImageResource(R.color.TabNoSelectColor);
 
-                this.tabIndex = 0;
+//                this.tabIndex = 0;
             }
             else if(tabIndex == 1)
             {
@@ -181,7 +181,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 ImageButton hotCookBookButton = (ImageButton) rootView.findViewById(R.id.hotCookBookButton_SelectColor);
                 hotCookBookButton.setImageResource(R.color.TabSelectColor);
 
-                this.tabIndex = 1;
+//                this.tabIndex = 1;
             }
 
     }

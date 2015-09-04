@@ -1,146 +1,174 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context="com.giantcroissant.blender.CookBookDetailToDoFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/White">
 
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.8">
-
-        <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-            android:text="水蜜桃汁"
-            android:layout_weight="1"
-            android:background="@color/White"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:gravity="bottom"
-            android:paddingBottom="10dp"
-            android:paddingLeft="40dp"
-            android:id="@+id/cookBookNameText" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="未連接果汁機"
-            android:layout_weight="1.2"
-            android:background="@color/White"
-            android:textSize="14dp"
-            android:textStyle="bold"
-            android:gravity="bottom"
-            android:paddingBottom="10dp"
-            android:id="@+id/IsConnectedBlueToothText" />
-    </LinearLayout>
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/checkListView"
-        android:layout_weight="1"
-        android:background="@color/White" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.8"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp">
-
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/imageButton"
-            android:src="@drawable/start"
-            android:layout_weight="1.8"
-            android:background="@color/White"
-            android:visibility="invisible" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Confrim"
-            android:id="@+id/ConfrimButton"
-            android:textColor="#ff030303"
-            android:background="@color/ColorPrimary"
-            android:visibility="visible"
-            android:clickable="true"
-            android:onClick="onClick" />
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/White">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/StartOrSkip"
-            android:visibility="visible">
+            android:elevation="5dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@color/White">
 
-            <Button
+            <RelativeLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Start"
-                android:id="@+id/StartBlenderButton"
-                android:textColor="#ff030303"
-                android:background="@color/ColorPrimary"
-                android:layout_weight="1"
-                android:visibility="visible"
-                android:clickable="true"
-                android:onClick="onClick"
-                android:layout_marginRight="2.5dp" />
+                android:layout_weight="6"
+                android:background="@color/White">
 
-            <Button
+                <TextView android:layout_width="wrap_content" android:layout_height="match_parent"
+                    android:text="水蜜桃汁"
+                    android:layout_weight="1"
+                    android:background="@color/White"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:gravity="bottom"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:id="@+id/cookBookNameText"
+                    android:textColor="@color/ColorPrimaryDark" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="未連接果汁機"
+                    android:layout_weight="1.2"
+                    android:background="@color/White"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:gravity="bottom|right"
+                    android:paddingBottom="10dp"
+                    android:id="@+id/IsConnectedBlueToothText"
+                    android:layout_toRightOf="@+id/cookBookNameText"
+                    android:layout_marginLeft="20dp" />
+            </RelativeLayout>
+
+            <ListView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Skip"
-                android:id="@+id/SkipBlenderButton"
-                android:textColor="#ff030303"
-                android:background="@color/ColorPrimary"
+                android:id="@+id/checkListView"
                 android:layout_weight="1"
-                android:visibility="visible"
-                android:clickable="true"
-                android:onClick="onClick"
-                android:layout_marginLeft="2.5dp" />
+                android:background="@color/White" />
+
         </LinearLayout>
 
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Finish"
-            android:id="@+id/FinishButton"
-            android:textColor="#ff030303"
-            android:background="@color/ColorPrimary"
-            android:visibility="visible"
-            android:clickable="true"
-            android:onClick="onClick" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="Connect"
-            android:id="@+id/connectBlueToothButton"
-            android:textColor="#ff030303"
-            android:background="@color/ColorPrimary"
-            android:visibility="visible"
-            android:clickable="true"
-            android:onClick="onClick" />
-    </RelativeLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1.8"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
-
-        <ProgressBar
-            style="?android:attr/progressBarStyleHorizontal"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/checkProgressBar" />
-    </FrameLayout>
+            android:layout_weight="5"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="32dp"
+            android:elevation="5dp"
+            android:background="@color/White">
 
-</LinearLayout>
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imageButton"
+                android:src="@drawable/start"
+                android:layout_weight="1.8"
+                android:background="@color/White"
+                android:visibility="invisible" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Confrim"
+                android:id="@+id/ConfrimButton"
+                android:textColor="@color/White"
+                android:background="@color/ColorPrimary"
+                android:visibility="visible"
+                android:clickable="true"
+                android:onClick="onClick" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/StartOrSkip"
+                android:visibility="visible">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Start"
+                    android:id="@+id/StartBlenderButton"
+                    android:textColor="@color/White"
+                    android:background="@color/ColorPrimary"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:layout_marginRight="2.5dp" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Skip"
+                    android:id="@+id/SkipBlenderButton"
+                    android:textColor="@color/White"
+                    android:background="@color/ColorPrimary"
+                    android:layout_weight="1"
+                    android:visibility="visible"
+                    android:clickable="true"
+                    android:onClick="onClick"
+                    android:layout_marginLeft="2.5dp" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Finish"
+                android:id="@+id/FinishButton"
+                android:textColor="@color/White"
+                android:background="@color/ColorPrimary"
+                android:visibility="visible"
+                android:clickable="true"
+                android:onClick="onClick" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Connect"
+                android:id="@+id/connectBlueToothButton"
+                android:textColor="@color/White"
+                android:background="@color/ColorPrimary"
+                android:visibility="visible"
+                android:clickable="true"
+                android:onClick="onClick" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:visibility="invisible">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/checkProgressBar" />
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>

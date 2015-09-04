@@ -5,9 +5,92 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3"
+        android:background="@color/White" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#EEEEEE" >
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/tab_blender_setting"
+                android:id="@+id/BlenderSettingButton"
+                android:background="@color/ColorPrimary"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:id="@+id/BlenderSettingButton_SelectColor"
+                android:layout_weight="1"
+                android:src="@drawable/newcookbook_true"
+                android:background="@color/BackgroundColor"
+                android:scaleType="matrix"
+                android:layout_gravity="bottom"
+                android:onClick="onClick" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#EEEEEE" >
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/tab_blender_control"
+                android:id="@+id/BlenderControlButton"
+                android:background="@color/ColorPrimary"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:id="@+id/BlenderControlButton_SelectColor"
+                android:layout_weight="1"
+                android:src="@drawable/hotcookbook_false"
+                android:layout_toEndOf="@+id/BlenderSettingButton"
+                android:layout_toRightOf="@+id/BlenderSettingButton"
+                android:background="@color/BackgroundColor"
+                android:scaleType="matrix"
+                android:layout_gravity="bottom"
+                android:onClick="onClick" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayout3"
+        android:background="#EEEEEE"
+        android:id="@+id/sub_content">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/listView"
+            android:dividerHeight="0dp"
+            android:divider="@color/BackgroundColor" />
+    </RelativeLayout>
+
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="0dp"
         android:id="@+id/imageView"
         android:src="@drawable/autotest"
         android:scaleType="fitStart"
@@ -19,7 +102,7 @@
 
     <Button
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:text="連接藍芽"
         android:id="@+id/connectbutton"
         android:layout_alignParentTop="true"

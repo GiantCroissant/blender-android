@@ -3,13 +3,18 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <CheckBox
+    <RadioButton
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="New CheckBox"
-        android:id="@+id/checkBoxItem"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="New RadioButton"
+        android:id="@+id/radioButtonItem"
+        android:textSize="16dp"
         android:checked="false"
         android:clickable="false"
-        android:textSize="16dp" />
+        android:layout_weight="0"
+        android:minLines="2"
+        android:minHeight="80dp"
+        android:gravity="top"
+        android:paddingTop="4dp" />
+
 </LinearLayout>

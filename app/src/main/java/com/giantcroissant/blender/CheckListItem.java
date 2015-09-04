@@ -1,6 +1,7 @@
 package com.giantcroissant.blender;
 
 import android.widget.CheckBox;
+import android.widget.RadioButton;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +17,7 @@ public class CheckListItem {
     private String title;
     private boolean finished;
     public CheckBox checkBox;
+    public RadioButton radioButton;
 
     public CheckListItem(String id, String title, boolean finished)
     {

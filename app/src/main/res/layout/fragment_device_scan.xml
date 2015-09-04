@@ -1,0 +1,78 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.giantcroissant.blender.DeviceScanFragment"
+    android:background="@color/BackgroundColor">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/White"
+        android:layout_marginTop="16dp"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="果汁機配對"
+            android:id="@+id/textView"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:enabled="false"
+            android:textColor="#ff000000"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentBottom="false"
+            android:layout_alignTop="@+id/blueToothSwitch"
+            android:layout_alignBottom="@+id/blueToothSwitch" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/blueToothSwitch"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:onClick="onClick"
+            android:clickable="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/BackgroundColor"
+        android:id="@+id/relativeLayout2"
+        android:layout_below="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_to_connect_bluetooth"
+            android:id="@+id/blueToothHint"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:enabled="false"
+            android:textColor="#ff717171"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/blenderHint"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:enabled="false"
+            android:textColor="#ff717171"
+            android:textSize="16sp"
+            android:layout_below="@+id/blueToothHint" />
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/gattServicesList"
+            android:layout_below="@+id/blenderHint" />
+    </RelativeLayout>
+
+</RelativeLayout>

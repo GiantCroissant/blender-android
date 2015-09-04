@@ -107,7 +107,7 @@ public class CookBookDetailToDoFragment extends Fragment {
         checkProgressBar.setMax(newCheckListItems.size());
         int currentCheckIndex = 0;
         for (CheckListItem newCheckListItem : newCheckListItems) {
-            if(newCheckListItem.getIsFinished())
+            if(newCheckListItem.radioButton.isChecked()) //newCheckListItem.checkBox.isChecked()
             {
                 currentCheckIndex += 1;
             }
@@ -166,14 +166,16 @@ public class CookBookDetailToDoFragment extends Fragment {
         {
             return;
         }
-        newCheckListItems.get(currentIndex).checkBox.setChecked(true);
+//        newCheckListItems.get(currentIndex).checkBox.setChecked(true);
+        newCheckListItems.get(currentIndex).radioButton.setChecked(true);
         currentIndex++;
     }
 
     public void setReStart()
     {
         for (CheckListItem newCheckListItem : newCheckListItems) {
-            newCheckListItem.checkBox.setChecked(false);
+//            newCheckListItem.checkBox.setChecked(false);
+            newCheckListItem.radioButton.setChecked(false);
         }
         currentIndex = 0;
     }

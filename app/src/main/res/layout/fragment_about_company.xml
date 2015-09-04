@@ -1,12 +1,89 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.giantcroissant.blender.AboutCompanyFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ListView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/aboutcompanylistView" />
-</FrameLayout>
+        android:id="@+id/linearLayout4"
+        android:background="@color/White" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#EEEEEE" >
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/tab_about_company"
+                android:id="@+id/AboutCompanyButton"
+                android:background="@color/ColorPrimary"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:id="@+id/AboutCompanyButton_SelectColor"
+                android:layout_weight="1"
+                android:src="@drawable/newcookbook_true"
+                android:background="@color/BackgroundColor"
+                android:scaleType="matrix"
+                android:layout_gravity="bottom"
+                android:onClick="onClick" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#EEEEEE" >
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="@string/tab_about_good"
+                android:id="@+id/AboutGoodButton"
+                android:background="@color/ColorPrimary"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:id="@+id/AboutGoodButton_SelectColor"
+                android:layout_weight="1"
+                android:src="@drawable/hotcookbook_false"
+                android:layout_toEndOf="@+id/AboutCompanyButton"
+                android:layout_toRightOf="@+id/AboutCompanyButton"
+                android:background="@color/BackgroundColor"
+                android:scaleType="matrix"
+                android:layout_gravity="bottom"
+                android:onClick="onClick" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayout4"
+        android:background="#EEEEEE" >
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/aboutcompanylistView" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

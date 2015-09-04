@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class AboutCompanyFragment extends Fragment implements CookBooksDataFragm
         createFakeData();
         mAboutCompanyAdapter = new AboutCompanyAdapter(this.getActivity() , R.layout.about_company_item, companyItems);
         itemListView.setAdapter(mAboutCompanyAdapter);
+        setCurrentTab(0);
         return rootView;
     }
 
@@ -78,6 +80,23 @@ public class AboutCompanyFragment extends Fragment implements CookBooksDataFragm
         if (mListener != null) {
             mListener.onAboutCompanyFragmentInteraction(string);
         }
+    }
+
+    public void setCurrentTab(int tabIndex) {
+
+        ImageButton aboutCompanyButton = (ImageButton) rootView.findViewById(R.id.AboutCompanyButton_SelectColor);
+        ImageButton aboutGoodButton = (ImageButton) rootView.findViewById(R.id.AboutGoodButton_SelectColor);
+        if (tabIndex == 0)
+        {
+            aboutCompanyButton.setImageResource(R.color.TabSelectColor);
+            aboutGoodButton.setImageResource(R.color.TabNoSelectColor);
+        }
+        else if(tabIndex == 1)
+        {
+            aboutCompanyButton.setImageResource(R.color.TabNoSelectColor);
+            aboutGoodButton.setImageResource(R.color.TabSelectColor);
+        }
+
     }
 
     private void createFakeData()

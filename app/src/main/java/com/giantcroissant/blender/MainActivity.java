@@ -1,11 +1,16 @@
 package com.giantcroissant.blender;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +20,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.DrawerLayout.DrawerListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +31,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -33,6 +42,8 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+import static android.bluetooth.BluetoothAdapter.*;
+
 public class MainActivity extends AppCompatActivity
         implements OnItemClickListener,
         NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -40,6 +51,8 @@ public class MainActivity extends AppCompatActivity
         UserDataFragment.OnUserDataFragmentInteractionListener,
         AutoTestFragment.OnAutoTestFragmentInteractionListener,
         AboutCompanyFragment.OnAboutCompanyFragmentInteractionListener,
+        DeviceControlFragment.OnFragmentInteractionListener,
+        DeviceScanFragment.OnFragmentInteractionListener,
         View.OnClickListener
 {
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
@@ -69,9 +82,23 @@ public class MainActivity extends AppCompatActivity
     private Realm realm;
     private RealmQuery<CookBookRealm> cookBookRealmQuery;
     private RealmResults<CookBookRealm> cookBookRealmResult;
+
     private Intent searchIntent;
 
     private ArrayList<Cookbook> cookBooks;
+
+    private Switch blueToothSwitch;
+    private TextView blueToothHint;
+    private TextView blenderHint;
+    private LeDeviceListAdapter mLeDeviceListAdapter;
+    private BluetoothAdapter mBluetoothAdapter;
+    private ListView mGattServicesList;
+    private boolean mScanning;
+    private Handler bluetoothHandler;
+
+    private static final int REQUEST_ENABLE_BT = 1;
+    // Stops scanning after 10 seconds.
+    private static final long SCAN_PERIOD = 10000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +134,14 @@ public class MainActivity extends AppCompatActivity
                 mDrawerToggle.syncState();
             }
         });
+
         mCallbacks = (NavigationDrawerFragment.NavigationDrawerCallbacks) this;
         selectItem(mCurrentSelectedPosition);
 
-//        onItemClick(null, null, fragmentId, 0);
+        bluetoothHandler = new Handler();
+        final android.bluetooth.BluetoothManager bluetoothManager =
+                (android.bluetooth.BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mBluetoothAdapter = bluetoothManager.getAdapter();
     }
 
     @Override
@@ -131,6 +162,11 @@ public class MainActivity extends AppCompatActivity
         {
             CookBooksDataFragment fragment = (CookBooksDataFragment)fm.findFragmentById(R.id.main_content);
             fragment.upDateListView(realm);
+        }
+
+        if(blueToothSwitch != null)
+        {
+            enableBlueToothIntent();
         }
 
     }
@@ -235,7 +271,7 @@ public class MainActivity extends AppCompatActivity
         ArrayList<NavigationMenuItem> tempNavigationMenuItemList = new ArrayList<NavigationMenuItem>();
         tempNavigationMenuItemList.add(new NavigationMenuItem(getString(R.string.title_section1),R.drawable.icon_recipe));
         tempNavigationMenuItemList.add(new NavigationMenuItem(getString(R.string.title_section2),R.drawable.icon_favorit));
-        tempNavigationMenuItemList.add(new NavigationMenuItem(getString(R.string.title_section3),R.drawable.icon_machine_test));
+        tempNavigationMenuItemList.add(new NavigationMenuItem(getString(R.string.title_section3), R.drawable.icon_machine_test));
         tempNavigationMenuItemList.add(new NavigationMenuItem(getString(R.string.title_section4), R.drawable.icon_shops));
 
         mDrawerList.setAdapter(new NavigationMenuItemAdapter(
@@ -331,6 +367,11 @@ public class MainActivity extends AppCompatActivity
                 cookBookRealmQuery = realm.where(CookBookRealm.class);
                 fragmentTransaction.replace(R.id.main_content, autoTestFragment.newInstance(position + 1));
                 fragmentTransaction.commit();
+
+                checkSupportBLE();
+                checkSupportBlueTooth();
+                enableBlueToothIntent();
+
                 break;
             case 3:
                 if (aboutCompanyFragment == null)
@@ -349,6 +390,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onSectionAttached(int number) {
+        if(actionBar == null)
+        {
+            actionBar = getSupportActionBar();
+        }
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
@@ -508,7 +553,7 @@ public class MainActivity extends AppCompatActivity
         if (view.getId() == R.id.newCookBookButton) {
             FragmentManager fm = getSupportFragmentManager();//if added by xml
             CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.main_content);
-            fragment.setCurrentCookBooks(realm,0);
+            fragment.setCurrentCookBooks(realm, 0);
 
 //            Log.e("XXX","OOO");
         }
@@ -531,13 +576,73 @@ public class MainActivity extends AppCompatActivity
 //            Log.e("OOO","XXX");
 
         }
-        else if (view.getId() == R.id.connectbutton) {
+        else if (view.getId() == R.id.BlenderSettingButton) {
 
-            Intent intent = new Intent(this, DeviceScanActivity.class);
-            intent.putExtra("Name", "BlueToothTest");
-            startActivity(intent);
+            FragmentManager fm = getSupportFragmentManager();//if added by xml
+            AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setCurrentTab(0);
+//            Intent intent = new Intent(this, DeviceScanActivity.class);
+//            intent.putExtra("Name", "BlueToothTest");
+//            startActivity(intent);
+
+        }
+        else if (view.getId() == R.id.BlenderControlButton) {
+
+            FragmentManager fm = getSupportFragmentManager();//if added by xml
+            AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setCurrentTab(1);
+
+        }
+        else if (view.getId() == R.id.AboutCompanyButton) {
+
+            FragmentManager fm = getSupportFragmentManager();//if added by xml
+            AboutCompanyFragment fragment = (AboutCompanyFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setCurrentTab(0);
+
+        }
+        else if (view.getId() == R.id.AboutGoodButton) {
+            FragmentManager fm = getSupportFragmentManager();//if added by xml
+            AboutCompanyFragment fragment = (AboutCompanyFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setCurrentTab(1);
+        }
+        else if (view.getId() == R.id.blueToothSwitch) {
+            blueToothSwitch = (Switch)findViewById(R.id.blueToothSwitch);
+            blueToothHint = (TextView) findViewById(R.id.blueToothHint);
+            blenderHint = (TextView) findViewById(R.id.blenderHint);
+//            Log.e("XXX",String.valueOf(blueToothSwitch.isChecked()));
+            if(blueToothSwitch.isChecked())
+            {
+                initializesListViewAdapter();
+                enableBlueToothIntent();
+                if(mBluetoothAdapter.isEnabled())
+                {
+                    blueToothHint.setText("");
+                    blenderHint.setText(R.string.hint_blender);
+
+                    mLeDeviceListAdapter.clear();
+                    scanLeDevice(true);
+                }
+            }
+            else
+            {
+                stopConnectBlueTooth();
+            }
         }
 
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // User chose not to enable Bluetooth.
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
+
+        }
+        if(blueToothSwitch != null)
+        {
+            blueToothSwitch.setChecked(false);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -577,6 +682,129 @@ public class MainActivity extends AppCompatActivity
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
     }
+
+    @Override
+    public void onFragmentInteraction(String string) {
+
+    }
+
+    void checkSupportBLE()
+    {
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+            if(blueToothSwitch != null)
+            {
+                blueToothSwitch.setChecked(false);
+            }
+        }
+    }
+
+    void checkSupportBlueTooth()
+    {
+        if (mBluetoothAdapter == null) {
+            Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+            if(blueToothSwitch != null)
+            {
+                blueToothSwitch.setChecked(false);
+            }
+        }
+    }
+
+    void enableBlueToothIntent()
+    {
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+    }
+
+    void initializesListViewAdapter()
+    {
+        mLeDeviceListAdapter = new LeDeviceListAdapter(MainActivity.this.getLayoutInflater());
+        mGattServicesList = (ListView) findViewById(R.id.gattServicesList);
+
+        mGattServicesList.setAdapter(mLeDeviceListAdapter);
+        mGattServicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                selectService(position);
+            }
+        });
+    }
+
+    private void selectService(int position) {
+
+        if(mBluetoothAdapter.isEnabled())
+        {
+            final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
+            if (device == null) return;
+            final Intent intent = new Intent(this, DeviceControlActivity.class);
+            intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
+            intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+            if (mScanning) {
+                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                mScanning = false;
+            }
+
+            BlueToothData.getInstance().mDeviceName = device.getName();
+            BlueToothData.getInstance().mDeviceAddress = device.getAddress();
+        }
+        else
+        {
+            blueToothSwitch.setChecked(false);
+            stopConnectBlueTooth();
+            enableBlueToothIntent();
+        }
+
+        mLeDeviceListAdapter.notifyDataSetChanged();
+    }
+
+    private void scanLeDevice(final boolean enable) {
+        if (enable) {
+            // Stops scanning after a pre-defined scan period.
+            bluetoothHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mScanning = false;
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                }
+            }, SCAN_PERIOD);
+
+            mScanning = true;
+            mBluetoothAdapter.startLeScan(mLeScanCallback);
+        } else {
+            mScanning = false;
+            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+        }
+
+    }
+
+    void stopConnectBlueTooth()
+    {
+        blenderHint.setText("");
+        blueToothHint.setText(R.string.hint_to_connect_bluetooth);
+        mLeDeviceListAdapter.clear();
+        scanLeDevice(false);
+        mLeDeviceListAdapter.notifyDataSetChanged();
+    }
+
+    // Device scan callback.
+    private LeScanCallback mLeScanCallback =
+            new LeScanCallback() {
+
+                @Override
+                public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mLeDeviceListAdapter.addDevice(device);
+                            mLeDeviceListAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            };
 
 //
 //    private Runnable getImage = new Runnable() {
