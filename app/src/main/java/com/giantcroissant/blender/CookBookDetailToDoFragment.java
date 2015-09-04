@@ -21,7 +21,7 @@ import java.util.UUID;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CookBookDetailToDoFragment.OnCookBookDetailVideoFragmentInteractionListener} interface
+ * {@link CookBookDetailToDoFragment.OnCookBookDetailToDoFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link CookBookDetailToDoFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -30,7 +30,7 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private CheckListAdapter mCheckListAdapter;
-    private OnCookBookDetailVideoFragmentInteractionListener mListener;
+    private OnCookBookDetailToDoFragmentInteractionListener mListener;
     private Cookbook cookBook;
     private ProgressBar checkProgressBar;
     private ListView checkListListView;
@@ -70,25 +70,6 @@ public class CookBookDetailToDoFragment extends Fragment {
 
         checkProgressBar = (ProgressBar) rootView.findViewById(R.id.checkProgressBar);
 //        createFakeData();
-        setUIValue();
-        setStepsList();
-        CompoundButton.OnCheckedChangeListener newOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                View parentRow = (View) compoundButton.getParent().getParent();
-                ListView listView = (ListView) parentRow.getParent();
-                final int position = listView.getPositionForView(parentRow);
-
-                newCheckListItems.get(position).setIsFinished(b);
-//                Log.e("XXX",String.valueOf(position));
-//                Log.e("XXX", compoundButton.getParent().getParent().getParent().toString());
-//                Log.e("XXX",String.valueOf(b));
-                checkAllcheckBox();
-            }
-        };
-
-        mCheckListAdapter = new CheckListAdapter(this.getActivity() , R.layout.check_list_item, newCheckListItems, newOnCheckedChangeListener);
-        checkListListView.setAdapter(mCheckListAdapter);
 
         // Inflate the layout for this fragment
         return rootView;
@@ -98,7 +79,7 @@ public class CookBookDetailToDoFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(String string) {
         if (mListener != null) {
-            mListener.onCookBookDetailVideoFragmentInteraction(string);
+            mListener.onCookBookDetailToDoFragmentInteraction(string);
         }
     }
 
@@ -167,6 +148,7 @@ public class CookBookDetailToDoFragment extends Fragment {
             return;
         }
 //        newCheckListItems.get(currentIndex).checkBox.setChecked(true);
+//        Log.e("XXX", String.valueOf(newCheckListItems.get(currentIndex).radioButton));
         newCheckListItems.get(currentIndex).radioButton.setChecked(true);
         currentIndex++;
     }
@@ -215,6 +197,39 @@ public class CookBookDetailToDoFragment extends Fragment {
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        mListener.onCookBookDetailToDoFragmentInteraction("Ok");
+        setUIValue();
+        setStepsList();
+        CompoundButton.OnCheckedChangeListener newOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            View parentRow = (View) compoundButton.getParent().getParent();
+            ListView listView = (ListView) parentRow.getParent();
+//            Log.e("XXX", compoundButton.toString());
+//            Log.e("XXX", compoundButton.getParent().toString());
+//            Log.e("XXX", compoundButton.getParent().getParent().toString());
+//            Log.e("XXX", compoundButton.getParent().getParent().getParent().toString());
+//            Log.e("XXX", compoundButton.getParent().getParent().getParent().getParent().toString());
+
+//            final int position = listView.getPositionForView(parentRow);
+
+//            newCheckListItems.get(currentIndex).radioButton.setChecked(b);
+//            Log.e("XXX",String.valueOf(position));
+//            Log.e("XXX", compoundButton.getParent().getParent().getParent().toString());
+//            Log.e("XXX",String.valueOf(b));
+            checkAllcheckBox();
+        }
+    };
+
+        mCheckListAdapter = new CheckListAdapter(this.getActivity() , R.layout.check_list_item, newCheckListItems, newOnCheckedChangeListener);
+        checkListListView.setAdapter(mCheckListAdapter);
+
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
@@ -222,7 +237,7 @@ public class CookBookDetailToDoFragment extends Fragment {
                 getArguments().getInt(ARG_SECTION_NUMBER));
 
         try {
-            mListener = (OnCookBookDetailVideoFragmentInteractionListener) activity;
+            mListener = (OnCookBookDetailToDoFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -245,8 +260,8 @@ public class CookBookDetailToDoFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnCookBookDetailVideoFragmentInteractionListener {
+    public interface OnCookBookDetailToDoFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onCookBookDetailVideoFragmentInteraction(String string);
+        public void onCookBookDetailToDoFragmentInteraction(String string);
     }
 }

@@ -4,11 +4,17 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import io.realm.Realm;
 
@@ -42,16 +48,17 @@ public class AutoTestFragment extends Fragment
     private String mParam2;
 
     private OnAutoTestFragmentInteractionListener mListener;
-
+    private boolean switchIsChecked;
     private View rootView;
     private DeviceScanFragment deviceScanFragment;
     private DeviceControlFragment deviceControlFragment;
 
-    public static AutoTestFragment newInstance(int sectionNumber) {
+    public static AutoTestFragment newInstance(int sectionNumber, boolean switchIsChecked) {
         AutoTestFragment fragment = new AutoTestFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
+        fragment.switchIsChecked = switchIsChecked;
         return fragment;
     }
 
@@ -98,7 +105,7 @@ public class AutoTestFragment extends Fragment
                 deviceScanFragment = new DeviceScanFragment();
             }
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.sub_content, deviceScanFragment.newInstance());
+            fragmentTransaction.replace(R.id.sub_content, deviceScanFragment.newInstance(switchIsChecked));
             fragmentTransaction.commit();
 
         }
@@ -117,6 +124,49 @@ public class AutoTestFragment extends Fragment
         }
 
     }
+
+    public void setBlenderSettingView(boolean visibility)
+    {
+
+        FragmentManager fm = getFragmentManager();//if added by xml
+        DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+        fragment.setBlenderSettingView(visibility);
+    }
+
+    public void setSpeedView()
+    {
+        FragmentManager fm = getFragmentManager();//if added by xml
+        DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+        fragment.setSpeedView();
+    }
+
+    public void setValue()
+    {
+        FragmentManager fm = getFragmentManager();//if added by xml
+        DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+        fragment.setValue();
+    }
+
+    public void setTimeView()
+    {
+        FragmentManager fm = getFragmentManager();//if added by xml
+        DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+        fragment.setTimeView();
+    }
+
+    public void deviceScanIsOk()
+    {
+        mListener.onAutoTestFragmentInteraction("OK");
+    }
+
+    public void setSwitchChecked(boolean isChecked)
+    {
+        switchIsChecked = isChecked;
+//        FragmentManager fm = getFragmentManager();//if added by xml
+//        DeviceScanFragment fragment = (DeviceScanFragment)fm.findFragmentById(R.id.sub_content);
+//        fragment.setSwitch(isChecked);
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -140,6 +190,43 @@ public class AutoTestFragment extends Fragment
     @Override
     public void upDateListView(Realm realm) {
 
+    }
+
+    public void onClick(View view)
+    {
+        FragmentManager fm = getFragmentManager();//if added by xml
+        if (view.getId() == R.id.startBlenderButton)
+        {
+            DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+
+        }
+        else if (view.getId() == R.id.stopBlenderButton)
+        {
+            DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+        }
+        else if (view.getId() == R.id.cancelSettingButton)
+        {
+            DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+            fragment.setBlenderSettingView(false);
+        }
+        else if (view.getId() == R.id.confrimSettingButton)
+        {
+            DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+            fragment.setValue();
+            fragment.setBlenderSettingView(false);
+        }
+        else if (view.getId() == R.id.setTimeEditText)
+        {
+            DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+            fragment.setBlenderSettingView(true);
+            fragment.setTimeView();
+        }
+        else if (view.getId() == R.id.setSpeedEditText)
+        {
+            DeviceControlFragment fragment = (DeviceControlFragment)fm.findFragmentById(R.id.sub_content);
+            fragment.setBlenderSettingView(true);
+            fragment.setSpeedView();
+        }
     }
 
     /**

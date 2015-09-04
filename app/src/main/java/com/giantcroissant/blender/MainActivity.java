@@ -3,14 +3,23 @@ package com.giantcroissant.blender;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +37,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -36,6 +47,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import io.realm.Realm;
@@ -51,7 +64,7 @@ public class MainActivity extends AppCompatActivity
         UserDataFragment.OnUserDataFragmentInteractionListener,
         AutoTestFragment.OnAutoTestFragmentInteractionListener,
         AboutCompanyFragment.OnAboutCompanyFragmentInteractionListener,
-        DeviceControlFragment.OnFragmentInteractionListener,
+        DeviceControlFragment.OnDeviceControlFragmentInteractionListener,
         DeviceScanFragment.OnFragmentInteractionListener,
         View.OnClickListener
 {
@@ -86,7 +99,8 @@ public class MainActivity extends AppCompatActivity
     private Intent searchIntent;
 
     private ArrayList<Cookbook> cookBooks;
-
+//scan bluetooth
+    private boolean switchIsChecked = false;
     private Switch blueToothSwitch;
     private TextView blueToothHint;
     private TextView blenderHint;
@@ -97,8 +111,26 @@ public class MainActivity extends AppCompatActivity
     private Handler bluetoothHandler;
 
     private static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_COOKBOOK = 2;
     // Stops scanning after 10 seconds.
-    private static final long SCAN_PERIOD = 10000;
+    private static final long SCAN_PERIOD = 1000;
+    private int resultCode = 0;
+    private int resultPosition = 0;
+    private String resultCookBookListViewID = "";
+
+//cotrol blender
+    private boolean isConnected = false;
+    private final String LIST_NAME = "NAME";
+    private final String LIST_UUID = "UUID";
+    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
+            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+    private final static String TAG = CookBookDetailActivity.class.getSimpleName();
+    private String mDeviceName;
+    private String mDeviceAddress;
+    private BluetoothLeService mBluetoothLeService;
+    private BluetoothGattCharacteristic mClickCharacteristic;
+    private boolean mConnected = false;
+    private BluetoothManager mblueToothManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +173,7 @@ public class MainActivity extends AppCompatActivity
         bluetoothHandler = new Handler();
         final android.bluetooth.BluetoothManager bluetoothManager =
                 (android.bluetooth.BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        mblueToothManager = bluetoothManager;
         mBluetoothAdapter = bluetoothManager.getAdapter();
     }
 
@@ -168,6 +201,57 @@ public class MainActivity extends AppCompatActivity
         {
             enableBlueToothIntent();
         }
+
+        if((Button)findViewById(R.id.startBlenderButton) != null)
+        {
+            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+            if (mBluetoothLeService != null) {
+                final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+                Log.d(TAG, "Connect request result=" + result);
+
+            }
+            else
+            {
+
+                mDeviceName = BlueToothData.getInstance().mDeviceName;
+                mDeviceAddress = BlueToothData.getInstance().mDeviceAddress;
+
+                if(mDeviceName != null && mDeviceAddress != null )
+                {
+                    Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+                    bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+                }
+
+                mClickCharacteristic = BlueToothData.getInstance().mClickCharacteristic;
+
+            }
+
+            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+        }
+
+    }
+
+    @Override
+    protected void onPostResume()
+    {
+        super.onPostResume();
+        if(resultCode == 100)
+        {
+            if (autoTestFragment == null)
+            {
+                autoTestFragment = new AutoTestFragment();
+            }
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            cookBookRealmQuery = realm.where(CookBookRealm.class);
+            fragmentTransaction.replace(R.id.main_content, autoTestFragment.newInstance(2 + 1, switchIsChecked));
+            fragmentTransaction.commit();
+
+            checkSupportBLE();
+            checkSupportBlueTooth();
+            enableBlueToothIntent();
+        }
+        Log.e("XXX",String.valueOf(switchIsChecked));
 
     }
 
@@ -365,7 +449,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
                 cookBookRealmQuery = realm.where(CookBookRealm.class);
-                fragmentTransaction.replace(R.id.main_content, autoTestFragment.newInstance(position + 1));
+                fragmentTransaction.replace(R.id.main_content, autoTestFragment.newInstance(position + 1, switchIsChecked));
                 fragmentTransaction.commit();
 
                 checkSupportBLE();
@@ -398,25 +482,29 @@ public class MainActivity extends AppCompatActivity
             case 1:
                 mTitle = getString(R.string.title_section1);
 //                restoreActionBar();
+                if(actionBar != null)
                 actionBar.setTitle(mTitle);
 
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
 //                restoreActionBar();
-                actionBar.setTitle(mTitle);
+                if(actionBar != null)
+                    actionBar.setTitle(mTitle);
 
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
 //                restoreActionBar();
-                actionBar.setTitle(mTitle);
+                if(actionBar != null)
+                    actionBar.setTitle(mTitle);
 
                 break;
             case 4:
                 mTitle = getString(R.string.title_section4);
 //                restoreActionBar();
-                actionBar.setTitle(mTitle);
+                if(actionBar != null)
+                    actionBar.setTitle(mTitle);
 
                 break;
         }
@@ -550,70 +638,194 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View view)
     {
+        FragmentManager fm = getSupportFragmentManager();//if added by xml
         if (view.getId() == R.id.newCookBookButton) {
-            FragmentManager fm = getSupportFragmentManager();//if added by xml
             CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentCookBooks(realm, 0);
 
 //            Log.e("XXX","OOO");
         }
         else if (view.getId() == R.id.hotCookBookButton) {
-            FragmentManager fm = getSupportFragmentManager();//if added by xml
             CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentCookBooks(realm,1);
 //            Log.e("OOO","XXX");
         }
         else if (view.getId() == R.id.userRecordCookBookButton) {
-            FragmentManager fm = getSupportFragmentManager();//if added by xml
             UserDataFragment fragment = (UserDataFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentCookBooks(realm,0);
 //            Log.e("XXX","OOO");
         }
         else if (view.getId() == R.id.userLikeCookBookButton) {
-            FragmentManager fm = getSupportFragmentManager();//if added by xml
             UserDataFragment fragment = (UserDataFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentCookBooks(realm,1);
 //            Log.e("OOO","XXX");
 
         }
-        else if (view.getId() == R.id.BlenderSettingButton) {
-
-            FragmentManager fm = getSupportFragmentManager();//if added by xml
+        else if (view.getId() == R.id.BlenderSettingButton)
+        {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setSwitchChecked(switchIsChecked);
             fragment.setCurrentTab(0);
 //            Intent intent = new Intent(this, DeviceScanActivity.class);
 //            intent.putExtra("Name", "BlueToothTest");
 //            startActivity(intent);
 
         }
-        else if (view.getId() == R.id.BlenderControlButton) {
-
-            FragmentManager fm = getSupportFragmentManager();//if added by xml
+        else if (view.getId() == R.id.BlenderControlButton)
+        {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentTab(1);
+            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+
+            if (mBluetoothLeService != null) {
+                final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+                Log.d(TAG, "Connect request result=" + result);
+
+            }
+            else
+            {
+
+                mDeviceName = BlueToothData.getInstance().mDeviceName;
+                mDeviceAddress = BlueToothData.getInstance().mDeviceAddress;
+
+                if(mDeviceName != null && mDeviceAddress != null )
+                {
+                    Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+                    bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+                }
+
+                mClickCharacteristic = BlueToothData.getInstance().mClickCharacteristic;
+
+            }
+
+            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
 
         }
-        else if (view.getId() == R.id.AboutCompanyButton) {
-
-            FragmentManager fm = getSupportFragmentManager();//if added by xml
+        else if (view.getId() == R.id.AboutCompanyButton)
+        {
             AboutCompanyFragment fragment = (AboutCompanyFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentTab(0);
-
         }
         else if (view.getId() == R.id.AboutGoodButton) {
-            FragmentManager fm = getSupportFragmentManager();//if added by xml
             AboutCompanyFragment fragment = (AboutCompanyFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentTab(1);
         }
         else if (view.getId() == R.id.blueToothSwitch) {
-            blueToothSwitch = (Switch)findViewById(R.id.blueToothSwitch);
-            blueToothHint = (TextView) findViewById(R.id.blueToothHint);
-            blenderHint = (TextView) findViewById(R.id.blenderHint);
-//            Log.e("XXX",String.valueOf(blueToothSwitch.isChecked()));
-            if(blueToothSwitch.isChecked())
+
+            switchConnectBlueTooth();
+
+        }
+        else if (view.getId() == R.id.startBlenderButton)
+        {
+            AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+            if(isConnected == false)
             {
-                initializesListViewAdapter();
-                enableBlueToothIntent();
+                fragment.setSwitchChecked(switchIsChecked);
+                fragment.setCurrentTab(0);
+            }
+
+            EditText setTimeEditText = (EditText) findViewById(R.id.setTimeEditText);
+            EditText setSpeedEditText = (EditText) findViewById(R.id.setSpeedEditText);
+            byte[] sendmsg = new byte[10];
+            sendmsg[0] = (byte) 0xA5;
+            sendmsg[1] = (byte) 0x5A;
+            sendmsg[9] = (byte) 0xB3;
+            sendmsg[2] = (byte) 0x07;
+            sendmsg[3] = (byte) 0x01;
+            sendmsg[4] = (byte) ((Integer.parseInt(setTimeEditText.getText().toString())+1)*5 % 256);//((npTime.getValue()+1)*5 % 256);
+            sendmsg[5] = (byte) ((Integer.parseInt(setTimeEditText.getText().toString())+1)*5 / 256);//((npTime.getValue()+1)*5 / 256);
+            sendmsg[6] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) % 256);//(npSpeed.getValue() % 256);
+            sendmsg[7] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) / 256);//(npSpeed.getValue() / 256);
+            sendmsg[8] = (byte) 0x01;
+
+            if(mClickCharacteristic != null && mBluetoothLeService != null)
+            {
+
+                mClickCharacteristic.setValue(sendmsg);
+                mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                mBluetoothLeService.writeCharacteristic(mClickCharacteristic);
+            }
+
+        }
+        else if (view.getId() == R.id.stopBlenderButton)
+        {
+            AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+            if(isConnected == false)
+            {
+                fragment.setSwitchChecked(switchIsChecked);
+                fragment.setCurrentTab(0);
+            }
+
+            EditText setTimeEditText = (EditText) findViewById(R.id.setTimeEditText);
+            EditText setSpeedEditText = (EditText) findViewById(R.id.setSpeedEditText);
+
+            byte[] sendmsg = new byte[10];
+            sendmsg[0] = (byte) 0xA5;
+            sendmsg[1] = (byte) 0x5A;
+            sendmsg[9] = (byte) 0xB3;
+            sendmsg[2] = (byte) 0x07;
+            sendmsg[3] = (byte) 0x01;
+            sendmsg[4] = (byte) 0x00;
+            sendmsg[5] = (byte) 0x00;
+            sendmsg[6] = (byte) 0x00;
+            sendmsg[7] = (byte) 0x00;
+            sendmsg[8] = (byte) 0x00;
+
+            if(mClickCharacteristic != null && mBluetoothLeService != null)
+            {
+
+                mClickCharacteristic.setValue(sendmsg);
+                mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                mBluetoothLeService.writeCharacteristic(mClickCharacteristic);
+            }
+
+        }
+        else if (view.getId() == R.id.cancelSettingButton)
+        {
+            AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setBlenderSettingView(false);
+        }
+        else if (view.getId() == R.id.confrimSettingButton)
+        {
+            AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setValue();
+            fragment.setBlenderSettingView(false);
+        }
+        else if (view.getId() == R.id.setTimeEditText)
+        {
+            AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setBlenderSettingView(true);
+            fragment.setTimeView();
+        }
+        else if (view.getId() == R.id.setSpeedEditText)
+        {
+            AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
+            fragment.setBlenderSettingView(true);
+            fragment.setSpeedView();
+        }
+
+
+    }
+
+    public void switchConnectBlueTooth()
+    {
+        blueToothSwitch = (Switch)findViewById(R.id.blueToothSwitch);
+        blueToothHint = (TextView) findViewById(R.id.blueToothHint);
+        blenderHint = (TextView) findViewById(R.id.blenderHint);
+//            Log.e("XXX",String.valueOf(blueToothSwitch.isChecked()));
+        if(blueToothSwitch != null)
+        {
+            initializesListViewAdapter();
+            enableBlueToothIntent();
+            switchIsChecked = blueToothSwitch.isChecked();
+
+//        Log.e("XXX",String.valueOf(switchIsChecked));
+//        Log.e("XXX", String.valueOf(mBluetoothAdapter.isEnabled()));
+
+            if(switchIsChecked)
+            {
                 if(mBluetoothAdapter.isEnabled())
                 {
                     blueToothHint.setText("");
@@ -629,19 +841,33 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // User chose not to enable Bluetooth.
-        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
+        if (requestCode == REQUEST_ENABLE_BT )//&& resultCode == Activity.RESULT_CANCELED) {
+        {
+            if(blueToothSwitch != null)
+            {
+                switchIsChecked = false;
+                blueToothSwitch.setChecked(false);
+            }
+        }
+
+        if(resultCode == 100)
+        {
+            this.resultCode = resultCode;
+            this.resultPosition = data.getIntExtra("posistion",0);
+            this.resultCookBookListViewID = data.getStringExtra("cookBookListViewID");
+//            Log.e("XXX","100");
+        }
+
+        if(requestCode == REQUEST_COOKBOOK)
+        {
 
         }
-        if(blueToothSwitch != null)
-        {
-            blueToothSwitch.setChecked(false);
-        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -666,6 +892,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onDeviceControlFragmentInteraction(String string) {
+
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
@@ -685,7 +916,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(String string) {
+//        Log.e("XXX",string);
+        if(string.compareTo("Ok") == 0)
+        {
+            switchConnectBlueTooth();
+//            Log.e("XXX",string);
+        }
+        else if(string.compareTo("Exit") == 0)
+        {
 
+            stopConnectBlueTooth();
+        }
     }
 
     void checkSupportBLE()
@@ -694,6 +935,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
             if(blueToothSwitch != null)
             {
+                switchIsChecked = false;
                 blueToothSwitch.setChecked(false);
             }
         }
@@ -705,6 +947,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
             if(blueToothSwitch != null)
             {
+                switchIsChecked = false;
                 blueToothSwitch.setChecked(false);
             }
         }
@@ -720,18 +963,24 @@ public class MainActivity extends AppCompatActivity
 
     void initializesListViewAdapter()
     {
-        mLeDeviceListAdapter = new LeDeviceListAdapter(MainActivity.this.getLayoutInflater());
+        if(mLeDeviceListAdapter == null)
+        {
+            mLeDeviceListAdapter = new LeDeviceListAdapter(MainActivity.this.getLayoutInflater());
+        }
         mGattServicesList = (ListView) findViewById(R.id.gattServicesList);
+        if(mGattServicesList != null)
+        {
+            mGattServicesList.setAdapter(mLeDeviceListAdapter);
+            mGattServicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        mGattServicesList.setAdapter(mLeDeviceListAdapter);
-        mGattServicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    selectService(position);
+                }
+            });
+        }
 
-                selectService(position);
-            }
-        });
     }
 
     private void selectService(int position) {
@@ -750,9 +999,61 @@ public class MainActivity extends AppCompatActivity
 
             BlueToothData.getInstance().mDeviceName = device.getName();
             BlueToothData.getInstance().mDeviceAddress = device.getAddress();
+
+            if(resultCode == 100)
+            {
+                Intent cookbookDetailIntent = new Intent(this, CookBookDetailActivity.class);
+
+                RealmQuery<CookBookRealm> tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
+                RealmResults<CookBookRealm> tempCookBookRealmResult = tmpCookBookRealmQuery.contains("Id",resultCookBookListViewID).findAll();
+                ArrayList<Cookbook> tmpCookBooks = new ArrayList<Cookbook>();
+
+                for (CookBookRealm cookBookRealm : tempCookBookRealmResult) {
+                    ArrayList<String> tmpSteps = new ArrayList<String>();
+                    String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+                    for (String tmpStepPart : tmpStepParts) {
+                        tmpSteps.add(tmpStepPart);
+//            Log.e("XXX", tmpStepPart);
+                    }
+                    ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+                    String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+                    for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+                        tmpTimeOfSteps.add(tmpTimeOfStepPart);
+//            Log.e("XXX", tmpStepPart);
+                    }
+                    ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+                    String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+                    for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+                        tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+//            Log.e("XXX", tmpStepPart);
+                    }
+                    Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
+                    newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
+                    tmpCookBooks.add(newCookBook);
+                }
+                cookbookDetailIntent.putExtra("position", resultPosition);
+//                cookbookDetailIntent.putExtra("currentFragmentIndex", 1);
+
+                cookbookDetailIntent.putExtra("cookBookListViewID", tmpCookBooks.get(0).getId());
+                cookbookDetailIntent.putExtra("cookBookListViewName", tmpCookBooks.get(0).getName());
+                cookbookDetailIntent.putExtra("cookBookListViewDescription", tmpCookBooks.get(0).getDescription());
+                cookbookDetailIntent.putExtra("cookBookListViewUrl", tmpCookBooks.get(0).getUrl());
+                cookbookDetailIntent.putExtra("cookBookListViewImageUrl", tmpCookBooks.get(0).getImageUrl());
+                cookbookDetailIntent.putExtra("cookBookListViewIngredient", tmpCookBooks.get(0).getIngredient());
+                cookbookDetailIntent.putExtra("cookBookListViewSteps", tmpCookBooks.get(0).getSteps());
+                cookbookDetailIntent.putExtra("cookBookListViewViewPeople", tmpCookBooks.get(0).getViewedPeopleCount());
+                cookbookDetailIntent.putExtra("cookBookListViewCollectedPeople", tmpCookBooks.get(0).getCollectedPeopleCount());
+                cookbookDetailIntent.putExtra("cookBookListIsCollected", tmpCookBooks.get(0).getIsCollected());
+                cookbookDetailIntent.putExtra("cookBookListViewTimeOfSteps", tmpCookBooks.get(0).getTimeOfSteps());
+                cookbookDetailIntent.putExtra("cookBookListViewSpeedOfSteps", tmpCookBooks.get(0).getSpeedOfSteps());
+
+                startActivityForResult(cookbookDetailIntent, REQUEST_COOKBOOK);
+                resultCode = 0;
+            }
         }
         else
         {
+            switchIsChecked = false;
             blueToothSwitch.setChecked(false);
             stopConnectBlueTooth();
             enableBlueToothIntent();
@@ -774,6 +1075,10 @@ public class MainActivity extends AppCompatActivity
 
             mScanning = true;
             mBluetoothAdapter.startLeScan(mLeScanCallback);
+            for (BluetoothDevice bluetoothDevice : mblueToothManager.getConnectedDevices(BluetoothProfile.GATT_SERVER)) {
+                mLeDeviceListAdapter.addDevice(bluetoothDevice);
+            }
+
         } else {
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
@@ -785,9 +1090,12 @@ public class MainActivity extends AppCompatActivity
     {
         blenderHint.setText("");
         blueToothHint.setText(R.string.hint_to_connect_bluetooth);
-        mLeDeviceListAdapter.clear();
-        scanLeDevice(false);
-        mLeDeviceListAdapter.notifyDataSetChanged();
+        if(mLeDeviceListAdapter != null)
+        {
+            mLeDeviceListAdapter.clear();
+            scanLeDevice(false);
+            mLeDeviceListAdapter.notifyDataSetChanged();
+        }
     }
 
     // Device scan callback.
@@ -799,12 +1107,163 @@ public class MainActivity extends AppCompatActivity
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+//                            Log.e("XXX",device.getName());
                             mLeDeviceListAdapter.addDevice(device);
                             mLeDeviceListAdapter.notifyDataSetChanged();
                         }
                     });
                 }
             };
+
+
+
+
+    // Code to manage Service lifecycle.
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+                Log.e(TAG, "Unable to initialize Bluetooth");
+                finish();
+            }
+            // Automatically connects to the device upon successful start-up initialization.
+            mBluetoothLeService.connect(mDeviceAddress);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
+
+    // Handles various events fired by the Service.
+    // ACTION_GATT_CONNECTED: connected to a GATT server.
+    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
+    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
+    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
+    //                        or notification operations.
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                mConnected = true;
+                updateConnectionState(R.string.connected);
+                invalidateOptionsMenu();
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                mConnected = false;
+                updateConnectionState(R.string.disconnected);
+                invalidateOptionsMenu();
+//                clearUI();
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                // Show all the supported services and characteristics on the user interface.
+                displayGattServices(mBluetoothLeService.getSupportedGattServices());
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+//                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+            }
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        registerReceiver(mGattUpdateReceiver,makeGattUpdateIntentFilter());
+        unregisterReceiver(mGattUpdateReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(isConnected)
+        {
+            unbindService(mServiceConnection);
+            mBluetoothLeService = null;
+        }
+    }
+
+
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        return intentFilter;
+    }
+
+    private void updateConnectionState(final int resourceId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+
+//                if (IsConnectedBlueToothText != null) {
+//                    if (isConnected == false) {
+//                        IsConnectedBlueToothText.setText("未連接果汁機");
+//                    } else {
+//                        IsConnectedBlueToothText.setText("已連接果汁機");
+//                    }
+//                }
+
+            }
+        });
+    }
+
+    // Demonstrates how to iterate through the supported GATT Services/Characteristics.
+    // In this sample, we populate the data structure that is bound to the ExpandableListView
+    // on the UI.
+    private void displayGattServices(List<BluetoothGattService> gattServices) {
+        if (gattServices == null) return;
+        String uuid = null;
+        String unknownServiceString = getResources().getString(R.string.unknown_service);
+        String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
+        ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
+        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
+                = new ArrayList<ArrayList<HashMap<String, String>>>();
+        mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+
+        // Loops through available GATT Services.
+        for (BluetoothGattService gattService : gattServices) {
+            HashMap<String, String> currentServiceData = new HashMap<String, String>();
+            uuid = gattService.getUuid().toString();
+            currentServiceData.put(
+                    LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
+            currentServiceData.put(LIST_UUID, uuid);
+            gattServiceData.add(currentServiceData);
+
+            ArrayList<HashMap<String, String>> gattCharacteristicGroupData =
+                    new ArrayList<HashMap<String, String>>();
+            List<BluetoothGattCharacteristic> gattCharacteristics =
+                    gattService.getCharacteristics();
+            ArrayList<BluetoothGattCharacteristic> charas =
+                    new ArrayList<BluetoothGattCharacteristic>();
+
+            // Loops through available Characteristics.
+            for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
+                charas.add(gattCharacteristic);
+                HashMap<String, String> currentCharaData = new HashMap<String, String>();
+                uuid = gattCharacteristic.getUuid().toString();
+                currentCharaData.put(
+                        LIST_NAME, SampleGattAttributes.lookup(uuid, unknownCharaString));
+                currentCharaData.put(LIST_UUID, uuid);
+                gattCharacteristicGroupData.add(currentCharaData);
+            }
+            mGattCharacteristics.add(charas);
+            gattCharacteristicData.add(gattCharacteristicGroupData);
+
+            if(mGattCharacteristics.size() == 3)
+            {
+                BlueToothData.getInstance().mClickCharacteristic = mGattCharacteristics.get(2).get(0);
+                mClickCharacteristic =  BlueToothData.getInstance().mClickCharacteristic;
+
+            }
+//            Log.e("XXX", String.valueOf(mGattCharacteristics.size()));
+        }
+    }
+
 
 //
 //    private Runnable getImage = new Runnable() {

@@ -90,7 +90,7 @@ public class SideMenuActivity extends AppCompatActivity
                     {
                         autoTestFragment = new AutoTestFragment();
                     }
-                    fragmentTransaction.replace(R.id.container, autoTestFragment.newInstance(position + 1));
+                    fragmentTransaction.replace(R.id.container, autoTestFragment.newInstance(position + 1, true));
                     fragmentTransaction.commit();
                     break;
                 case 3:

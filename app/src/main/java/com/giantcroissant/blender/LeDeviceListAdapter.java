@@ -1,6 +1,7 @@
 package com.giantcroissant.blender;
 
 import android.bluetooth.BluetoothDevice;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +16,18 @@ import java.util.ArrayList;
 // Adapter for holding devices found through scanning.
 public class LeDeviceListAdapter extends BaseAdapter {
     private ArrayList<BluetoothDevice> mLeDevices;
+    ArrayList<BluetoothDevice> tmpLeDevices;
     private LayoutInflater mInflator;
 
     public LeDeviceListAdapter(LayoutInflater mInflator) {
         super();
         mLeDevices = new ArrayList<BluetoothDevice>();
+        tmpLeDevices = new ArrayList<BluetoothDevice>();
         this.mInflator = mInflator;//DeviceScanActivity.this.getLayoutInflater();
     }
 
     public void addDevice(BluetoothDevice device) {
+//        Log.e("XXX",device.getName());
         if(!mLeDevices.contains(device)) {
             mLeDevices.add(device);
         }
@@ -34,7 +38,20 @@ public class LeDeviceListAdapter extends BaseAdapter {
     }
 
     public void clear() {
+//        for (BluetoothDevice mLeDevice : mLeDevices) {
+//            Log.e("XXX",mLeDevice.getName());
+//            if(BlueToothData.getInstance().mDeviceAddress.compareTo(mLeDevice.getAddress()) == 0)
+//            {
+//                tmpLeDevices.add(mLeDevice);
+//                Log.e("XXX",mLeDevice.getName());
+//            }
+//        }
+
         mLeDevices.clear();
+
+//        for (BluetoothDevice tmpLeDevice : tmpLeDevices) {
+//            mLeDevices.add(tmpLeDevice);
+//        }
     }
 
     @Override

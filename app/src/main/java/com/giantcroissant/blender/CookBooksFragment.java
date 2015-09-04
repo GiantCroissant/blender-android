@@ -29,6 +29,8 @@ import io.realm.RealmResults;
  */
 public class CookBooksFragment extends Fragment implements CookBooksDataFragment {
 
+    private static final int REQUEST_COOKBOOK = 2;
+
     private CookBookAdapter mCookBookAdapter;
     /**
      * The fragment argument representing the section number for this
@@ -220,7 +222,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
         intent.putExtra("cookBookListViewTimeOfSteps", currentCookBooks.get(position).getTimeOfSteps());
         intent.putExtra("cookBookListViewSpeedOfSteps", currentCookBooks.get(position).getSpeedOfSteps());
 
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, REQUEST_COOKBOOK);
 
     }
 

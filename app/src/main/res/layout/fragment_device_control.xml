@@ -1,10 +1,214 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.giantcroissant.blender.DeviceControlFragment">
+    tools:context="com.giantcroissant.blender.DeviceControlFragment"
+    android:background="@color/BackgroundColor">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/White"
+        android:elevation="5dp"
+        android:id="@+id/linearLayout5">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentBottom="false"
+                android:src="@drawable/icon_time"
+                android:layout_alignTop="@+id/setTimeEditText"
+                android:layout_alignBottom="@+id/setTimeEditText"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="32dp" />
+
+            <android.widget.EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/setTimeEditText"
+                android:layout_toRightOf="@+id/imageView2"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_centerHorizontal="true"
+                android:clickable="true"
+                android:editable="false"
+                android:onClick="onClick"
+                android:text="1"
+                android:enabled="true"
+                android:focusable="false"
+                android:textColor="@color/ColorPrimary"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="秒"
+                android:id="@+id/textView4"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:gravity="left"
+                android:layout_toRightOf="@+id/setTimeEditText" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2" >
+
+            <android.widget.EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/setSpeedEditText"
+                android:layout_toRightOf="@+id/imageView4"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_centerHorizontal="true"
+                android:editable="false"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:text="1"
+                android:focusable="false"
+                android:enabled="true"
+                android:textColor="@color/ColorPrimary"
+                android:gravity="center_horizontal" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView4"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentBottom="false"
+                android:src="@drawable/icon_speed"
+                android:layout_alignTop="@+id/setSpeedEditText"
+                android:layout_alignBottom="@+id/setSpeedEditText"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="32dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="轉速"
+                android:id="@+id/textView5"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/setSpeedEditText" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="停止"
+                android:id="@+id/stopBlenderButton"
+                android:background="@drawable/corners_button"
+                android:layout_weight="1"
+                android:layout_marginRight="4dp"
+                android:onClick="onClick"
+                android:clickable="true" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="啟動"
+                android:id="@+id/startBlenderButton"
+                android:background="@drawable/corners_button"
+                android:layout_weight="1"
+                android:layout_marginLeft="4dp"
+                android:onClick="onClick"
+                android:clickable="true" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/White"
+        android:layout_below="@+id/linearLayout5"
+        android:layout_marginTop="16dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/blenderSettingView">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:background="#ffd7d7d7"
+            android:clickable="false">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消"
+                android:id="@+id/cancelSettingButton"
+                android:textColor="@color/ColorPrimary"
+                android:background="#ffd7d7d7"
+                android:layout_alignParentLeft="true"
+                android:clickable="true"
+                android:onClick="onClick" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="完成"
+                android:id="@+id/confrimSettingButton"
+                android:textColor="@color/ColorPrimary"
+                android:background="#ffd7d7d7"
+                android:layout_alignParentRight="true"
+                android:clickable="true"
+                android:onClick="onClick" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="選擇轉速"
+                android:id="@+id/blenderSettingTitle"
+                android:layout_toRightOf="@+id/cancelSettingButton"
+                android:layout_toLeftOf="@+id/confrimSettingButton"
+                android:layout_alignTop="@+id/cancelSettingButton"
+                android:layout_alignBottom="@+id/confrimSettingButton"
+                android:gravity="center" />
+        </RelativeLayout>
+
+        <NumberPicker
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/blenderSettingNumberPicker"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:background="@color/White"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="32dp"
+            android:clickable="false" />
+    </LinearLayout>
+</RelativeLayout>

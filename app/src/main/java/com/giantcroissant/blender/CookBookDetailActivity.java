@@ -34,7 +34,7 @@ import io.realm.RealmResults;
 
 public class CookBookDetailActivity extends AppCompatActivity
         implements CookBookDetailInfoFragment.OnCookBookDetailInfoFragmentInteractionListener,
-        CookBookDetailToDoFragment.OnCookBookDetailVideoFragmentInteractionListener,
+        CookBookDetailToDoFragment.OnCookBookDetailToDoFragmentInteractionListener,
         View.OnClickListener {
 
     private ActionBar actionBar;                              // Declaring the Toolbar Object
@@ -65,6 +65,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     Button skipBlenderhbutton;
     Button finishhbutton;
     TextView IsConnectedBlueToothText;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,8 @@ public class CookBookDetailActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         getView();
-
+        position = intent.getIntExtra("position",0);
+        currentFragmentIndex = intent.getIntExtra("currentFragmentIndex",0);
         cookBook = new Cookbook();
         cookBook.setId(intent.getStringExtra("cookBookListViewID"));
         cookBook.setName(intent.getStringExtra("cookBookListViewName"));
@@ -99,7 +101,6 @@ public class CookBookDetailActivity extends AppCompatActivity
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setValueToView();
-        setDefaultFragment();
         getRealm();
         setRealmData();
 
@@ -126,16 +127,20 @@ public class CookBookDetailActivity extends AppCompatActivity
 
     private void setDefaultFragment()
     {
-        currentFragmentIndex = 0;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.contentfragment, new CookBookDetailInfoFragment().newInstance(1,cookBook));
-        fragmentTransaction.commit();
+
+        cookBookDetailInfoFragment = new CookBookDetailInfoFragment().newInstance(1,cookBook);
+
+        fragmentTransaction.replace(R.id.contentfragment, cookBookDetailInfoFragment);
 
         ImageButton infoButton = (ImageButton) findViewById(R.id.cook_book_Info_button_SelectColor);
         infoButton.setImageResource(R.color.TabSelectColor);
 
         ImageButton toDoButton = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
         toDoButton.setImageResource(R.color.TabNoSelectColor);
+
+        fragmentTransaction.commit();
+
     }
 
     private void getView()
@@ -275,9 +280,15 @@ public class CookBookDetailActivity extends AppCompatActivity
             isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
             if(isConnected == false)
             {
-                Intent intent = new Intent(this, DeviceScanActivity.class);
-                intent.putExtra("Name", "ToDoList");
-                startActivity(intent);
+//                Intent intent = new Intent(this, DeviceScanActivity.class);
+//                intent.putExtra("Name", "ToDoList");
+//                startActivity(intent);
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("cookBookListViewID", cookBook.getId());
+
+                setResult(100, intent);
+                finish();
             }
             checkButtonState();
 
@@ -330,9 +341,9 @@ public class CookBookDetailActivity extends AppCompatActivity
         else if(view.getId() == R.id.SkipBlenderButton)
         {
             skipBlenderhbutton = (Button) findViewById(R.id.SkipBlenderButton);
-            isFinished = cookBookDetailToDoFragment.getFinished();
             cookBookDetailToDoFragment.setConfrim();
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
+            isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
 
         }
@@ -420,7 +431,28 @@ public class CookBookDetailActivity extends AppCompatActivity
     }
 
     @Override
-    public void onCookBookDetailVideoFragmentInteraction(String string) {
+    public void onCookBookDetailToDoFragmentInteraction(String string) {
+
+
+    }
+
+    @Override
+    public void onPostResume() {
+        super.onPostResume();
+        isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+
+        if(currentFragmentIndex == 1)
+        {
+            connectBlueToothbutton = (Button) findViewById(R.id.connectBlueToothButton);
+            confrimhbutton = (Button)findViewById(R.id.ConfrimButton);
+            startBlenderbutton = (Button) findViewById(R.id.StartBlenderButton);
+            skipBlenderhbutton = (Button) findViewById(R.id.SkipBlenderButton);
+            finishhbutton = (Button) findViewById(R.id.FinishButton);
+            IsConnectedBlueToothText = (TextView) findViewById(R.id.IsConnectedBlueToothText);
+
+            checkButtonState();
+
+        }
 
     }
 
@@ -487,6 +519,8 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+
+        setDefaultFragment();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
@@ -510,7 +544,6 @@ public class CookBookDetailActivity extends AppCompatActivity
         }
 
         isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-        checkButtonState();
 
     }
 

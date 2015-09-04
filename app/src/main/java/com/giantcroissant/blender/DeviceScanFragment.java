@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 
 
 /**
@@ -29,6 +30,9 @@ public class DeviceScanFragment extends android.support.v4.app.Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private View rootView;
+    private Switch blueToothSwitch;
+    private boolean switchIsChecked;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -38,8 +42,9 @@ public class DeviceScanFragment extends android.support.v4.app.Fragment {
      * @return A new instance of fragment DeviceScanFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DeviceScanFragment newInstance() {
+    public static DeviceScanFragment newInstance(boolean switchIsChecked) {
         DeviceScanFragment fragment = new DeviceScanFragment();
+        fragment.switchIsChecked = switchIsChecked;
 //        Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
 //        args.putString(ARG_PARAM2, param2);
@@ -58,13 +63,29 @@ public class DeviceScanFragment extends android.support.v4.app.Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_device_scan, container, false);
+        rootView = inflater.inflate(R.layout.fragment_device_scan, container, false);
+        blueToothSwitch = (Switch)rootView.findViewById(R.id.blueToothSwitch);
+        setSwitchIsChecked(switchIsChecked);
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mListener.onFragmentInteraction("Ok");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+//        mListener.onFragmentInteraction("Ok");
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -74,11 +95,17 @@ public class DeviceScanFragment extends android.support.v4.app.Fragment {
         }
     }
 
+    public void setSwitchIsChecked(boolean isChecked)
+    {
+        blueToothSwitch.setChecked(isChecked);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+//            mListener.onFragmentInteraction("Ok");
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
