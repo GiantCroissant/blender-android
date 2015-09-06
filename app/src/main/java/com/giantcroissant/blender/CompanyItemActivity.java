@@ -45,6 +45,8 @@ public class CompanyItemActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
 
         setValueToView();
+//        ReplaceFont.replaceDefaultFont(this, "DEFAULT", "fonts/NotoSansCJKjp-Medium.otf");
+
     }
 
     private void getView()

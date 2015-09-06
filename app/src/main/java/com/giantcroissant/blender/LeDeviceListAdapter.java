@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ public class LeDeviceListAdapter extends BaseAdapter {
     }
 
     public void addDevice(BluetoothDevice device) {
-//        Log.e("XXX",device.getName());
         if(!mLeDevices.contains(device)) {
             mLeDevices.add(device);
         }
@@ -85,17 +85,22 @@ public class LeDeviceListAdapter extends BaseAdapter {
 
         BluetoothDevice device = mLeDevices.get(i);
         final String deviceName = device.getName();
+
         if (deviceName != null && deviceName.length() > 0)
             viewHolder.deviceName.setText(deviceName);
         else
             viewHolder.deviceName.setText(R.string.unknown_device);
 
+//        device.getBondState()
         viewHolder.deviceAddress.setText(R.string.disconnected);
+        ImageView contectImage = (ImageView) view.findViewById(R.id.contectImage);
+        contectImage.setVisibility(View.VISIBLE);
         if(BlueToothData.getInstance().mDeviceAddress != null)
         {
             if(BlueToothData.getInstance().mDeviceAddress.compareTo(device.getAddress()) == 0)
             {
                 viewHolder.deviceAddress.setText(R.string.connected);
+                contectImage.setVisibility(View.INVISIBLE);
             }
         }
 

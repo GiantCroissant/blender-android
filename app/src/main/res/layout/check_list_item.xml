@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="72dp"
     android:orientation="horizontal">
 
-    <RadioButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButtonItem"
-        android:textSize="16dp"
-        android:checked="false"
-        android:clickable="false"
-        android:layout_weight="0"
-        android:minLines="2"
-        android:minHeight="80dp"
-        android:gravity="top"
-        android:paddingTop="4dp" />
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/checkImage"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp" />
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="1"
+        android:id="@+id/checkIndexText"
+        android:layout_marginLeft="16dp"
+        android:textSize="@dimen/Body1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/checkContentText"
+        android:textSize="@dimen/Body1"
+        android:layout_toRightOf="@+id/checkIndexText"
+        android:layout_toLeftOf="@+id/checkImage" />
+
+</RelativeLayout>

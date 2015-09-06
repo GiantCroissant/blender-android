@@ -3,6 +3,8 @@ package com.giantcroissant.blender;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,27 +61,37 @@ public class CookBookDetailInfoFragment extends Fragment {
         cookBookNameText.setText(cookBook.getName());
 
         TextView cookBookIngredientText = (TextView) rootView.findViewById(R.id.cookBookIngredientText);
-        cookBookIngredientText.setText("材料： " + cookBook.getIngredient());
+        cookBookIngredientText.setText(getResources().getTextArray(R.array.menu_items_labels)[0]+"\n" + cookBook.getIngredient()+"\n", TextView.BufferType.SPANNABLE);
+        Spannable spanCookBookIngredientText = (Spannable) cookBookIngredientText.getText();
 
+        spanCookBookIngredientText.setSpan(new ForegroundColorSpan(0xFF336900), 0, getResources().getTextArray(R.array.menu_items_labels)[0].length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         TextView cookBookStepsText = (TextView) rootView.findViewById(R.id.cookBookStepsText);
         String tmpSteps = "";
 //        Log.e("XXX",String.valueOf(cookBook.getSteps().size()));
         for (int i = 0; i < cookBook.getSteps().size(); i++) {
 
-            tmpSteps += (i+1)+")."+cookBook.getSteps().get(i) + "。";
+            tmpSteps += (i+1)+" "+cookBook.getSteps().get(i) + "";
             if(Integer.parseInt(cookBook.getTimeOfSteps().get(i)) > 0 && Integer.parseInt(cookBook.getSpeedOfSteps().get(i))> 0)
             {
-                tmpSteps = tmpSteps + " 啟動果汁機，轉速 " + cookBook.getSpeedOfSteps().get(i) + "，" + cookBook.getTimeOfSteps().get(i) + "秒。";
+                tmpSteps = tmpSteps + "轉速" + cookBook.getSpeedOfSteps().get(i) + "，" + cookBook.getTimeOfSteps().get(i) + "秒。";
             }
-            tmpSteps +="\n";
+            tmpSteps +="\n\n";
         }
 
 
-        cookBookStepsText.setText("作法 : \n" + tmpSteps);
+        cookBookStepsText.setText(getResources().getTextArray(R.array.menu_items_labels)[1]+"\n" + tmpSteps, TextView.BufferType.SPANNABLE);
+        Spannable spanCookBookStepsText = (Spannable) cookBookStepsText.getText();
+
+        spanCookBookStepsText.setSpan(new ForegroundColorSpan(0xFF336900), 0, getResources().getTextArray(R.array.menu_items_labels)[1].length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         TextView cookBookDescriptionText = (TextView) rootView.findViewById(R.id.cookBookDescriptionText);
-        cookBookDescriptionText.setText("描述 :"+ cookBook.getDescription());
+        cookBookDescriptionText.setText(getResources().getTextArray(R.array.menu_items_labels)[2] + "\n" + cookBook.getDescription(), TextView.BufferType.SPANNABLE);
+        Spannable spanCookBookDescriptionText = (Spannable) cookBookDescriptionText.getText();
+        spanCookBookDescriptionText.setSpan(new ForegroundColorSpan(0xFF336900), 0, getResources().getTextArray(R.array.menu_items_labels)[2].length(),
+                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         ImageButton likeCookbookButton = (ImageButton) rootView.findViewById(R.id.likeCookBookButton);
         if(cookBook.getIsCollected())

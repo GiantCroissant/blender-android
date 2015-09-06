@@ -2,6 +2,7 @@ package com.giantcroissant.blender;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -84,6 +86,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 //        createFakeData();
 //        getNewCookBooks();
 //        getHotCookBooks();
+        realm = RealmData.getInstance().realm;
         setCurrentCookBooks(realm, 0);
 
         // Inflate the layout for this fragment
@@ -158,33 +161,37 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
     public void setCurrentCookBooks(Realm realm,int tabIndex) {
         getNewCookBooks(realm);
         getHotCookBooks(realm);
-        if (tabIndex == 0) {
+        Button newCookBookButton = (Button) rootView.findViewById(R.id.newCookBookButton);
+        Button hotCookBookButton = (Button) rootView.findViewById(R.id.hotCookBookButton);
+        ImageButton newCookBookButtonColor = (ImageButton) rootView.findViewById(R.id.newCookBookButton_SelectColor);
+        ImageButton hotCookBookButtonColor = (ImageButton) rootView.findViewById(R.id.hotCookBookButton_SelectColor);
+        if (tabIndex == 0)
+        {
             currentCookBooks = newCookBooks;
-                mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
-                cookbookListView.setAdapter(mCookBookAdapter);
+            mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
+            cookbookListView.setAdapter(mCookBookAdapter);
+            newCookBookButton.setTextColor(getResources().getColor(R.color.White));
+            newCookBookButtonColor.setImageResource(R.color.TabSelectColor);
 
-                ImageButton newCookBookButton = (ImageButton) rootView.findViewById(R.id.newCookBookButton_SelectColor);
-                newCookBookButton.setImageResource(R.color.TabSelectColor);
-
-                ImageButton hotCookBookButton = (ImageButton) rootView.findViewById(R.id.hotCookBookButton_SelectColor);
-                hotCookBookButton.setImageResource(R.color.TabNoSelectColor);
+            hotCookBookButton.setTextColor(getResources().getColor(R.color.c70White));
+            hotCookBookButtonColor.setImageResource(R.color.TabNoSelectColor);
 
 //                this.tabIndex = 0;
-            }
-            else if(tabIndex == 1)
-            {
-                currentCookBooks = hotCookBooks;
-                mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
-                cookbookListView.setAdapter(mCookBookAdapter);
+        }
+        else if(tabIndex == 1)
+        {
+            currentCookBooks = hotCookBooks;
+            mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
+            cookbookListView.setAdapter(mCookBookAdapter);
 
-                ImageButton newCookBookButton = (ImageButton) rootView.findViewById(R.id.newCookBookButton_SelectColor);
-                newCookBookButton.setImageResource(R.color.TabNoSelectColor);
+            newCookBookButton.setTextColor(getResources().getColor(R.color.c70White));
+            newCookBookButtonColor.setImageResource(R.color.TabNoSelectColor);
 
-                ImageButton hotCookBookButton = (ImageButton) rootView.findViewById(R.id.hotCookBookButton_SelectColor);
-                hotCookBookButton.setImageResource(R.color.TabSelectColor);
+            hotCookBookButton.setTextColor(getResources().getColor(R.color.White));
+            hotCookBookButtonColor.setImageResource(R.color.TabSelectColor);
 
 //                this.tabIndex = 1;
-            }
+        }
 
     }
 

@@ -26,6 +26,8 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(this);
         searchView.setQueryHint("Search");
+//        ReplaceFont.replaceDefaultFont(this, "DEFAULT", "fonts/NotoSansCJKjp-Medium.otf");
+
     }
 
     @Override

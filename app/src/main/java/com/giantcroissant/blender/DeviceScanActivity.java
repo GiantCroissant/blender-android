@@ -90,6 +90,8 @@ public class DeviceScanActivity extends AppCompatActivity{
             finish();
             return;
         }
+//        ReplaceFont.replaceDefaultFont(this, "DEFAULT", "fonts/NotoSansCJKjp-Medium.otf");
+
     }
 
     void setActionBar(){

@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 
@@ -72,6 +73,14 @@ public class DeviceScanFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_device_scan, container, false);
         blueToothSwitch = (Switch)rootView.findViewById(R.id.blueToothSwitch);
+        blueToothSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                mListener.onFragmentInteraction("blueToothSwitchOnCheckedChanged");
+            }
+        });
+
         setSwitchIsChecked(switchIsChecked);
         return rootView;
     }

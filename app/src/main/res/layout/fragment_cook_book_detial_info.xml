@@ -3,9 +3,9 @@
     android:layout_height="wrap_content"
     tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment"
     android:orientation="vertical"
-    android:background="@color/White">
+    android:background="@color/BackgroundColor">
 
-    <LinearLayout
+    <RelativeLayout
         tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -16,100 +16,115 @@
         android:elevation="5dp"
         android:layout_margin="16dp">
 
-        <RelativeLayout
-            android:layout_width="296dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:layout_gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="水蜜桃汁"
-                android:id="@+id/cookBookNameText"
-                android:layout_weight="1"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/ColorPrimaryDark"
-                android:gravity="center_vertical"
-                android:layout_marginTop="8dp" />
-
-            <ImageButton
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:id="@+id/likeCookBookButton"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="false"
-                android:src="@drawable/icon_collect_y"
-                android:background="@color/White"
-                android:layout_alignParentBottom="false"
-                android:layout_alignParentTop="false"
-                android:scaleType="fitCenter"
-                android:onClick="onClick"
-                android:clickable="true"
-                android:layout_marginTop="8dp" />
-        </RelativeLayout>
-
-        <ImageView
-            android:layout_width="296dp"
-            android:layout_height="228dp"
-            android:id="@+id/cookBookIcon"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/pictures_01"
-            android:scaleType="centerCrop"
-            android:background="#ffd2d5da"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:clickable="true" />
-
         <ScrollView
-            android:layout_width="296dp"
-            android:layout_height="228dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/scrollView2"
             android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" >
+                android:layout_height="match_parent">
 
-                <TextView
+                <ImageView
+                    android:layout_width="296dp"
+                    android:layout_height="222dp"
+                    android:id="@+id/cookBookIcon"
+                    android:layout_alignParentTop="false"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="false"
+                    android:layout_alignParentBottom="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="false"
+                    android:src="@drawable/pictures_01"
+                    android:scaleType="centerCrop"
+                    android:background="#ffd2d5da"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/cookBookTitle" />
+
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="材料 ：水蜜桃1 個、蜂蜜50克。"
-                    android:id="@+id/cookBookIngredientText"
                     android:layout_weight="1"
-                    android:minLines="2"
-                    android:textSize="16dp" />
+                    android:layout_below="@+id/cookBookIcon"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/cookBookStepsText"
-                    android:layout_weight="1"
-                    android:minLines="7"
-                    android:text="步驟 ： \n 1. 洗水蜜桃 \n 2. 消水蜜桃皮 \n 3. 去水蜜桃籽 \n 4. 把水蜜桃與蜂蜜一同加入果汁機中 \n 5. 可口水蜜桃汁上桌"
-                    android:textSize="16dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="材料 ：水蜜桃1 個、蜂蜜50克。"
+                        android:id="@+id/cookBookIngredientText"
+                        android:layout_weight="1"
+                        android:minLines="2"
+                        android:textSize="@dimen/Body1"
+                        android:textColor="@color/c87000000" />
 
-                <TextView
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/cookBookStepsText"
+                        android:layout_weight="1"
+                        android:minLines="7"
+                        android:text="步驟 ： \n 1. 洗水蜜桃 \n 2. 消水蜜桃皮 \n 3. 去水蜜桃籽 \n 4. 把水蜜桃與蜂蜜一同加入果汁機中 \n 5. 可口水蜜桃汁上桌"
+                        android:textSize="@dimen/Body1"
+                        android:textColor="@color/c87000000" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="美味的水蜜桃。好吃好吃。做成果汁也很棒喔。"
+                        android:id="@+id/cookBookDescriptionText"
+                        android:layout_weight="1"
+                        android:minLines="3"
+                        android:textSize="@dimen/Body1"
+                        android:textColor="@color/c87000000" />
+                </LinearLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="美味的水蜜桃。好吃好吃。做成果汁也很棒喔。"
-                    android:id="@+id/cookBookDescriptionText"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:minLines="3"
-                    android:textSize="16dp" />
-            </LinearLayout>
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/cookBookTitle">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="水蜜桃汁"
+                        android:id="@+id/cookBookNameText"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/Headline"
+                        android:textColor="@color/ColorPrimaryDark"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginLeft="16dp" />
+
+                    <ImageButton
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:id="@+id/likeCookBookButton"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="false"
+                        android:src="@drawable/icon_collect_y"
+                        android:background="@color/White"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignParentTop="false"
+                        android:scaleType="fitCenter"
+                        android:onClick="onClick"
+                        android:clickable="true"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp" />
+                </RelativeLayout>
+            </RelativeLayout>
         </ScrollView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

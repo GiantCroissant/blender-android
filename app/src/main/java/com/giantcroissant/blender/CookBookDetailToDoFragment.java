@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -71,6 +72,27 @@ public class CookBookDetailToDoFragment extends Fragment {
         checkProgressBar = (ProgressBar) rootView.findViewById(R.id.checkProgressBar);
 //        createFakeData();
 
+        setUIValue();
+        setStepsList();
+        CompoundButton.OnCheckedChangeListener newOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                View parentRow = (View) compoundButton.getParent().getParent();
+                ListView listView = (ListView) parentRow.getParent();
+//            Log.e("XXX", compoundButton.toString());
+//            Log.e("XXX", compoundButton.getParent().toString());
+//            Log.e("XXX", compoundButton.getParent().getParent().toString());
+//            Log.e("XXX", compoundButton.getParent().getParent().getParent().toString());
+//            Log.e("XXX", compoundButton.getParent().getParent().getParent().getParent().toString());
+
+//            final int position = listView.getPositionForView(parentRow);
+
+                checkAllcheckBox();
+            }
+        };
+
+        mCheckListAdapter = new CheckListAdapter(this.getActivity() , R.layout.check_list_item, newCheckListItems, newOnCheckedChangeListener);
+        checkListListView.setAdapter(mCheckListAdapter);
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -88,7 +110,7 @@ public class CookBookDetailToDoFragment extends Fragment {
         checkProgressBar.setMax(newCheckListItems.size());
         int currentCheckIndex = 0;
         for (CheckListItem newCheckListItem : newCheckListItems) {
-            if(newCheckListItem.radioButton.isChecked()) //newCheckListItem.checkBox.isChecked()
+            if(newCheckListItem.getIsFinished()) //newCheckListItem.checkBox.isChecked()
             {
                 currentCheckIndex += 1;
             }
@@ -112,6 +134,37 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     }
 
+    public int getCurrentIndex()
+    {
+        return currentIndex;
+    }
+
+    public void setCurrentIndex(int index)
+    {
+        currentIndex = index;
+
+        for (int i = 0; i < newCheckListItems.size(); i++) {
+            if(i < currentIndex)
+            {
+                newCheckListItems.get(i).setIsFinished(true);
+            }
+        }
+        mCheckListAdapter.notifyDataSetChanged();
+
+    }
+
+    public void setIsConnected(boolean isConnected)
+    {
+        if(isConnected)
+        {
+            TextView IsConnectedBlueToothText = (TextView) rootView.findViewById(R.id.IsConnectedBlueToothText);
+            if(IsConnectedBlueToothText != null)
+            {
+                IsConnectedBlueToothText.setText(R.string.connected);
+            }
+        }
+    }
+
     private void setUIValue()
     {
         TextView cookBookNameText = (TextView) rootView.findViewById(R.id.cookBookNameText);
@@ -128,12 +181,13 @@ public class CookBookDetailToDoFragment extends Fragment {
         newCheckListItems = new ArrayList<CheckListItem>();
 
         for (int i = 0; i < newSteps.size(); i++) {
-            String tmpStep = (i+1)+")."+ newSteps.get(i)+"。";
+            String tmpStep = newSteps.get(i)+"";
             if(Integer.parseInt(newTimeOfSteps.get(i)) > 0 && Integer.parseInt(newSpeedOfSteps.get(i))> 0)
             {
-                tmpStep = tmpStep + " 啟動果汁機，轉速 " + newSpeedOfSteps.get(i) + "，" + newTimeOfSteps.get(i) + "秒。";
+                tmpStep = tmpStep + "轉速" + newSpeedOfSteps.get(i) + "，" + newTimeOfSteps.get(i) + "秒。";
             }
             newCheckListItems.add(new CheckListItem(UUID.randomUUID().toString(), tmpStep, false));
+
         }
     }
 
@@ -147,18 +201,23 @@ public class CookBookDetailToDoFragment extends Fragment {
         {
             return;
         }
-//        newCheckListItems.get(currentIndex).checkBox.setChecked(true);
-//        Log.e("XXX", String.valueOf(newCheckListItems.get(currentIndex).radioButton));
-        newCheckListItems.get(currentIndex).radioButton.setChecked(true);
+//        Log.e("currentIndex", String.valueOf(currentIndex));
+
+        newCheckListItems.get(currentIndex).setIsFinished(true);
+//        Log.e("currentIndex", String.valueOf(newCheckListItems.get(currentIndex).getIsFinished()) + " isChecked");
+
+        mCheckListAdapter.notifyDataSetChanged();
         currentIndex++;
     }
 
     public void setReStart()
     {
         for (CheckListItem newCheckListItem : newCheckListItems) {
-//            newCheckListItem.checkBox.setChecked(false);
-            newCheckListItem.radioButton.setChecked(false);
+            newCheckListItem.setIsFinished(false);
+//            newCheckListItem.imageView.setVisibility(View.INVISIBLE);
         }
+
+        mCheckListAdapter.notifyDataSetChanged();
         currentIndex = 0;
     }
 
@@ -170,6 +229,8 @@ public class CookBookDetailToDoFragment extends Fragment {
         }
         ArrayList<String> newTimeOfSteps = cookBook.getTimeOfSteps();
         ArrayList<String> newSpeedOfSteps = cookBook.getSpeedOfSteps();
+
+//        mCheckListAdapter.notifyDataSetChanged();
         return Integer.parseInt(newTimeOfSteps.get(currentIndex)) > 0 && Integer.parseInt(newSpeedOfSteps.get(currentIndex))> 0;
     }
 
@@ -193,6 +254,8 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     public boolean getFinished()
     {
+
+//        mCheckListAdapter.notifyDataSetChanged();
         return currentIndex >= newCheckListItems.size();
     }
 
@@ -201,32 +264,6 @@ public class CookBookDetailToDoFragment extends Fragment {
     {
         super.onResume();
         mListener.onCookBookDetailToDoFragmentInteraction("Ok");
-        setUIValue();
-        setStepsList();
-        CompoundButton.OnCheckedChangeListener newOnCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
-        @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            View parentRow = (View) compoundButton.getParent().getParent();
-            ListView listView = (ListView) parentRow.getParent();
-//            Log.e("XXX", compoundButton.toString());
-//            Log.e("XXX", compoundButton.getParent().toString());
-//            Log.e("XXX", compoundButton.getParent().getParent().toString());
-//            Log.e("XXX", compoundButton.getParent().getParent().getParent().toString());
-//            Log.e("XXX", compoundButton.getParent().getParent().getParent().getParent().toString());
-
-//            final int position = listView.getPositionForView(parentRow);
-
-//            newCheckListItems.get(currentIndex).radioButton.setChecked(b);
-//            Log.e("XXX",String.valueOf(position));
-//            Log.e("XXX", compoundButton.getParent().getParent().getParent().toString());
-//            Log.e("XXX",String.valueOf(b));
-            checkAllcheckBox();
-        }
-    };
-
-        mCheckListAdapter = new CheckListAdapter(this.getActivity() , R.layout.check_list_item, newCheckListItems, newOnCheckedChangeListener);
-        checkListListView.setAdapter(mCheckListAdapter);
-
     }
 
     @Override

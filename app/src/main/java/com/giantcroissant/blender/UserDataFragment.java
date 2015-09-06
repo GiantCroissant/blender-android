@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -161,17 +162,20 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
     public void setCurrentCookBooks(Realm realm,int tabIndex) {
         getUserRecordCookBooks(realm);
         getUserLikeCookBooks(realm);
+        Button recordCookBookButton = (Button) rootView.findViewById(R.id.userRecordCookBookButton);
+        Button likeCookBookButton = (Button) rootView.findViewById(R.id.userLikeCookBookButton);
+        ImageButton recordCookBookButtonColor = (ImageButton) rootView.findViewById(R.id.userRecordCookBookButton_SelectColor);
+        ImageButton likeCookBookButtonColor = (ImageButton) rootView.findViewById(R.id.userLikeCookBookButton_SelectColor);
         if (tabIndex == 0)
         {
             currentCookBooks = userRecordCookBooks;
             mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.user_cook_book_list_item, currentCookBooks);
             cookbookListView.setAdapter(mCookBookAdapter);
 
-            ImageButton recordCookBookButton = (ImageButton) rootView.findViewById(R.id.userRecordCookBookButton_SelectColor);
-            recordCookBookButton.setImageResource(R.color.TabSelectColor);
-
-            ImageButton likeCookBookButton = (ImageButton) rootView.findViewById(R.id.userLikeCookBookButton_SelectColor);
-            likeCookBookButton.setImageResource(R.color.TabNoSelectColor);
+            recordCookBookButton.setTextColor(getResources().getColor(R.color.White));
+            recordCookBookButtonColor.setImageResource(R.color.TabSelectColor);
+            likeCookBookButton.setTextColor(getResources().getColor(R.color.c70White));
+            likeCookBookButtonColor.setImageResource(R.color.TabNoSelectColor);
 
             this.tabIndex = 0;
         }
@@ -181,11 +185,10 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
             mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.user_cook_book_list_item, currentCookBooks);
             cookbookListView.setAdapter(mCookBookAdapter);
 
-            ImageButton recordCookBookButton = (ImageButton) rootView.findViewById(R.id.userRecordCookBookButton_SelectColor);
-            recordCookBookButton.setImageResource(R.color.TabNoSelectColor);
-
-            ImageButton likeCookBookButton = (ImageButton) rootView.findViewById(R.id.userLikeCookBookButton_SelectColor);
-            likeCookBookButton.setImageResource(R.color.TabSelectColor);
+            recordCookBookButton.setTextColor(getResources().getColor(R.color.c70White));
+            recordCookBookButtonColor.setImageResource(R.color.TabNoSelectColor);
+            likeCookBookButton.setTextColor(getResources().getColor(R.color.White));
+            likeCookBookButtonColor.setImageResource(R.color.TabSelectColor);
 
             this.tabIndex = 1;
         }

@@ -16,22 +16,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="48dp"
     android:background="@color/White">
     <TextView android:id="@+id/device_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24dp"
+            android:layout_height="48dp"
+            android:textSize="@dimen/Body1"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="16dp"
-        android:text="xxx" />
+        android:text="xxx"
+        android:layout_centerVertical="true"
+        android:textColor="@color/c87000000"
+        android:gravity="center_vertical" />
     <TextView android:id="@+id/device_address"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-        android:layout_alignParentRight="true"
+            android:layout_height="48dp"
+            android:textSize="@dimen/Caption"
+        android:layout_alignParentRight="false"
         android:gravity="center_vertical"
         android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"
-        android:text="xxx" />
+        android:text="@string/disconnected"
+        android:layout_toLeftOf="@+id/contectImage"
+        android:textColor="@color/c26000000" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/contectImage"
+        android:src="@drawable/icon_connect"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp" />
 </RelativeLayout>

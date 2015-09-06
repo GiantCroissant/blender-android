@@ -1,6 +1,7 @@
 package com.giantcroissant.blender;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,16 +54,29 @@ public class CheckListAdapter extends ArrayAdapter<CheckListItem> {
 //        CheckBox checkBoxView = (CheckBox) itemView.findViewById(R.id.checkBoxItem);
 //        checkListItem.checkBox = checkBoxView;
 
-        RadioButton radioButtonView = (RadioButton) itemView.findViewById(R.id.radioButtonItem);
-        checkListItem.radioButton = radioButtonView;
+//        RadioButton radioButtonView = (RadioButton) itemView.findViewById(R.id.radioButtonItem);
+//        checkListItem.radioButton = radioButtonView;
         // 設定標題
 //        checkBoxView.setText(checkListItem.getTitle());
 //        checkBoxView.setOnCheckedChangeListener(newOnCheckedChangeListener);
+        TextView checkIndex = (TextView) itemView.findViewById(R.id.checkIndexText);
+        checkIndex.setText(String.valueOf(position + 1)+" ");
+        TextView checkContent = (TextView) itemView.findViewById(R.id.checkContentText);
+        checkContent.setText(checkListItem.getTitle());
 
-        radioButtonView.setText(checkListItem.getTitle());
-        radioButtonView.setOnCheckedChangeListener(newOnCheckedChangeListener);
-//        checkListItemIcon.setImageResource();
+        ImageView checkImage = (ImageView) itemView.findViewById(R.id.checkImage);
+        checkListItem.imageView = checkImage;
+        if(checkListItem.getIsFinished())
+        {
+            checkImage.setVisibility(View.VISIBLE);
+            checkImage.setImageResource(R.drawable.icon_check);
+        }
+        else
+        {
+            checkImage.setVisibility(View.INVISIBLE);
+        }
 
+//        Log.e("currentIndex",String.valueOf(position)+" position "+String.valueOf(radioButtonView.isChecked()));
         return itemView;
     }
 

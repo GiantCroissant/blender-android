@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/ColorPrimary</item>
         <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/White</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">@dimen/Title</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="elevation">0dp</item>
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
@@ -16,7 +16,7 @@
     <style name="Theme.MyFancyTheme" parent="android:Theme.Light">
         <item name="android:homeAsUpIndicator">@drawable/icon_main_menu</item>
         <item name="android:textColorPrimary">@color/White</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="ActionBarTitle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
@@ -37,6 +37,7 @@
         <item name="searchIcon">@drawable/ic_search</item>
         <item name="closeIcon">@drawable/ic_clear</item>
         <item name="searchHintIcon">@drawable/ic_search</item>
+        <item name="android:colorActivatedHighlight">@color/HighLight</item>
     </style>
 
 

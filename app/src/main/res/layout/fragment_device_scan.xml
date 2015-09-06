@@ -7,7 +7,7 @@
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:background="@color/White"
         android:layout_marginTop="16dp"
         android:id="@+id/relativeLayout">
@@ -20,14 +20,15 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:enabled="false"
-            android:textColor="#ff000000"
+            android:textColor="#df000000"
             android:textStyle="bold"
-            android:textSize="16sp"
+            android:textSize="@dimen/Body1"
             android:gravity="center_vertical"
             android:layout_alignParentTop="false"
             android:layout_alignParentBottom="false"
             android:layout_alignTop="@+id/blueToothSwitch"
-            android:layout_alignBottom="@+id/blueToothSwitch" />
+            android:layout_alignBottom="@+id/blueToothSwitch"
+            android:layout_centerVertical="true" />
 
         <Switch
             android:layout_width="wrap_content"
@@ -36,7 +37,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
             android:onClick="onClick"
-            android:clickable="true" />
+            android:clickable="true"
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -48,25 +50,26 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:text="@string/hint_to_connect_bluetooth"
             android:id="@+id/blueToothHint"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:enabled="false"
-            android:textColor="#ff717171"
-            android:textSize="16sp" />
+            android:textColor="#8b000000"
+            android:textSize="@dimen/Caption"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" />
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:id="@+id/blenderHint"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:enabled="false"
-            android:textColor="#ff717171"
-            android:textSize="16sp"
-            android:layout_below="@+id/blueToothHint" />
+            android:textColor="@color/c54000000"
+            android:textSize="@dimen/Caption"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" />
 
         <ListView
             android:layout_width="fill_parent"

@@ -59,7 +59,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_below="@+id/imageView3"
                 android:layout_marginLeft="16dp"
-                android:textSize="14dp" />
+                android:textSize="@dimen/Body1" />
         </RelativeLayout>
 
     </RelativeLayout>

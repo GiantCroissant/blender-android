@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -94,12 +95,16 @@ public class AutoTestFragment extends Fragment
 
     public void setCurrentTab(int tabIndex) {
 
-        ImageButton blenderSettingButton = (ImageButton) rootView.findViewById(R.id.BlenderSettingButton_SelectColor);
-        ImageButton blenderControlButton = (ImageButton) rootView.findViewById(R.id.BlenderControlButton_SelectColor);
+        Button blenderSettingButton = (Button) rootView.findViewById(R.id.BlenderSettingButton);
+        Button blenderControlButton = (Button) rootView.findViewById(R.id.BlenderControlButton);
+        ImageButton blenderSettingButtonColor = (ImageButton) rootView.findViewById(R.id.BlenderSettingButton_SelectColor);
+        ImageButton blenderControlButtonColor = (ImageButton) rootView.findViewById(R.id.BlenderControlButton_SelectColor);
         if (tabIndex == 0)
         {
-            blenderSettingButton.setImageResource(R.color.TabSelectColor);
-            blenderControlButton.setImageResource(R.color.TabNoSelectColor);
+            blenderSettingButton.setTextColor(getResources().getColor(R.color.White));
+            blenderControlButton.setTextColor(getResources().getColor(R.color.c70White));
+            blenderSettingButtonColor.setImageResource(R.color.TabSelectColor);
+            blenderControlButtonColor.setImageResource(R.color.TabNoSelectColor);
             if(deviceScanFragment == null)
             {
                 deviceScanFragment = new DeviceScanFragment();
@@ -111,8 +116,10 @@ public class AutoTestFragment extends Fragment
         }
         else if(tabIndex == 1)
         {
-            blenderSettingButton.setImageResource(R.color.TabNoSelectColor);
-            blenderControlButton.setImageResource(R.color.TabSelectColor);
+            blenderSettingButton.setTextColor(getResources().getColor(R.color.c70White));
+            blenderControlButton.setTextColor(getResources().getColor(R.color.White));
+            blenderSettingButtonColor.setImageResource(R.color.TabNoSelectColor);
+            blenderControlButtonColor.setImageResource(R.color.TabSelectColor);
 
             if(deviceControlFragment == null)
             {

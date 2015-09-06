@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -84,17 +85,23 @@ public class AboutCompanyFragment extends Fragment implements CookBooksDataFragm
 
     public void setCurrentTab(int tabIndex) {
 
-        ImageButton aboutCompanyButton = (ImageButton) rootView.findViewById(R.id.AboutCompanyButton_SelectColor);
-        ImageButton aboutGoodButton = (ImageButton) rootView.findViewById(R.id.AboutGoodButton_SelectColor);
+        Button aboutCompanyButton = (Button) rootView.findViewById(R.id.AboutCompanyButton);
+        Button aboutGoodButton = (Button) rootView.findViewById(R.id.AboutGoodButton);
+        ImageButton aboutCompanyButtonColor = (ImageButton) rootView.findViewById(R.id.AboutCompanyButton_SelectColor);
+        ImageButton aboutGoodButtonColor = (ImageButton) rootView.findViewById(R.id.AboutGoodButton_SelectColor);
         if (tabIndex == 0)
         {
-            aboutCompanyButton.setImageResource(R.color.TabSelectColor);
-            aboutGoodButton.setImageResource(R.color.TabNoSelectColor);
+            aboutCompanyButton.setTextColor(getResources().getColor(R.color.White));
+            aboutGoodButton.setTextColor(getResources().getColor(R.color.c70White));
+            aboutCompanyButtonColor.setImageResource(R.color.TabSelectColor);
+            aboutGoodButtonColor.setImageResource(R.color.TabNoSelectColor);
         }
         else if(tabIndex == 1)
         {
-            aboutCompanyButton.setImageResource(R.color.TabNoSelectColor);
-            aboutGoodButton.setImageResource(R.color.TabSelectColor);
+            aboutCompanyButton.setTextColor(getResources().getColor(R.color.c70White));
+            aboutGoodButton.setTextColor(getResources().getColor(R.color.White));
+            aboutCompanyButtonColor.setImageResource(R.color.TabNoSelectColor);
+            aboutGoodButtonColor.setImageResource(R.color.TabSelectColor);
         }
 
     }

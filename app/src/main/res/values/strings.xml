@@ -10,7 +10,7 @@
 
     <string name="title_section1">食譜預覽</string>
     <string name="title_section2">個人專區</string>
-    <string name="title_section3">果汁機設定</string>
+    <string name="title_section3">連線及操作設定</string>
     <string name="title_section4">廠商介面</string>
 
     <string name="tab_blender_setting">連線設定</string>
@@ -21,6 +21,23 @@
     <string name="hint_to_connect_bluetooth">開啟藍芽進行果汁機配對</string>
     <string name="hint_blender">果汁機裝置</string>
 
+    <string name="btn_connect">連接果汁機設定</string>
+    <string name="btn_confrim">確認</string>
+    <string name="btn_start">開始</string>
+    <string name="btn_skip">忽略</string>
+    <string name="btn_finish">完成</string>
+
+    <string-array name="menu_items" >
+        <item >材料 ： </item>
+        <item >作法 ： </item>
+        <item >描述 ： </item>
+    </string-array>
+
+    <string-array name="menu_items_labels" >
+        <item ><FONT COLOR="#FF336900"><b>材料 ： </b></FONT></item>
+        <item ><FONT COLOR="#FF336900"><b>作法 ： </b></FONT></item>
+        <item ><FONT COLOR="#FF336900"><b>描述 ： </b></FONT></item>
+    </string-array>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,8 +65,8 @@
     <string name="label_device_address">連接地址:</string>
     <string name="label_state">狀態:</string>
     <string name="no_data">沒有資料</string>
-    <string name="connected">已連接</string>
-    <string name="disconnected">未連接</string>
+    <string name="connected">已連線</string>
+    <string name="disconnected">未連線</string>
     <string name="title_devices">可連接裝置</string>
     <string name="error_bluetooth_not_supported">此手機不支援藍芽功能</string>
 
@@ -63,4 +80,5 @@
     <string name="menu_scan">開始掃描</string>
     <string name="menu_stop">停止掃描</string>
     <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_message">MessageActivity</string>
 </resources>

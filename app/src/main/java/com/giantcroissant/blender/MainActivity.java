@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
     private String resultCookBookListViewID = "";
 
 //cotrol blender
-    private boolean isConnected = false;
+//    private boolean isConnected = false;
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity
     private BluetoothGattCharacteristic mClickCharacteristic;
     private boolean mConnected = false;
     private BluetoothManager mblueToothManager;
+    private TextView IsConnectedBlueToothText;
+//    private int connectStateId = R.string.disconnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +177,8 @@ public class MainActivity extends AppCompatActivity
                 (android.bluetooth.BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         mblueToothManager = bluetoothManager;
         mBluetoothAdapter = bluetoothManager.getAdapter();
+
+//        ReplaceFont.replaceDefaultFont(this, "DEFAULT", "fonts/NotoSansCJKjp-Medium.otf");
     }
 
     @Override
@@ -226,7 +230,7 @@ public class MainActivity extends AppCompatActivity
 
             }
 
-            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+//            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
         }
 
     }
@@ -251,7 +255,7 @@ public class MainActivity extends AppCompatActivity
             checkSupportBlueTooth();
             enableBlueToothIntent();
         }
-        Log.e("XXX",String.valueOf(switchIsChecked));
+//        Log.e("XXX",String.valueOf(switchIsChecked));
 
     }
 
@@ -430,6 +434,7 @@ public class MainActivity extends AppCompatActivity
 
                 cookBookRealmQuery = realm.where(CookBookRealm.class);
                 fragmentTransaction.replace(R.id.main_content, cookBooksFragment.newInstance(position + 1, realm));
+                RealmData.getInstance().realm = realm;
                 fragmentTransaction.commit();
                 break;
             case 1:
@@ -440,6 +445,8 @@ public class MainActivity extends AppCompatActivity
 
                 cookBookRealmQuery = realm.where(CookBookRealm.class);
                 fragmentTransaction.replace(R.id.main_content, userDataFragment.newInstance(position + 1, realm));
+                RealmData.getInstance().realm = realm;
+
                 fragmentTransaction.commit();
                 break;
             case 2:
@@ -539,33 +546,37 @@ public class MainActivity extends AppCompatActivity
     private void createFakeData()
     {
         ArrayList<String> newSteps = new ArrayList<String>();
-        newSteps.add("步驟1;");
-        newSteps.add("步驟2;");
-        newSteps.add("步驟3;");
-        newSteps.add("步驟4;");
-        newSteps.add("步驟5;");
+        newSteps.add("雪梨洗淨去皮，切成可放入榨汁機內 雪梨洗淨去皮，切成可放入榨汁機內。;");
+        newSteps.add("香蕉去皮切成數段。;");
+        newSteps.add("啟動果汁機。;");
+        newSteps.add("檸檬連皮對切為四份去核。;");
+        newSteps.add("將所有材料順序放入榨汁機內壓榨成汁榨成汁。;");
+        newSteps.add("啟動果汁機。;");
 
         ArrayList<String> newTimeOfSteps = new ArrayList<String>();
         newTimeOfSteps.add("0;");
         newTimeOfSteps.add("0;");
-        newTimeOfSteps.add("1;");
+        newTimeOfSteps.add("10;");
         newTimeOfSteps.add("0;");
-        newTimeOfSteps.add("2;");
+        newTimeOfSteps.add("0;");
+        newTimeOfSteps.add("7;");
+
 
         ArrayList<String> newSpeedOfSteps = new ArrayList<String>();
         newSpeedOfSteps.add("0;");
         newSpeedOfSteps.add("0;");
-        newSpeedOfSteps.add("1;");
+        newSpeedOfSteps.add("2;");
         newSpeedOfSteps.add("0;");
-        newSpeedOfSteps.add("1;");
+        newSpeedOfSteps.add("0;");
+        newSpeedOfSteps.add("3;");
 
 
         cookBooks = new ArrayList<Cookbook>();
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "檸檬葡萄汁", "很好喝", "Http://xd.com", "https://www.dropbox.com/s/xm0pw3kw78orzg5/pictures_01.png?dl=0", "葡萄、蜂蜜、檸檬",newSteps, 20, 100, true,newTimeOfSteps,newSpeedOfSteps));
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "草莓葡萄汁", "超好喝", "Http://xd.com", "https://www.dropbox.com/s/6r3vdhrxqvot47d/pictures_02.png?dl=0", "葡萄、蜂蜜、草莓",newSteps, 40, 80, true,newTimeOfSteps,newSpeedOfSteps));
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "非常好喝", "Http://xd.com", "https://www.dropbox.com/s/pw4fyjhfs1kqsxa/pictures_03.png?dl=0", "水蜜桃、蜂蜜、芒果",newSteps, 60, 60, true,newTimeOfSteps,newSpeedOfSteps));
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃汁", "好喝到不行", "Http://xd.com", "https://www.dropbox.com/s/1u136gj6nvu8mjw/pictures_04.png?dl=0", "水蜜桃、蜂蜜",newSteps, 80, 40, true,newTimeOfSteps,newSpeedOfSteps));
-        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "芒果汁", "好好喝", "Http://xd.com", "https://www.dropbox.com/s/gqvvaquqaqs978s/pictures_05.png?dl=0", "芒果、蜂蜜",newSteps, 100, 20, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "檸檬葡萄汁", "美味的檸檬和葡萄。好吃好吃。做成果汁也很棒喔。", "Http://xd.com", "https://www.dropbox.com/s/xm0pw3kw78orzg5/pictures_01.png?dl=0", "葡萄、蜂蜜、檸檬",newSteps, 20, 100, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "草莓葡萄汁", "美味的草莓和葡萄。好吃好吃。做成果汁也很棒喔。", "Http://xd.com", "https://www.dropbox.com/s/6r3vdhrxqvot47d/pictures_02.png?dl=0", "葡萄、蜂蜜、草莓",newSteps, 40, 80, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "美味的水蜜桃和芒果。好吃好吃。做成果汁也很棒喔。", "Http://xd.com", "https://www.dropbox.com/s/pw4fyjhfs1kqsxa/pictures_03.png?dl=0", "水蜜桃、蜂蜜、芒果",newSteps, 60, 60, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃汁", "美味的水蜜桃。好吃好吃。做成果汁也很棒喔。", "Http://xd.com", "https://www.dropbox.com/s/1u136gj6nvu8mjw/pictures_04.png?dl=0", "水蜜桃、蜂蜜",newSteps, 80, 40, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "雪梨香蕉生菜汁", "美味的雪梨和香蕉。好吃好吃。做成果汁也很棒喔。", "Http://xd.com", "https://www.dropbox.com/s/gqvvaquqaqs978s/pictures_05.png?dl=0", "芒果、蜂蜜",newSteps, 100, 20, true,newTimeOfSteps,newSpeedOfSteps));
 
         for (Cookbook cookBook : cookBooks) {
             String tmpStep = "";
@@ -698,7 +709,7 @@ public class MainActivity extends AppCompatActivity
 
             }
 
-            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+//            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
 
         }
         else if (view.getId() == R.id.AboutCompanyButton)
@@ -718,8 +729,8 @@ public class MainActivity extends AppCompatActivity
         else if (view.getId() == R.id.startBlenderButton)
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
-            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-            if(isConnected == false)
+//            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+            if(mConnected == false)
             {
                 fragment.setSwitchChecked(switchIsChecked);
                 fragment.setCurrentTab(0);
@@ -733,8 +744,8 @@ public class MainActivity extends AppCompatActivity
             sendmsg[9] = (byte) 0xB3;
             sendmsg[2] = (byte) 0x07;
             sendmsg[3] = (byte) 0x01;
-            sendmsg[4] = (byte) ((Integer.parseInt(setTimeEditText.getText().toString())+1)*5 % 256);//((npTime.getValue()+1)*5 % 256);
-            sendmsg[5] = (byte) ((Integer.parseInt(setTimeEditText.getText().toString())+1)*5 / 256);//((npTime.getValue()+1)*5 / 256);
+            sendmsg[4] = (byte) (Integer.parseInt(setTimeEditText.getText().toString()) - 1 % 256);//((npTime.getValue()+1)*5 % 256);
+            sendmsg[5] = (byte) (Integer.parseInt(setTimeEditText.getText().toString()) - 1 / 256);//((npTime.getValue()+1)*5 / 256);
             sendmsg[6] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) % 256);//(npSpeed.getValue() % 256);
             sendmsg[7] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) / 256);//(npSpeed.getValue() / 256);
             sendmsg[8] = (byte) 0x01;
@@ -751,8 +762,8 @@ public class MainActivity extends AppCompatActivity
         else if (view.getId() == R.id.stopBlenderButton)
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
-            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-            if(isConnected == false)
+//            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+            if(mConnected == false)
             {
                 fragment.setSwitchChecked(switchIsChecked);
                 fragment.setCurrentTab(0);
@@ -919,6 +930,7 @@ public class MainActivity extends AppCompatActivity
 //        Log.e("XXX",string);
         if(string.compareTo("Ok") == 0)
         {
+//            updateConnectionState(connectStateId);
             switchConnectBlueTooth();
 //            Log.e("XXX",string);
         }
@@ -976,19 +988,22 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                    selectService(position);
+                    selectService(position, view);
                 }
             });
         }
 
     }
 
-    private void selectService(int position) {
+    private void selectService(int position, View view) {
+        TextView textView = (TextView)view.findViewById(R.id.device_name);
 
+        if(textView.getText().toString().compareTo("ITRI_JUICER_v1.0") != 0) return;
         if(mBluetoothAdapter.isEnabled())
         {
             final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
             if (device == null) return;
+
             final Intent intent = new Intent(this, DeviceControlActivity.class);
             intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
             intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
@@ -1047,8 +1062,14 @@ public class MainActivity extends AppCompatActivity
                 cookbookDetailIntent.putExtra("cookBookListViewTimeOfSteps", tmpCookBooks.get(0).getTimeOfSteps());
                 cookbookDetailIntent.putExtra("cookBookListViewSpeedOfSteps", tmpCookBooks.get(0).getSpeedOfSteps());
 
+//                Log.e("getCookBoookTimeOfSteps", String.valueOf(tmpCookBooks.get(0).getTimeOfSteps()));
+//                Log.e("getCookBoookSpeedOfSteps", String.valueOf(tmpCookBooks.get(0).getSpeedOfSteps()));
                 startActivityForResult(cookbookDetailIntent, REQUEST_COOKBOOK);
                 resultCode = 0;
+            }
+            else
+            {
+                startActivity(intent);
             }
         }
         else
@@ -1108,6 +1129,7 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void run() {
 //                            Log.e("XXX",device.getName());
+
                             mLeDeviceListAdapter.addDevice(device);
                             mLeDeviceListAdapter.notifyDataSetChanged();
                         }
@@ -1177,7 +1199,7 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
 
-        if(isConnected)
+        if(mConnected)
         {
             unbindService(mServiceConnection);
             mBluetoothLeService = null;
@@ -1197,17 +1219,14 @@ public class MainActivity extends AppCompatActivity
     private void updateConnectionState(final int resourceId) {
         runOnUiThread(new Runnable() {
             @Override
-            public void run() {
-                isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-
-//                if (IsConnectedBlueToothText != null) {
-//                    if (isConnected == false) {
-//                        IsConnectedBlueToothText.setText("未連接果汁機");
-//                    } else {
-//                        IsConnectedBlueToothText.setText("已連接果汁機");
-//                    }
-//                }
-
+            public void run()
+            {
+//                isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+//                connectStateId = resourceId;
+                if (IsConnectedBlueToothText != null)
+                {
+//                    IsConnectedBlueToothText.setText(resourceId);
+                }
             }
         });
     }

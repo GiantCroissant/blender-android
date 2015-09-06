@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ColorPrimary">#7db343</color>
-    <color name="ColorPrimaryDark">#346901</color>
+    <color name="ColorPrimary">#FF7CB342</color>
+    <color name="ColorPrimaryDark">#FF336900</color>
     <color name="White">#FFFFFF</color>
+    <color name="c70White">#B4FFFFFF</color>
+
+    <color name="HighLight">#DCEDC8</color>
 
     <color name="NameColor">#FF5522</color>
     <color name="Green">#00FF00</color>
     <color name="Pink">#FF5555</color>
-    <color name="TabSelectColor">#FFFF0A</color>
+    <color name="TabSelectColor">#FFFF8D</color>
     <color name="TabNoSelectColor">#EEEEEE</color>
 
     <color name="BackgroundColor">#EEEEEE</color>
     <color name="SearchBackgroundColor">#66000000</color>
+
+
+    <color name="cFF336900">#FF336900</color>
+    <color name="c26000000">#43000000</color>
+    <color name="c87000000">#DF000000</color>
+    <color name="c54000000">#8D000000</color>
+
 </resources>
