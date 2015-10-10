@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity
         AboutCompanyFragment.OnAboutCompanyFragmentInteractionListener,
         DeviceControlFragment.OnDeviceControlFragmentInteractionListener,
         DeviceScanFragment.OnFragmentInteractionListener,
+        AboutCompanyInfoFragment.OnAboutCompanyInfoFragmentInteractionListener,
+        AboutCompanyItemFragment.OnAboutCompanyItemFragmentInteractionListener,
         View.OnClickListener
 {
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
@@ -195,11 +197,11 @@ public class MainActivity extends AppCompatActivity
         getCookBooks();
 
         FragmentManager fm = getSupportFragmentManager();//if added by xml
-        if((CookBooksDataFragment)fm.findFragmentById(R.id.main_content) != null)
-        {
-            CookBooksDataFragment fragment = (CookBooksDataFragment)fm.findFragmentById(R.id.main_content);
-            fragment.upDateListView(realm);
-        }
+//        if((CookBooksDataFragment)fm.findFragmentById(R.id.main_content) != null)
+//        {
+//            CookBooksDataFragment fragment = (CookBooksDataFragment)fm.findFragmentById(R.id.main_content);
+//            fragment.upDateListView(realm);
+//        }
 
         if(blueToothSwitch != null)
         {
@@ -255,6 +257,31 @@ public class MainActivity extends AppCompatActivity
             checkSupportBlueTooth();
             enableBlueToothIntent();
         }
+        else if(resultCode == 103)
+        {
+            if (cookBooksFragment == null)
+            {
+                cookBooksFragment = new CookBooksFragment();
+            }
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            cookBookRealmQuery = realm.where(CookBookRealm.class);
+            fragmentTransaction.replace(R.id.main_content, cookBooksFragment.newInstance(0 + 1, realm));
+            fragmentTransaction.commit();
+
+        }
+        else if(resultCode == 104)
+        {
+            if (userDataFragment == null)
+            {
+                userDataFragment = new UserDataFragment();
+            }
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            cookBookRealmQuery = realm.where(CookBookRealm.class);
+            fragmentTransaction.replace(R.id.main_content, userDataFragment.newInstance(1 + 1, realm));
+            fragmentTransaction.commit();
+        }
 //        Log.e("XXX",String.valueOf(switchIsChecked));
 
     }
@@ -267,11 +294,11 @@ public class MainActivity extends AppCompatActivity
         getCookBooks();
 
         FragmentManager fm = getSupportFragmentManager();//if added by xml
-        if((CookBooksDataFragment)fm.findFragmentById(R.id.main_content) != null)
-        {
-            CookBooksDataFragment fragment = (CookBooksDataFragment)fm.findFragmentById(R.id.main_content);
-            fragment.upDateListView(realm);
-        }
+//        if((CookBooksDataFragment)fm.findFragmentById(R.id.main_content) != null)
+//        {
+//            CookBooksDataFragment fragment = (CookBooksDataFragment)fm.findFragmentById(R.id.main_content);
+//            fragment.upDateListView(realm);
+//        }
     }
 
     private void moveDrawerToTop() {
@@ -854,6 +881,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    protected void onFragmentResult(int requestCode, int resultCode, Intent data)
+    {
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // User chose not to enable Bluetooth.
@@ -866,13 +898,15 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        this.resultCode = resultCode;
         if(resultCode == 100)
         {
-            this.resultCode = resultCode;
-            this.resultPosition = data.getIntExtra("posistion",0);
+            this.resultPosition = data.getIntExtra("posistion", 0);
             this.resultCookBookListViewID = data.getStringExtra("cookBookListViewID");
-//            Log.e("XXX","100");
         }
+        Log.e("XXX1",String.valueOf(this.resultCode ));
+
+
 
         if(requestCode == REQUEST_COOKBOOK)
         {
@@ -938,6 +972,17 @@ public class MainActivity extends AppCompatActivity
         {
 
             stopConnectBlueTooth();
+        }
+        else if(string.compareTo("blueToothSwitchOnCheckedChangedtrue") == 0)
+        {
+
+            switchConnectBlueTooth();
+
+        }
+        else if(string.compareTo("blueToothSwitchOnCheckedChangedfalse") == 0) {
+
+            stopConnectBlueTooth();
+
         }
     }
 
@@ -1061,6 +1106,7 @@ public class MainActivity extends AppCompatActivity
                 cookbookDetailIntent.putExtra("cookBookListIsCollected", tmpCookBooks.get(0).getIsCollected());
                 cookbookDetailIntent.putExtra("cookBookListViewTimeOfSteps", tmpCookBooks.get(0).getTimeOfSteps());
                 cookbookDetailIntent.putExtra("cookBookListViewSpeedOfSteps", tmpCookBooks.get(0).getSpeedOfSteps());
+                cookbookDetailIntent.putExtra("requestCode", -1);
 
 //                Log.e("getCookBoookTimeOfSteps", String.valueOf(tmpCookBooks.get(0).getTimeOfSteps()));
 //                Log.e("getCookBoookSpeedOfSteps", String.valueOf(tmpCookBooks.get(0).getSpeedOfSteps()));
@@ -1281,6 +1327,16 @@ public class MainActivity extends AppCompatActivity
             }
 //            Log.e("XXX", String.valueOf(mGattCharacteristics.size()));
         }
+    }
+
+    @Override
+    public void onAboutCompanyInfoFragmentInteraction(String string) {
+
+    }
+
+    @Override
+    public void onAboutCompanyItemFragmentInteraction(String id) {
+
     }
 
 

@@ -77,12 +77,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/linearLayout4"
-        android:background="#EEEEEE" >
-
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/aboutcompanylistView" />
+        android:background="#EEEEEE"
+        android:id="@+id/aboutCompanyContainView">
 
     </RelativeLayout>
 

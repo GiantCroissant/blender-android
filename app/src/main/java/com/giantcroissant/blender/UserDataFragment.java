@@ -213,7 +213,8 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
         intent.putExtra("cookBookListViewTimeOfSteps", currentCookBooks.get(position).getTimeOfSteps());
         intent.putExtra("cookBookListViewSpeedOfSteps", currentCookBooks.get(position).getSpeedOfSteps());
 
-        startActivityForResult(intent, 0);
+        intent.putExtra("requestCode", 104);
+        getActivity().startActivityFromFragment(this, intent, 104);
 
     }
 

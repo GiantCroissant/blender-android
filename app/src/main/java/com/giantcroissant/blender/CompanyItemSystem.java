@@ -1,28 +1,29 @@
 package com.giantcroissant.blender;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 /**
  * Created by liyihao on 15/7/14.
  */
-public class CompanyItem {
+public class CompanyItemSystem {
 
     private String id;
     private String title;
     private String content;
     private String iconUrl;
     private Date createTime;
-    private String systemId;
+    public ArrayList<CompanyItem> contentIds;
 
-    public CompanyItem(String id,String title,String content,String iconUrl,String systemId)
+    public CompanyItemSystem(String id, String title, String content, String iconUrl)
     {
         this.id = id;
         this.title = title;
         this.content = content;
         this.iconUrl = iconUrl;
         this.createTime = new Date(System.currentTimeMillis());
-        this.systemId = systemId;
+        contentIds = new ArrayList<CompanyItem>();
     }
 
     public String getId() {
@@ -77,15 +78,6 @@ public class CompanyItem {
 
     public void setIconUrl(String iconUrl) {
         this.iconUrl = iconUrl;
-    }
-
-
-    public String getSystemId() {
-        return systemId;
-    }
-
-    public void setSystemId(String systemId) {
-        this.systemId = systemId;
     }
 
 

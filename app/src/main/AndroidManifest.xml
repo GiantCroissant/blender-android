@@ -73,6 +73,10 @@
             android:label="@string/title_activity_message"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+        <activity
+            android:name=".CompanyItemSystemActivity"
+            android:label="@string/title_activity_company_item_system" >
+        </activity>
     </application>
 
 </manifest>

@@ -69,6 +69,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     Button finishhbutton;
     TextView IsConnectedBlueToothText;
     private int position;
+    private int requestCode = 0;
     private int resultCode = 0;
     private boolean doing = false;
     private int currentStateIndex = 0;
@@ -96,7 +97,11 @@ public class CookBookDetailActivity extends AppCompatActivity
         cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
         cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
         cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
+        if(intent.getIntExtra("requestCode",0) != -1)
+        {
+            requestCode = intent.getIntExtra("requestCode",0);
 
+        }
 //        Log.e("getCookBoookSpeedOfSteps", String.valueOf(cookBook.getSpeedOfSteps()));
 //        Log.e("getCookBoookSpeedOfSteps", String.valueOf(cookBook.getSpeedOfSteps()));
 
@@ -198,6 +203,18 @@ public class CookBookDetailActivity extends AppCompatActivity
             }
             else
             {
+                if(requestCode == 103)
+                {
+                    setResult(requestCode);
+
+                }
+                else if(requestCode == 104)
+                {
+                    setResult(requestCode);
+                }
+                setResult(requestCode);
+                Log.e("XXX2", String.valueOf(this.requestCode));
+
                 finish();
             }
 
@@ -210,7 +227,14 @@ public class CookBookDetailActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        this.resultCode = resultCode;
+        this.resultCode = requestCode;
+
+        Log.e("XXX3",String.valueOf(requestCode));
+
+        if(requestCode == 103 || requestCode == 104)
+        {
+            this.requestCode = requestCode;
+        }
         if(data != null)
         {
             this.currentStateIndex = data.getIntExtra("currentStateIndex",0);
@@ -218,6 +242,7 @@ public class CookBookDetailActivity extends AppCompatActivity
         if(this.resultCode == 101)
         {
             this.resultCode = 0;
+            setResult(requestCode);
             finish();
         }
 

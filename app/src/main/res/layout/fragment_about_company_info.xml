@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.giantcroissant.blender.AboutCompanyInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="156dp"
+                android:layout_height="54dp"
+                android:id="@+id/imageView5"
+                android:src="@drawable/ig"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="根盈企業股份有限公司"
+                android:id="@+id/textView9"
+                android:textSize="@dimen/Headline"
+                android:textColor="@color/c87000000"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="貴夫人公司 之關係企業，成立於民國 72 年，本 公司 秉持著良心與道德之理念，不斷研發各種家電產品，以滿足消費者之需求，在這科技進步的時代，為提升大眾的生活品質，我們研發了更先進、高科技、更符合人性化的生機食品調製機。 由沒沒無聞的品牌，延伸到 1999 年的「生機食品調製機」開創始者，至 2006 年「生機精華萃取機」走上國際品牌，榮獲發明金牌獎，由〞貴夫人〞 Ladyship 雷迪迅浦，揚名國際市場。 貴夫人 公司 不斷提供消費者生機飲食相關資料，秉持「完美－是所有細節的加總」呼籲「天然 純淨 粗簡的生機飲食才是天賜美食」，是希望消費大眾都能有生理健康的提昇與改善，及高品質的生活。 本 公司 也將繼續貫徹永續經營之理念，為消費者提供更完善的售後服務"
+                android:id="@+id/textView6"
+                android:textSize="@dimen/Body1"
+                android:textColor="@color/c54000000"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="經營理念"
+                android:id="@+id/textView7"
+                android:textColor="@color/c87000000"
+                android:textSize="@dimen/Headline"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="貴夫人企業自從創業以來，就深深受到社會各界的提攜與指導，本 公司 的經營管理本質從「傳統家電」的範疇，一舉進化到「科技家電」更人性、更精緻的新領域 。"
+                android:id="@+id/textView8"
+                android:textSize="@dimen/Body1"
+                android:textColor="@color/c54000000"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

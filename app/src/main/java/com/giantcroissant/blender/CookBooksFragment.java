@@ -228,8 +228,8 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
         intent.putExtra("cookBookListIsCollected", currentCookBooks.get(position).getIsCollected());
         intent.putExtra("cookBookListViewTimeOfSteps", currentCookBooks.get(position).getTimeOfSteps());
         intent.putExtra("cookBookListViewSpeedOfSteps", currentCookBooks.get(position).getSpeedOfSteps());
-
-        startActivityForResult(intent, REQUEST_COOKBOOK);
+        intent.putExtra("requestCode", 103);
+        getActivity().startActivityFromFragment(this,intent, 103);
 
     }
 
