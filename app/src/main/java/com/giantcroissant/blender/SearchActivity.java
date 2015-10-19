@@ -55,9 +55,9 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
     public void onClick(View view)
     {
 
-//        if (view.getId() == R.id.SearchClearButton) {
-//            finish();
-//        }
+        if (view.getId() == R.id.searchviewBackground) {
+            finish();
+        }
     }
 
     @Override

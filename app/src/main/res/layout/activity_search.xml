@@ -9,12 +9,16 @@
     tools:context="com.giantcroissant.blender.SearchActivity"
     android:background="@color/SearchBackgroundColor"
     android:theme="@style/Theme.Transparent"
-    android:clickable="false">
+    android:clickable="true"
+    android:onClick="onClick"
+    android:id="@+id/searchviewBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/corners_bg">
+        android:clickable="false"
+        android:id="@+id/searchviewbackground"
+        android:background="@color/White">
 
         <SearchView
             android:layout_width="fill_parent"

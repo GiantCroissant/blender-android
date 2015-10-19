@@ -30,7 +30,7 @@
                     android:text="簡介"
                     android:id="@+id/cook_book_Info_button"
                     android:layout_weight="1"
-                    android:background="@color/ColorPrimary"
+                    android:background="@color/TabColor"
                     android:clickable="true"
                     android:onClick="onClick" />
 
@@ -59,7 +59,7 @@
                     android:text="影片"
                     android:id="@+id/cook_book_video_button"
                     android:layout_weight="1"
-                    android:background="@color/ColorPrimary"
+                    android:background="@color/TabColor"
                     android:clickable="true"
                     android:onClick="onClick" />
 
@@ -88,7 +88,7 @@
                     android:text="製作"
                     android:id="@+id/cook_book_to_do_button"
                     android:layout_weight="1"
-                    android:background="@color/ColorPrimary"
+                    android:background="@color/TabColor"
                     android:clickable="true"
                     android:onClick="onClick" />
 

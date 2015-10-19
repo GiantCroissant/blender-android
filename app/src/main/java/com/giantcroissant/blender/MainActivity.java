@@ -1087,7 +1087,20 @@ public class MainActivity extends AppCompatActivity
                         tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
 //            Log.e("XXX", tmpStepPart);
                     }
-                    Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
+                    Cookbook newCookBook =
+                            new Cookbook(cookBookRealm.getId(),
+                                    cookBookRealm.getName(),
+                                    cookBookRealm.getDescription(),
+                                    cookBookRealm.getUrl(),
+                                    cookBookRealm.getImageUrl(),
+                                    cookBookRealm.getIngredient(),
+                                    tmpSteps,
+                                    cookBookRealm.getViewedPeopleCount(),
+                                    cookBookRealm.getCollectedPeopleCount(),
+                                    cookBookRealm.getBeCollected() ,
+                                    tmpTimeOfSteps,
+                                    tmpSpeedOfSteps);
+
                     newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
                     tmpCookBooks.add(newCookBook);
                 }

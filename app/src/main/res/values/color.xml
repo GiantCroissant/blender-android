@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ColorPrimary">#FF7CB342</color>
+    <color name="ColorPrimary">#FF8BC34A</color>
     <color name="ColorPrimaryDark">#FF336900</color>
     <color name="White">#FFFFFF</color>
     <color name="c70White">#B4FFFFFF</color>
@@ -13,6 +13,7 @@
     <color name="TabSelectColor">#FFFF8D</color>
     <color name="TabNoSelectColor">#EEEEEE</color>
 
+    <color name="TabColor">#FF7CB342</color>
     <color name="BackgroundColor">#EEEEEE</color>
     <color name="SearchBackgroundColor">#66000000</color>
 

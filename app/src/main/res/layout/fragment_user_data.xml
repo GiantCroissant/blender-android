@@ -25,7 +25,7 @@
                 android:layout_height="fill_parent"
                 android:text="健康履歷"
                 android:id="@+id/userRecordCookBookButton"
-                android:background="@color/ColorPrimary"
+                android:background="@color/TabColor"
                 android:clickable="true"
                 android:onClick="onClick"
                 android:layout_weight="1" />
@@ -55,7 +55,7 @@
                 android:layout_height="fill_parent"
                 android:text="收藏食譜"
                 android:id="@+id/userLikeCookBookButton"
-                android:background="@color/ColorPrimary"
+                android:background="@color/TabColor"
                 android:clickable="true"
                 android:onClick="onClick"
                 android:layout_weight="1" />

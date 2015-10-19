@@ -74,6 +74,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     private boolean doing = false;
     private int currentStateIndex = 0;
     private Handler mHandler;
+    private CookToDoData cookToDoData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,10 +196,10 @@ public class CookBookDetailActivity extends AppCompatActivity
         switch (id) {
             case android.R.id.home:
 
-            if(resultCode == 0 && doing)
+            if(resultCode == 0 && cookToDoData.getInstance().doing)
             {
                 Intent messageIntent = new Intent(this, MessageActivity.class);
-                messageIntent.putExtra("currentStateIndex", currentStateIndex);
+                messageIntent.putExtra("currentStateIndex", cookToDoData.getInstance().currentStateIndex);
                 startActivityForResult(messageIntent, 101);
             }
             else
@@ -237,7 +238,7 @@ public class CookBookDetailActivity extends AppCompatActivity
         }
         if(data != null)
         {
-            this.currentStateIndex = data.getIntExtra("currentStateIndex",0);
+            cookToDoData.getInstance().currentStateIndex = data.getIntExtra("currentStateIndex",0);
         }
         if(this.resultCode == 101)
         {
@@ -374,27 +375,27 @@ public class CookBookDetailActivity extends AppCompatActivity
                 finish();
             }
             checkButtonState();
-            currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
+            cookToDoData.getInstance().currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
 
         }
         else if(view.getId() == R.id.ConfrimButton)
         {
-            if(!doing)
+            if(!cookToDoData.getInstance().doing)
             {
-                doing = true;
+                cookToDoData.getInstance().doing = true;
             }
             confrimhbutton = (Button)findViewById(R.id.ConfrimButton);
             cookBookDetailToDoFragment.setConfrim();
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
-            currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
+            cookToDoData.getInstance().currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
         }
         else if(view.getId() == R.id.StartBlenderButton)
         {
-            if(!doing)
+            if(!cookToDoData.getInstance().doing)
             {
-                doing = true;
+                cookToDoData.getInstance().doing = true;
             }
             byte[] sendmsg = new byte[10];
             sendmsg[0] = (byte) 0xA5;
@@ -416,7 +417,7 @@ public class CookBookDetailActivity extends AppCompatActivity
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
-            currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
+            cookToDoData.getInstance().currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
 
 
 
@@ -439,23 +440,23 @@ public class CookBookDetailActivity extends AppCompatActivity
         }
         else if(view.getId() == R.id.SkipBlenderButton)
         {
-            if(!doing)
+            if(!cookToDoData.getInstance().doing)
             {
-                doing = true;
+                cookToDoData.getInstance().doing = true;
             }
             skipBlenderhbutton = (Button) findViewById(R.id.SkipBlenderButton);
             cookBookDetailToDoFragment.setConfrim();
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
-            currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
+            cookToDoData.getInstance().currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
 
         }
         else if(view.getId() == R.id.FinishButton)
         {
-            if(doing)
+            if(cookToDoData.getInstance().doing)
             {
-                doing = false;
+                cookToDoData.getInstance().doing = false;
             }
             finishhbutton = (Button) findViewById(R.id.FinishButton);
             mConnected = mBluetoothLeService != null && mClickCharacteristic != null;
@@ -463,7 +464,7 @@ public class CookBookDetailActivity extends AppCompatActivity
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
-            currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
+            cookToDoData.getInstance().currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
 
         }
 
@@ -550,7 +551,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     public void onCookBookDetailToDoFragmentInteraction(String string)
     {
         cookBookDetailToDoFragment.setIsConnected(mConnected);
-        cookBookDetailToDoFragment.setCurrentIndex(this.currentStateIndex);
+        cookBookDetailToDoFragment.setCurrentIndex(cookToDoData.getInstance().currentStateIndex);
 
         mHandler.post(checkIsConnected);
     }

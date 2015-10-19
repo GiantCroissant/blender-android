@@ -24,7 +24,7 @@
                 android:layout_height="fill_parent"
                 android:text="@string/tab_about_company"
                 android:id="@+id/AboutCompanyButton"
-                android:background="@color/ColorPrimary"
+                android:background="@color/TabColor"
                 android:clickable="true"
                 android:onClick="onClick"
                 android:layout_weight="1" />
@@ -53,7 +53,7 @@
                 android:layout_height="fill_parent"
                 android:text="@string/tab_about_good"
                 android:id="@+id/AboutGoodButton"
-                android:background="@color/ColorPrimary"
+                android:background="@color/TabColor"
                 android:clickable="true"
                 android:onClick="onClick"
                 android:layout_weight="1" />

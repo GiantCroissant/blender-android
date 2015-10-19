@@ -18,4 +18,15 @@ public class BlueToothData {
         if(uniqueInstance == null ) {uniqueInstance = new BlueToothData();}
         return uniqueInstance;
     }
+
+    
+
+
+
+
+
+
+
+
+
 }
