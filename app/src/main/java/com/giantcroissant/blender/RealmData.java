@@ -11,6 +11,8 @@ public class RealmData {
 
 
     private static RealmData uniqueInstance;
+
+
     private RealmData(){} // 使用Private 建構子, 確保類別CameraManager 的物件化只能透過 API:getInstance()
     public static synchronized RealmData getInstance() { // 使用 synchronized 關鍵字避免同時兩支Thread 進入函數
         if(uniqueInstance == null ) {uniqueInstance = new RealmData();}

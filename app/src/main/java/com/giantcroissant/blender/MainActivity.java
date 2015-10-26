@@ -1,25 +1,15 @@
 package com.giantcroissant.blender;
 
-import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
@@ -47,8 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import io.realm.Realm;
@@ -70,26 +58,34 @@ public class MainActivity extends AppCompatActivity
         AboutCompanyItemFragment.OnAboutCompanyItemFragmentInteractionListener,
         View.OnClickListener
 {
+    // Stops scanning after 10 seconds.
+    private static final long SCAN_PERIOD = 1000;
+    private static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_COOKBOOK = 2;
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-
+    private int fragmentId;
+    private int resultCode = 0;
+    private int resultPosition = 0;
     private int mTimeOutMills = 5000;
     private int mRefreshRateMills = 500;
+    private int mCurrentSelectedPosition = 0;
+    private boolean mUserLearnedDrawer;
+    private boolean switchIsChecked = false;
+    private boolean mFromSavedInstanceState;
+    private String resultCookBookListViewID = "";
+
+    private ListView mDrawerList;
     private ActionBar actionBar;
     private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
     private View mFragmentContainerView;
     private ActionBarDrawerToggle mDrawerToggle;
-    private int fragmentId;
-    private int mCurrentSelectedPosition = 0;
-    private boolean mFromSavedInstanceState;
-    private boolean mUserLearnedDrawer;
-    private Bitmap tmpBitmap;
 
     private CookBooksFragment cookBooksFragment;
     private UserDataFragment userDataFragment;
     private AutoTestFragment autoTestFragment;
     private AboutCompanyFragment aboutCompanyFragment;
+
     private NavigationDrawerFragment.NavigationDrawerCallbacks mCallbacks;
     private CharSequence mTitle;
     private SharedPreferences sp;
@@ -102,39 +98,10 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<Cookbook> cookBooks;
 //scan bluetooth
-    private boolean switchIsChecked = false;
     private Switch blueToothSwitch;
     private TextView blueToothHint;
     private TextView blenderHint;
-    private LeDeviceListAdapter mLeDeviceListAdapter;
-    private BluetoothAdapter mBluetoothAdapter;
-    private ListView mGattServicesList;
-    private boolean mScanning;
-    private Handler bluetoothHandler;
-
-    private static final int REQUEST_ENABLE_BT = 1;
-    private static final int REQUEST_COOKBOOK = 2;
-    // Stops scanning after 10 seconds.
-    private static final long SCAN_PERIOD = 1000;
-    private int resultCode = 0;
-    private int resultPosition = 0;
-    private String resultCookBookListViewID = "";
-
-//cotrol blender
-//    private boolean isConnected = false;
-    private final String LIST_NAME = "NAME";
-    private final String LIST_UUID = "UUID";
-    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
-            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
-    private final static String TAG = CookBookDetailActivity.class.getSimpleName();
-    private String mDeviceName;
-    private String mDeviceAddress;
-    private BluetoothLeService mBluetoothLeService;
-    private BluetoothGattCharacteristic mClickCharacteristic;
-    private boolean mConnected = false;
-    private BluetoothManager mblueToothManager;
     private TextView IsConnectedBlueToothText;
-//    private int connectStateId = R.string.disconnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,13 +141,7 @@ public class MainActivity extends AppCompatActivity
         mCallbacks = (NavigationDrawerFragment.NavigationDrawerCallbacks) this;
         selectItem(mCurrentSelectedPosition);
 
-        bluetoothHandler = new Handler();
-        final android.bluetooth.BluetoothManager bluetoothManager =
-                (android.bluetooth.BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        mblueToothManager = bluetoothManager;
-        mBluetoothAdapter = bluetoothManager.getAdapter();
-
-//        ReplaceFont.replaceDefaultFont(this, "DEFAULT", "fonts/NotoSansCJKjp-Medium.otf");
+        BlueToothData.getInstance().startBlueTooth((AppCompatActivity)this);
     }
 
     @Override
@@ -197,11 +158,6 @@ public class MainActivity extends AppCompatActivity
         getCookBooks();
 
         FragmentManager fm = getSupportFragmentManager();//if added by xml
-//        if((CookBooksDataFragment)fm.findFragmentById(R.id.main_content) != null)
-//        {
-//            CookBooksDataFragment fragment = (CookBooksDataFragment)fm.findFragmentById(R.id.main_content);
-//            fragment.upDateListView(realm);
-//        }
 
         if(blueToothSwitch != null)
         {
@@ -210,29 +166,8 @@ public class MainActivity extends AppCompatActivity
 
         if((Button)findViewById(R.id.startBlenderButton) != null)
         {
-            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-            if (mBluetoothLeService != null) {
-                final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-                Log.d(TAG, "Connect request result=" + result);
+           BlueToothData.getInstance().startBlender(this, mGattUpdateReceiver);
 
-            }
-            else
-            {
-
-                mDeviceName = BlueToothData.getInstance().mDeviceName;
-                mDeviceAddress = BlueToothData.getInstance().mDeviceAddress;
-
-                if(mDeviceName != null && mDeviceAddress != null )
-                {
-                    Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-                    bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-                }
-
-                mClickCharacteristic = BlueToothData.getInstance().mClickCharacteristic;
-
-            }
-
-//            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
         }
 
     }
@@ -294,11 +229,6 @@ public class MainActivity extends AppCompatActivity
         getCookBooks();
 
         FragmentManager fm = getSupportFragmentManager();//if added by xml
-//        if((CookBooksDataFragment)fm.findFragmentById(R.id.main_content) != null)
-//        {
-//            CookBooksDataFragment fragment = (CookBooksDataFragment)fm.findFragmentById(R.id.main_content);
-//            fragment.upDateListView(realm);
-//        }
     }
 
     private void moveDrawerToTop() {
@@ -399,22 +329,17 @@ public class MainActivity extends AppCompatActivity
 
     private void selectItem(int position) {
         mCurrentSelectedPosition = position;
-//        Log.e("XXXX",String.valueOf(position));
         if (mDrawerList != null) {
             mDrawerList.setItemChecked(position, true);
-//            Log.e("XXXX", "xxx2");
 
         }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer((RelativeLayout)findViewById(R.id.drawer));
 
-//            mDrawerLayout.closeDrawer(mDrawerLayout);
-//            Log.e("XXXX","xxx3");
-
         }
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
-//            Log.e("XXXX", "xxx4");
+
         }
     }
 
@@ -448,8 +373,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-//        mDrawerLayout.closeDrawer(mFragmentContainerView);
-        mDrawerLayout.closeDrawer((RelativeLayout)findViewById(R.id.drawer));
+
+        mDrawerLayout.closeDrawer((RelativeLayout) findViewById(R.id.drawer));
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
         switch (position) {
@@ -502,8 +427,6 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.commit();
                 break;
         }
-//        ftx.commit();
-//          Log.e("XXXX", "xxx5");
 
     }
 
@@ -515,21 +438,18 @@ public class MainActivity extends AppCompatActivity
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
-//                restoreActionBar();
                 if(actionBar != null)
                 actionBar.setTitle(mTitle);
 
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
-//                restoreActionBar();
                 if(actionBar != null)
                     actionBar.setTitle(mTitle);
 
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
-//                restoreActionBar();
                 if(actionBar != null)
                     actionBar.setTitle(mTitle);
 
@@ -549,9 +469,6 @@ public class MainActivity extends AppCompatActivity
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
-//        actionBar.show();
-//        actionBar.hide();
-//        actionBar.setShowHideAnimationEnabled(false);
     }
 
     private void getRealm()
@@ -652,19 +569,16 @@ public class MainActivity extends AppCompatActivity
             String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
             for (String tmpStepPart : tmpStepParts) {
                 tmpSteps.add(tmpStepPart);
-//            Log.e("XXX", tmpStepPart);
             }
             ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
             String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
             for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
                 tmpTimeOfSteps.add(tmpTimeOfStepPart);
-//            Log.e("XXX", tmpStepPart);
             }
             ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
             String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
             for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
                 tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-//            Log.e("XXX", tmpStepPart);
             }
             Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
@@ -680,64 +594,30 @@ public class MainActivity extends AppCompatActivity
         if (view.getId() == R.id.newCookBookButton) {
             CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentCookBooks(realm, 0);
-
-//            Log.e("XXX","OOO");
         }
         else if (view.getId() == R.id.hotCookBookButton) {
             CookBooksFragment fragment = (CookBooksFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentCookBooks(realm,1);
-//            Log.e("OOO","XXX");
         }
         else if (view.getId() == R.id.userRecordCookBookButton) {
             UserDataFragment fragment = (UserDataFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentCookBooks(realm,0);
-//            Log.e("XXX","OOO");
         }
         else if (view.getId() == R.id.userLikeCookBookButton) {
             UserDataFragment fragment = (UserDataFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentCookBooks(realm,1);
-//            Log.e("OOO","XXX");
-
         }
         else if (view.getId() == R.id.BlenderSettingButton)
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
             fragment.setSwitchChecked(switchIsChecked);
             fragment.setCurrentTab(0);
-//            Intent intent = new Intent(this, DeviceScanActivity.class);
-//            intent.putExtra("Name", "BlueToothTest");
-//            startActivity(intent);
-
         }
         else if (view.getId() == R.id.BlenderControlButton)
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentTab(1);
-            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-
-            if (mBluetoothLeService != null) {
-                final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-                Log.d(TAG, "Connect request result=" + result);
-
-            }
-            else
-            {
-
-                mDeviceName = BlueToothData.getInstance().mDeviceName;
-                mDeviceAddress = BlueToothData.getInstance().mDeviceAddress;
-
-                if(mDeviceName != null && mDeviceAddress != null )
-                {
-                    Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-                    bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-                }
-
-                mClickCharacteristic = BlueToothData.getInstance().mClickCharacteristic;
-
-            }
-
-//            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-
+            BlueToothData.getInstance().startBlender(this, mGattUpdateReceiver);
         }
         else if (view.getId() == R.id.AboutCompanyButton)
         {
@@ -749,15 +629,12 @@ public class MainActivity extends AppCompatActivity
             fragment.setCurrentTab(1);
         }
         else if (view.getId() == R.id.blueToothSwitch) {
-
             switchConnectBlueTooth();
-
         }
         else if (view.getId() == R.id.startBlenderButton)
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
-//            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-            if(mConnected == false)
+            if(BlueToothData.getInstance().getConnected() == false)
             {
                 fragment.setSwitchChecked(switchIsChecked);
                 fragment.setCurrentTab(0);
@@ -777,27 +654,22 @@ public class MainActivity extends AppCompatActivity
             sendmsg[7] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) / 256);//(npSpeed.getValue() / 256);
             sendmsg[8] = (byte) 0x01;
 
-            if(mClickCharacteristic != null && mBluetoothLeService != null)
+            if(BlueToothData.getInstance().mClickCharacteristic != null && BlueToothData.getInstance().mBluetoothLeService != null)
             {
-
-                mClickCharacteristic.setValue(sendmsg);
-                mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-                mBluetoothLeService.writeCharacteristic(mClickCharacteristic);
+                BlueToothData.getInstance().mClickCharacteristic.setValue(sendmsg);
+                BlueToothData.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                BlueToothData.getInstance().mBluetoothLeService.writeCharacteristic(BlueToothData.getInstance().mClickCharacteristic);
             }
 
         }
         else if (view.getId() == R.id.stopBlenderButton)
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
-//            isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-            if(mConnected == false)
+            if(BlueToothData.getInstance().getConnected() == false)
             {
                 fragment.setSwitchChecked(switchIsChecked);
                 fragment.setCurrentTab(0);
             }
-
-            EditText setTimeEditText = (EditText) findViewById(R.id.setTimeEditText);
-            EditText setSpeedEditText = (EditText) findViewById(R.id.setSpeedEditText);
 
             byte[] sendmsg = new byte[10];
             sendmsg[0] = (byte) 0xA5;
@@ -811,12 +683,11 @@ public class MainActivity extends AppCompatActivity
             sendmsg[7] = (byte) 0x00;
             sendmsg[8] = (byte) 0x00;
 
-            if(mClickCharacteristic != null && mBluetoothLeService != null)
+            if(BlueToothData.getInstance().mClickCharacteristic != null && BlueToothData.getInstance().mBluetoothLeService != null)
             {
-
-                mClickCharacteristic.setValue(sendmsg);
-                mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-                mBluetoothLeService.writeCharacteristic(mClickCharacteristic);
+                BlueToothData.getInstance().mClickCharacteristic.setValue(sendmsg);
+                BlueToothData.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                BlueToothData.getInstance().mBluetoothLeService.writeCharacteristic(BlueToothData.getInstance().mClickCharacteristic);
             }
 
         }
@@ -864,25 +735,23 @@ public class MainActivity extends AppCompatActivity
 
             if(switchIsChecked)
             {
-                if(mBluetoothAdapter.isEnabled())
+                if(BlueToothData.getInstance().mBluetoothAdapter.isEnabled())
                 {
                     blueToothHint.setText("");
                     blenderHint.setText(R.string.hint_blender);
 
-                    mLeDeviceListAdapter.clear();
-                    scanLeDevice(true);
+                    BlueToothData.getInstance().mLeDeviceListAdapter.clear();
+                    BlueToothData.getInstance().scanLeDevice(true);
                 }
             }
             else
             {
-                stopConnectBlueTooth();
+
+                blenderHint.setText("");
+                blueToothHint.setText(R.string.hint_to_connect_bluetooth);
+                BlueToothData.getInstance().stopConnectBlueTooth();
             }
         }
-
-    }
-
-    protected void onFragmentResult(int requestCode, int resultCode, Intent data)
-    {
 
     }
 
@@ -917,6 +786,277 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Forward the new configuration the drawer toggle component.
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    void checkSupportBLE()
+    {
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
+            if(blueToothSwitch != null)
+            {
+                switchIsChecked = false;
+                blueToothSwitch.setChecked(false);
+            }
+        }
+    }
+
+    void checkSupportBlueTooth()
+    {
+        if (BlueToothData.getInstance().mBluetoothAdapter == null) {
+            Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
+            if(blueToothSwitch != null)
+            {
+                switchIsChecked = false;
+                blueToothSwitch.setChecked(false);
+            }
+        }
+    }
+
+    void enableBlueToothIntent()
+    {
+        if (!BlueToothData.getInstance().mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+    }
+
+    void initializesListViewAdapter()
+    {
+        if(BlueToothData.getInstance().mLeDeviceListAdapter == null)
+        {
+            BlueToothData.getInstance().mLeDeviceListAdapter = new LeDeviceListAdapter(MainActivity.this.getLayoutInflater());
+        }
+        BlueToothData.getInstance().mGattServicesList = (ListView) findViewById(R.id.gattServicesList);
+        if(BlueToothData.getInstance().mGattServicesList != null)
+        {
+            BlueToothData.getInstance().mGattServicesList.setAdapter(BlueToothData.getInstance().mLeDeviceListAdapter);
+            BlueToothData.getInstance().mGattServicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                    selectService(position, view);
+                }
+            });
+        }
+    }
+
+    private void selectService(int position, View view) {
+        TextView textView = (TextView)view.findViewById(R.id.device_name);
+
+        if(textView.getText().toString().compareTo("ITRI_JUICER_v1.0") != 0) return;
+        if(BlueToothData.getInstance().mBluetoothAdapter.isEnabled())
+        {
+            final BluetoothDevice device = BlueToothData.getInstance().mLeDeviceListAdapter.getDevice(position);
+            if (device == null) return;
+
+            final Intent intent = new Intent(this, DeviceControlActivity.class);
+            intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
+            intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+            if (BlueToothData.getInstance().mScanning) {
+                BlueToothData.getInstance().mBluetoothAdapter.stopLeScan(BlueToothData.getInstance().mLeScanCallback);
+                BlueToothData.getInstance().mScanning = false;
+            }
+
+            BlueToothData.getInstance().mDeviceName = device.getName();
+            BlueToothData.getInstance().mDeviceAddress = device.getAddress();
+
+            if(resultCode == 100)
+            {
+                openCookBookDetial();
+            }
+            else
+            {
+                startActivity(intent);
+            }
+        }
+        else
+        {
+            switchIsChecked = false;
+            blueToothSwitch.setChecked(false);
+            BlueToothData.getInstance().stopConnectBlueTooth();
+            enableBlueToothIntent();
+        }
+
+        BlueToothData.getInstance().mLeDeviceListAdapter.notifyDataSetChanged();
+    }
+
+    void openCookBookDetial()
+    {
+        Intent cookbookDetailIntent = new Intent(this, CookBookDetailActivity.class);
+
+        RealmQuery<CookBookRealm> tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
+        RealmResults<CookBookRealm> tempCookBookRealmResult = tmpCookBookRealmQuery.contains("Id",resultCookBookListViewID).findAll();
+        ArrayList<Cookbook> tmpCookBooks = new ArrayList<Cookbook>();
+
+        for (CookBookRealm cookBookRealm : tempCookBookRealmResult) {
+
+            ArrayList<String> tmpSteps = new ArrayList<String>();
+            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+            for (String tmpStepPart : tmpStepParts) {
+                tmpSteps.add(tmpStepPart);
+            }
+
+            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+                tmpTimeOfSteps.add(tmpTimeOfStepPart);
+            }
+
+            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+            }
+
+            Cookbook newCookBook =
+                    new Cookbook(cookBookRealm.getId(),
+                            cookBookRealm.getName(),
+                            cookBookRealm.getDescription(),
+                            cookBookRealm.getUrl(),
+                            cookBookRealm.getImageUrl(),
+                            cookBookRealm.getIngredient(),
+                            tmpSteps,
+                            cookBookRealm.getViewedPeopleCount(),
+                            cookBookRealm.getCollectedPeopleCount(),
+                            cookBookRealm.getBeCollected() ,
+                            tmpTimeOfSteps,
+                            tmpSpeedOfSteps);
+
+            newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
+            tmpCookBooks.add(newCookBook);
+        }
+        cookbookDetailIntent.putExtra("requestCode", 2);
+        cookbookDetailIntent.putExtra("position", resultPosition);
+        cookbookDetailIntent.putExtra("cookBookListViewID", tmpCookBooks.get(0).getId());
+        cookbookDetailIntent.putExtra("cookBookListViewName", tmpCookBooks.get(0).getName());
+        cookbookDetailIntent.putExtra("cookBookListViewDescription", tmpCookBooks.get(0).getDescription());
+        cookbookDetailIntent.putExtra("cookBookListViewUrl", tmpCookBooks.get(0).getUrl());
+        cookbookDetailIntent.putExtra("cookBookListViewImageUrl", tmpCookBooks.get(0).getImageUrl());
+        cookbookDetailIntent.putExtra("cookBookListViewIngredient", tmpCookBooks.get(0).getIngredient());
+        cookbookDetailIntent.putExtra("cookBookListViewSteps", tmpCookBooks.get(0).getSteps());
+        cookbookDetailIntent.putExtra("cookBookListViewViewPeople", tmpCookBooks.get(0).getViewedPeopleCount());
+        cookbookDetailIntent.putExtra("cookBookListViewCollectedPeople", tmpCookBooks.get(0).getCollectedPeopleCount());
+        cookbookDetailIntent.putExtra("cookBookListIsCollected", tmpCookBooks.get(0).getIsCollected());
+        cookbookDetailIntent.putExtra("cookBookListViewTimeOfSteps", tmpCookBooks.get(0).getTimeOfSteps());
+        cookbookDetailIntent.putExtra("cookBookListViewSpeedOfSteps", tmpCookBooks.get(0).getSpeedOfSteps());
+//        cookbookDetailIntent.putExtra("requestCode", -1);
+
+        startActivityForResult(cookbookDetailIntent, REQUEST_COOKBOOK);
+        resultCode = 0;
+    }
+
+    // Handles various events fired by the Service.
+    // ACTION_GATT_CONNECTED: connected to a GATT server.
+    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
+    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
+    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
+    //                        or notification operations.
+    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+//                BlueToothData.getInstance().mConnected = true;
+                updateConnectionState(R.string.connected);
+                invalidateOptionsMenu();
+            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+//                BlueToothData.getInstance().mConnected = false;
+                updateConnectionState(R.string.disconnected);
+                invalidateOptionsMenu();
+//                clearUI();
+            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                // Show all the supported services and characteristics on the user interface.
+                BlueToothData.getInstance().displayGattServices(BlueToothData.getInstance().mBluetoothLeService.getSupportedGattServices());
+            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+//                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+            }
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        registerReceiver(mGattUpdateReceiver,BlueToothData.getInstance().makeGattUpdateIntentFilter());
+        unregisterReceiver(mGattUpdateReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        if(BlueToothData.getInstance().mConnected)
+//        {
+//            unbindService(BlueToothData.getInstance().mServiceConnection);
+//            BlueToothData.getInstance().mBluetoothLeService = null;
+//        }
+    }
+
+    private void updateConnectionState(final int resourceId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+//                isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+//                connectStateId = resourceId;
+//                if (IsConnectedBlueToothText != null)
+//                {
+//                    IsConnectedBlueToothText.setText(resourceId);
+//                }
+            }
+        });
+    }
+
+    @Override
+    public void onFragmentInteraction(String string) {
+//        Log.e("XXX",string);
+        if(string.compareTo("Ok") == 0)
+        {
+//            updateConnectionState(connectStateId);
+            switchConnectBlueTooth();
+//            Log.e("XXX",string);
+        }
+        else if(string.compareTo("Exit") == 0)
+        {
+            BlueToothData.getInstance().stopConnectBlueTooth();
+        }
+        else if(string.compareTo("blueToothSwitchOnCheckedChangedtrue") == 0)
+        {
+
+            switchConnectBlueTooth();
+
+        }
+        else if(string.compareTo("blueToothSwitchOnCheckedChangedfalse") == 0) {
+
+            BlueToothData.getInstance().stopConnectBlueTooth();
+
+        }
+    }
+
+    @Override
+    public void onAboutCompanyInfoFragmentInteraction(String string) {
+
+    }
+
+    @Override
+    public void onAboutCompanyItemFragmentInteraction(String id) {
+
+    }
+
+    @Override
     public void onAboutCompanyFragmentInteraction(String String) {
 
     }
@@ -940,450 +1080,5 @@ public class MainActivity extends AppCompatActivity
     public void onDeviceControlFragmentInteraction(String string) {
 
     }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Forward the new configuration the drawer toggle component.
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
-
-    @Override
-    public void onFragmentInteraction(String string) {
-//        Log.e("XXX",string);
-        if(string.compareTo("Ok") == 0)
-        {
-//            updateConnectionState(connectStateId);
-            switchConnectBlueTooth();
-//            Log.e("XXX",string);
-        }
-        else if(string.compareTo("Exit") == 0)
-        {
-
-            stopConnectBlueTooth();
-        }
-        else if(string.compareTo("blueToothSwitchOnCheckedChangedtrue") == 0)
-        {
-
-            switchConnectBlueTooth();
-
-        }
-        else if(string.compareTo("blueToothSwitchOnCheckedChangedfalse") == 0) {
-
-            stopConnectBlueTooth();
-
-        }
-    }
-
-    void checkSupportBLE()
-    {
-        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
-            Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
-            if(blueToothSwitch != null)
-            {
-                switchIsChecked = false;
-                blueToothSwitch.setChecked(false);
-            }
-        }
-    }
-
-    void checkSupportBlueTooth()
-    {
-        if (mBluetoothAdapter == null) {
-            Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-            if(blueToothSwitch != null)
-            {
-                switchIsChecked = false;
-                blueToothSwitch.setChecked(false);
-            }
-        }
-    }
-
-    void enableBlueToothIntent()
-    {
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
-    }
-
-    void initializesListViewAdapter()
-    {
-        if(mLeDeviceListAdapter == null)
-        {
-            mLeDeviceListAdapter = new LeDeviceListAdapter(MainActivity.this.getLayoutInflater());
-        }
-        mGattServicesList = (ListView) findViewById(R.id.gattServicesList);
-        if(mGattServicesList != null)
-        {
-            mGattServicesList.setAdapter(mLeDeviceListAdapter);
-            mGattServicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                    selectService(position, view);
-                }
-            });
-        }
-
-    }
-
-    private void selectService(int position, View view) {
-        TextView textView = (TextView)view.findViewById(R.id.device_name);
-
-        if(textView.getText().toString().compareTo("ITRI_JUICER_v1.0") != 0) return;
-        if(mBluetoothAdapter.isEnabled())
-        {
-            final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
-            if (device == null) return;
-
-            final Intent intent = new Intent(this, DeviceControlActivity.class);
-            intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
-            intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
-            if (mScanning) {
-                mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                mScanning = false;
-            }
-
-            BlueToothData.getInstance().mDeviceName = device.getName();
-            BlueToothData.getInstance().mDeviceAddress = device.getAddress();
-
-            if(resultCode == 100)
-            {
-                Intent cookbookDetailIntent = new Intent(this, CookBookDetailActivity.class);
-
-                RealmQuery<CookBookRealm> tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
-                RealmResults<CookBookRealm> tempCookBookRealmResult = tmpCookBookRealmQuery.contains("Id",resultCookBookListViewID).findAll();
-                ArrayList<Cookbook> tmpCookBooks = new ArrayList<Cookbook>();
-
-                for (CookBookRealm cookBookRealm : tempCookBookRealmResult) {
-                    ArrayList<String> tmpSteps = new ArrayList<String>();
-                    String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
-                    for (String tmpStepPart : tmpStepParts) {
-                        tmpSteps.add(tmpStepPart);
-//            Log.e("XXX", tmpStepPart);
-                    }
-                    ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
-                    String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
-                    for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                        tmpTimeOfSteps.add(tmpTimeOfStepPart);
-//            Log.e("XXX", tmpStepPart);
-                    }
-                    ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
-                    String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
-                    for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                        tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-//            Log.e("XXX", tmpStepPart);
-                    }
-                    Cookbook newCookBook =
-                            new Cookbook(cookBookRealm.getId(),
-                                    cookBookRealm.getName(),
-                                    cookBookRealm.getDescription(),
-                                    cookBookRealm.getUrl(),
-                                    cookBookRealm.getImageUrl(),
-                                    cookBookRealm.getIngredient(),
-                                    tmpSteps,
-                                    cookBookRealm.getViewedPeopleCount(),
-                                    cookBookRealm.getCollectedPeopleCount(),
-                                    cookBookRealm.getBeCollected() ,
-                                    tmpTimeOfSteps,
-                                    tmpSpeedOfSteps);
-
-                    newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
-                    tmpCookBooks.add(newCookBook);
-                }
-                cookbookDetailIntent.putExtra("position", resultPosition);
-//                cookbookDetailIntent.putExtra("currentFragmentIndex", 1);
-
-                cookbookDetailIntent.putExtra("cookBookListViewID", tmpCookBooks.get(0).getId());
-                cookbookDetailIntent.putExtra("cookBookListViewName", tmpCookBooks.get(0).getName());
-                cookbookDetailIntent.putExtra("cookBookListViewDescription", tmpCookBooks.get(0).getDescription());
-                cookbookDetailIntent.putExtra("cookBookListViewUrl", tmpCookBooks.get(0).getUrl());
-                cookbookDetailIntent.putExtra("cookBookListViewImageUrl", tmpCookBooks.get(0).getImageUrl());
-                cookbookDetailIntent.putExtra("cookBookListViewIngredient", tmpCookBooks.get(0).getIngredient());
-                cookbookDetailIntent.putExtra("cookBookListViewSteps", tmpCookBooks.get(0).getSteps());
-                cookbookDetailIntent.putExtra("cookBookListViewViewPeople", tmpCookBooks.get(0).getViewedPeopleCount());
-                cookbookDetailIntent.putExtra("cookBookListViewCollectedPeople", tmpCookBooks.get(0).getCollectedPeopleCount());
-                cookbookDetailIntent.putExtra("cookBookListIsCollected", tmpCookBooks.get(0).getIsCollected());
-                cookbookDetailIntent.putExtra("cookBookListViewTimeOfSteps", tmpCookBooks.get(0).getTimeOfSteps());
-                cookbookDetailIntent.putExtra("cookBookListViewSpeedOfSteps", tmpCookBooks.get(0).getSpeedOfSteps());
-                cookbookDetailIntent.putExtra("requestCode", -1);
-
-//                Log.e("getCookBoookTimeOfSteps", String.valueOf(tmpCookBooks.get(0).getTimeOfSteps()));
-//                Log.e("getCookBoookSpeedOfSteps", String.valueOf(tmpCookBooks.get(0).getSpeedOfSteps()));
-                startActivityForResult(cookbookDetailIntent, REQUEST_COOKBOOK);
-                resultCode = 0;
-            }
-            else
-            {
-                startActivity(intent);
-            }
-        }
-        else
-        {
-            switchIsChecked = false;
-            blueToothSwitch.setChecked(false);
-            stopConnectBlueTooth();
-            enableBlueToothIntent();
-        }
-
-        mLeDeviceListAdapter.notifyDataSetChanged();
-    }
-
-    private void scanLeDevice(final boolean enable) {
-        if (enable) {
-            // Stops scanning after a pre-defined scan period.
-            bluetoothHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScanning = false;
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                }
-            }, SCAN_PERIOD);
-
-            mScanning = true;
-            mBluetoothAdapter.startLeScan(mLeScanCallback);
-            for (BluetoothDevice bluetoothDevice : mblueToothManager.getConnectedDevices(BluetoothProfile.GATT_SERVER)) {
-                mLeDeviceListAdapter.addDevice(bluetoothDevice);
-            }
-
-        } else {
-            mScanning = false;
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
-        }
-
-    }
-
-    void stopConnectBlueTooth()
-    {
-        blenderHint.setText("");
-        blueToothHint.setText(R.string.hint_to_connect_bluetooth);
-        if(mLeDeviceListAdapter != null)
-        {
-            mLeDeviceListAdapter.clear();
-            scanLeDevice(false);
-            mLeDeviceListAdapter.notifyDataSetChanged();
-        }
-    }
-
-    // Device scan callback.
-    private LeScanCallback mLeScanCallback =
-            new LeScanCallback() {
-
-                @Override
-                public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-//                            Log.e("XXX",device.getName());
-
-                            mLeDeviceListAdapter.addDevice(device);
-                            mLeDeviceListAdapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-            };
-
-
-
-
-    // Code to manage Service lifecycle.
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
-                Log.e(TAG, "Unable to initialize Bluetooth");
-                finish();
-            }
-            // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(mDeviceAddress);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
-        }
-    };
-
-    // Handles various events fired by the Service.
-    // ACTION_GATT_CONNECTED: connected to a GATT server.
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
-    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
-    //                        or notification operations.
-    private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                mConnected = true;
-                updateConnectionState(R.string.connected);
-                invalidateOptionsMenu();
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                mConnected = false;
-                updateConnectionState(R.string.disconnected);
-                invalidateOptionsMenu();
-//                clearUI();
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-                // Show all the supported services and characteristics on the user interface.
-                displayGattServices(mBluetoothLeService.getSupportedGattServices());
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-//                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
-            }
-        }
-    };
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        registerReceiver(mGattUpdateReceiver,makeGattUpdateIntentFilter());
-        unregisterReceiver(mGattUpdateReceiver);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if(mConnected)
-        {
-            unbindService(mServiceConnection);
-            mBluetoothLeService = null;
-        }
-    }
-
-
-    private static IntentFilter makeGattUpdateIntentFilter() {
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
-        return intentFilter;
-    }
-
-    private void updateConnectionState(final int resourceId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run()
-            {
-//                isConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-//                connectStateId = resourceId;
-                if (IsConnectedBlueToothText != null)
-                {
-//                    IsConnectedBlueToothText.setText(resourceId);
-                }
-            }
-        });
-    }
-
-    // Demonstrates how to iterate through the supported GATT Services/Characteristics.
-    // In this sample, we populate the data structure that is bound to the ExpandableListView
-    // on the UI.
-    private void displayGattServices(List<BluetoothGattService> gattServices) {
-        if (gattServices == null) return;
-        String uuid = null;
-        String unknownServiceString = getResources().getString(R.string.unknown_service);
-        String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
-        ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
-        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
-                = new ArrayList<ArrayList<HashMap<String, String>>>();
-        mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
-
-        // Loops through available GATT Services.
-        for (BluetoothGattService gattService : gattServices) {
-            HashMap<String, String> currentServiceData = new HashMap<String, String>();
-            uuid = gattService.getUuid().toString();
-            currentServiceData.put(
-                    LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
-            currentServiceData.put(LIST_UUID, uuid);
-            gattServiceData.add(currentServiceData);
-
-            ArrayList<HashMap<String, String>> gattCharacteristicGroupData =
-                    new ArrayList<HashMap<String, String>>();
-            List<BluetoothGattCharacteristic> gattCharacteristics =
-                    gattService.getCharacteristics();
-            ArrayList<BluetoothGattCharacteristic> charas =
-                    new ArrayList<BluetoothGattCharacteristic>();
-
-            // Loops through available Characteristics.
-            for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
-                charas.add(gattCharacteristic);
-                HashMap<String, String> currentCharaData = new HashMap<String, String>();
-                uuid = gattCharacteristic.getUuid().toString();
-                currentCharaData.put(
-                        LIST_NAME, SampleGattAttributes.lookup(uuid, unknownCharaString));
-                currentCharaData.put(LIST_UUID, uuid);
-                gattCharacteristicGroupData.add(currentCharaData);
-            }
-            mGattCharacteristics.add(charas);
-            gattCharacteristicData.add(gattCharacteristicGroupData);
-
-            if(mGattCharacteristics.size() == 3)
-            {
-                BlueToothData.getInstance().mClickCharacteristic = mGattCharacteristics.get(2).get(0);
-                mClickCharacteristic =  BlueToothData.getInstance().mClickCharacteristic;
-
-            }
-//            Log.e("XXX", String.valueOf(mGattCharacteristics.size()));
-        }
-    }
-
-    @Override
-    public void onAboutCompanyInfoFragmentInteraction(String string) {
-
-    }
-
-    @Override
-    public void onAboutCompanyItemFragmentInteraction(String id) {
-
-    }
-
-
-//
-//    private Runnable getImage = new Runnable() {
-//        @Override
-//        public void run() {
-//            new LoadImage().execute(cookbook.imageUrl);
-//        }
-//    };
-//
-//    private class LoadImage extends AsyncTask<String, String, Bitmap> {
-//
-//        // Background
-//        protected Bitmap doInBackground(String... args) {
-//            try {
-//                URLConnection url = new URL(args[0]).openConnection();
-//                url.setConnectTimeout(mTimeOutMills);
-//                url.setReadTimeout(mTimeOutMills);
-//                cookbook.image = BitmapFactory.decodeStream(url.getInputStream());
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return cookbook.image;
-//        }
-//
-//        // UI
-//        protected void onPostExecute(Bitmap aboutEventImage) {
-//            if (aboutEventImage != null) {
-//
-//            }
-//            mHandler.postDelayed(getImage, mRefreshRateMills);
-//        }
-//    }
 
 }

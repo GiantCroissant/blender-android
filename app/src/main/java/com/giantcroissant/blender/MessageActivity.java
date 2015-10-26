@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 public class MessageActivity extends Activity implements View.OnClickListener
 {
@@ -70,6 +71,12 @@ public class MessageActivity extends Activity implements View.OnClickListener
         }
         else if (view.getId() == R.id.messageConfrimButton)
         {
+
+            if(CookToDoData.getInstance().doing)
+            {
+                CookToDoData.getInstance().doing = false;
+            }
+            CookToDoData.getInstance().currentStateIndex = 0;
             setResult(101);
             finish();
         }
