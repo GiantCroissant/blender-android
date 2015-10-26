@@ -47,21 +47,21 @@ public class CookBookDetailActivity extends AppCompatActivity
     private Realm realm;
     private RealmQuery<CookBookRealm> cookBookRealmQuery;
     private RealmResults<CookBookRealm> cookBookRealmResult;
-    private boolean isConnected = false;
+//    private boolean isConnected = false;
     private boolean isNeedStartBlender = false;
     private boolean isFinished = false;
     public int currentFragmentIndex = 0;
 
-    private final String LIST_NAME = "NAME";
-    private final String LIST_UUID = "UUID";
-    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
-            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
-    private final static String TAG = CookBookDetailActivity.class.getSimpleName();
-    private String mDeviceName;
-    private String mDeviceAddress;
-    private BluetoothLeService mBluetoothLeService;
-    private BluetoothGattCharacteristic mClickCharacteristic;
-    private boolean mConnected = false;
+//    private final String LIST_NAME = "NAME";
+//    private final String LIST_UUID = "UUID";
+//    private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
+//            new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+//    private final static String TAG = CookBookDetailActivity.class.getSimpleName();
+//    private String mDeviceName;
+//    private String mDeviceAddress;
+//    private BluetoothLeService mBluetoothLeService;
+//    private BluetoothGattCharacteristic mClickCharacteristic;
+//    private boolean mConnected = false;
     Button connectBlueToothbutton;
     Button confrimhbutton;
     Button startBlenderbutton;
@@ -83,6 +83,7 @@ public class CookBookDetailActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         getView();
+        requestCode = intent.getIntExtra("requestCode",0);
         position = intent.getIntExtra("position",0);
         currentFragmentIndex = intent.getIntExtra("currentFragmentIndex",0);
         cookBook = new Cookbook();
@@ -103,8 +104,6 @@ public class CookBookDetailActivity extends AppCompatActivity
             requestCode = intent.getIntExtra("requestCode",0);
 
         }
-//        Log.e("getCookBoookSpeedOfSteps", String.valueOf(cookBook.getSpeedOfSteps()));
-//        Log.e("getCookBoookSpeedOfSteps", String.valueOf(cookBook.getSpeedOfSteps()));
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -145,27 +144,58 @@ public class CookBookDetailActivity extends AppCompatActivity
 
     private void setDefaultFragment()
     {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        if(requestCode == 2)
+        {
+            currentFragmentIndex = 1;
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            if (cookBookDetailToDoFragment == null)
+            {
+                cookBookDetailToDoFragment = new CookBookDetailToDoFragment().newInstance(2,cookBook);
+            }
 
-        cookBookDetailInfoFragment = new CookBookDetailInfoFragment().newInstance(1,cookBook);
+            fragmentTransaction.replace(R.id.contentfragment, cookBookDetailToDoFragment);
 
-        fragmentTransaction.replace(R.id.contentfragment, cookBookDetailInfoFragment);
 
-        ImageButton infoButtonColor = (ImageButton) findViewById(R.id.cook_book_Info_button_SelectColor);
-        ImageButton toDoButtonColor = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
+            ImageButton infoButtonColor = (ImageButton) findViewById(R.id.cook_book_Info_button_SelectColor);
+            ImageButton toDoButtonColor = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
 
-        Button videoButton = (Button) findViewById(R.id.cook_book_video_button);
-        Button infoButton = (Button) findViewById(R.id.cook_book_Info_button);
-        Button toDoButton = (Button) findViewById(R.id.cook_book_to_do_button);
-        infoButton.setTextColor(getResources().getColor(R.color.White));
-        videoButton.setTextColor(getResources().getColor(R.color.c70White));
-        toDoButton.setTextColor(getResources().getColor(R.color.c70White));
+            Button videoButton = (Button) findViewById(R.id.cook_book_video_button);
+            Button infoButton = (Button) findViewById(R.id.cook_book_Info_button);
+            Button toDoButton = (Button) findViewById(R.id.cook_book_to_do_button);
+            infoButton.setTextColor(getResources().getColor(R.color.c70White));
+            videoButton.setTextColor(getResources().getColor(R.color.c70White));
+            toDoButton.setTextColor(getResources().getColor(R.color.White));
 
 //            videoButton.setImageResource(R.drawable.hotcookbook_false);
-        infoButtonColor.setImageResource(R.color.TabSelectColor);
-        toDoButtonColor.setImageResource(R.color.TabNoSelectColor);
+            infoButtonColor.setImageResource(R.color.TabNoSelectColor);
+            toDoButtonColor.setImageResource(R.color.TabSelectColor);
 
-        fragmentTransaction.commit();
+            fragmentTransaction.commit();
+        }
+        else
+        {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+            cookBookDetailInfoFragment = new CookBookDetailInfoFragment().newInstance(1,cookBook);
+
+            fragmentTransaction.replace(R.id.contentfragment, cookBookDetailInfoFragment);
+
+            ImageButton infoButtonColor = (ImageButton) findViewById(R.id.cook_book_Info_button_SelectColor);
+            ImageButton toDoButtonColor = (ImageButton) findViewById(R.id.cook_book_to_do_button_SelectColor);
+
+            Button videoButton = (Button) findViewById(R.id.cook_book_video_button);
+            Button infoButton = (Button) findViewById(R.id.cook_book_Info_button);
+            Button toDoButton = (Button) findViewById(R.id.cook_book_to_do_button);
+            infoButton.setTextColor(getResources().getColor(R.color.White));
+            videoButton.setTextColor(getResources().getColor(R.color.c70White));
+            toDoButton.setTextColor(getResources().getColor(R.color.c70White));
+
+//            videoButton.setImageResource(R.drawable.hotcookbook_false);
+            infoButtonColor.setImageResource(R.color.TabSelectColor);
+            toDoButtonColor.setImageResource(R.color.TabNoSelectColor);
+
+            fragmentTransaction.commit();
+        }
 
     }
 
@@ -229,8 +259,9 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         this.resultCode = requestCode;
+        this.requestCode = requestCode;
 
-        Log.e("XXX3",String.valueOf(requestCode));
+//        Log.e("XXX3",String.valueOf(resultCode));
 
         if(requestCode == 103 || requestCode == 104)
         {
@@ -240,13 +271,14 @@ public class CookBookDetailActivity extends AppCompatActivity
         {
             cookToDoData.getInstance().currentStateIndex = data.getIntExtra("currentStateIndex",0);
         }
-        if(this.resultCode == 101)
+        if(resultCode == 101)
         {
             this.resultCode = 0;
             setResult(requestCode);
+
+//            Log.e("XXX3", String.valueOf(resultCode)+"XD");
             finish();
         }
-
 
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -361,8 +393,10 @@ public class CookBookDetailActivity extends AppCompatActivity
             IsConnectedBlueToothText = (TextView) findViewById(R.id.IsConnectedBlueToothText);
 
 //            Log.e("xxx", String.valueOf(connectBlueToothbutton == null));
-            mConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-            if(mConnected == false)
+            BlueToothData.getInstance().getConnected();
+
+//            BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
+            if(BlueToothData.getInstance().getConnected() == false)
             {
 //                Intent intent = new Intent(this, DeviceScanActivity.class);
 //                intent.putExtra("Name", "ToDoList");
@@ -429,12 +463,12 @@ public class CookBookDetailActivity extends AppCompatActivity
 //            bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 //            Log.e("XXX", String.valueOf(mClickCharacteristic != null));
 //            Log.e("XXX", String.valueOf(mBluetoothLeService != null));
-            if(mClickCharacteristic != null && mBluetoothLeService != null)
+            if(BlueToothData.getInstance().mClickCharacteristic != null && BlueToothData.getInstance().mBluetoothLeService != null)
             {
 
-                mClickCharacteristic.setValue(sendmsg);
-                mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-                mBluetoothLeService.writeCharacteristic(mClickCharacteristic);
+                BlueToothData.getInstance().mClickCharacteristic.setValue(sendmsg);
+                BlueToothData.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+                BlueToothData.getInstance().mBluetoothLeService.writeCharacteristic(BlueToothData.getInstance().mClickCharacteristic);
             }
 
         }
@@ -459,7 +493,7 @@ public class CookBookDetailActivity extends AppCompatActivity
                 cookToDoData.getInstance().doing = false;
             }
             finishhbutton = (Button) findViewById(R.id.FinishButton);
-            mConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+            BlueToothData.getInstance().getConnected();
             cookBookDetailToDoFragment.setReStart();
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             isFinished = cookBookDetailToDoFragment.getFinished();
@@ -485,7 +519,7 @@ public class CookBookDetailActivity extends AppCompatActivity
             }
             else
             {
-                if(mConnected == false)
+                if(BlueToothData.getInstance().getConnected() == false)
                 {
                     connectBlueToothbutton.setVisibility(View.VISIBLE);
                     confrimhbutton.setVisibility(View.INVISIBLE);
@@ -550,7 +584,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     public void onCookBookDetailToDoFragmentInteraction(String string)
     {
-        cookBookDetailToDoFragment.setIsConnected(mConnected);
+        cookBookDetailToDoFragment.setIsConnected(BlueToothData.getInstance().getConnected());
         cookBookDetailToDoFragment.setCurrentIndex(cookToDoData.getInstance().currentStateIndex);
 
         mHandler.post(checkIsConnected);
@@ -560,7 +594,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     private Runnable checkIsConnected = new Runnable() {
         @Override
         public void run() {
-            new checkConnected().execute(String.valueOf(mConnected));
+            new checkConnected().execute(String.valueOf(BlueToothData.getInstance().getConnected()));
         }
     };
 
@@ -569,9 +603,9 @@ public class CookBookDetailActivity extends AppCompatActivity
         // Background
         protected Boolean doInBackground(String... args) {
 
-            mConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-
-            return mConnected;
+//            BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
+            BlueToothData.getInstance().getConnected();
+            return BlueToothData.getInstance().getConnected();
         }
 
         // UI
@@ -600,8 +634,9 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     public void onPostResume() {
         super.onPostResume();
-        mConnected = mBluetoothLeService != null && mClickCharacteristic != null;
 
+//        BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
+        BlueToothData.getInstance().getConnected();
         if(currentFragmentIndex == 1 && resultCode != 102)
         {
             connectBlueToothbutton = (Button) findViewById(R.id.connectBlueToothButton);
@@ -632,26 +667,6 @@ public class CookBookDetailActivity extends AppCompatActivity
         }
     }
 
-    // Code to manage Service lifecycle.
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
-                Log.e(TAG, "Unable to initialize Bluetooth");
-                finish();
-            }
-            // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(mDeviceAddress);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
-        }
-    };
-
     // Handles various events fired by the Service.
     // ACTION_GATT_CONNECTED: connected to a GATT server.
     // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
@@ -664,17 +679,19 @@ public class CookBookDetailActivity extends AppCompatActivity
             final String action = intent.getAction();
 //            Log.e("onReceive", action.toString() + " by CookBookDetailActivity");
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                mConnected = true;
+
+//                BlueToothData.getInstance().mConnected = true;
                 updateConnectionState(R.string.connected);
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                mConnected = false;
+
+//                BlueToothData.getInstance().mConnected = false;
                 updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
 //                clearUI();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
-                displayGattServices(mBluetoothLeService.getSupportedGattServices());
+                BlueToothData.getInstance().displayGattServices(BlueToothData.getInstance().mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
 //                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             }
@@ -684,38 +701,19 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+//        Log.e("XXX3", String.valueOf(requestCode));
 
         setDefaultFragment();
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Log.d(TAG, "Connect request result=" + result);
+        BlueToothData.getInstance().startBlender(this, mGattUpdateReceiver);
 
-        }
-        else
-        {
-
-            mDeviceName = BlueToothData.getInstance().mDeviceName;
-            mDeviceAddress = BlueToothData.getInstance().mDeviceAddress;
-
-            if(mDeviceName != null && mDeviceAddress != null )
-            {
-                Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-                bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-            }
-
-            mClickCharacteristic = BlueToothData.getInstance().mClickCharacteristic;
-
-        }
-
-        mConnected = mBluetoothLeService != null && mClickCharacteristic != null;
-
+//        BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
+        BlueToothData.getInstance().getConnected();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
+//        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override
@@ -729,21 +727,11 @@ public class CookBookDetailActivity extends AppCompatActivity
         finishhbutton = null;
         IsConnectedBlueToothText = null;
 
-        if(mConnected)
-        {
-            unbindService(mServiceConnection);
-            mBluetoothLeService = null;
-        }
-    }
-
-
-    private static IntentFilter makeGattUpdateIntentFilter() {
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
-        return intentFilter;
+//        if(BlueToothData.getInstance().mConnected)
+//        {
+//            unbindService(mServiceConnection);
+//            BlueToothData.getInstance().mBluetoothLeService = null;
+//        }
     }
 
     private void updateConnectionState(final int resourceId) {
@@ -754,61 +742,10 @@ public class CookBookDetailActivity extends AppCompatActivity
                 {
                     IsConnectedBlueToothText.setText(resourceId);
                 }
-                mConnected = mBluetoothLeService != null && mClickCharacteristic != null;
+                BlueToothData.getInstance().getConnected();
+
+//                BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
             }
         });
-    }
-
-    // Demonstrates how to iterate through the supported GATT Services/Characteristics.
-    // In this sample, we populate the data structure that is bound to the ExpandableListView
-    // on the UI.
-    private void displayGattServices(List<BluetoothGattService> gattServices) {
-        if (gattServices == null) return;
-        String uuid = null;
-        String unknownServiceString = getResources().getString(R.string.unknown_service);
-        String unknownCharaString = getResources().getString(R.string.unknown_characteristic);
-        ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
-        ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
-                = new ArrayList<ArrayList<HashMap<String, String>>>();
-        mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
-
-        // Loops through available GATT Services.
-        for (BluetoothGattService gattService : gattServices) {
-            HashMap<String, String> currentServiceData = new HashMap<String, String>();
-            uuid = gattService.getUuid().toString();
-            currentServiceData.put(
-                    LIST_NAME, SampleGattAttributes.lookup(uuid, unknownServiceString));
-            currentServiceData.put(LIST_UUID, uuid);
-            gattServiceData.add(currentServiceData);
-
-            ArrayList<HashMap<String, String>> gattCharacteristicGroupData =
-                    new ArrayList<HashMap<String, String>>();
-            List<BluetoothGattCharacteristic> gattCharacteristics =
-                    gattService.getCharacteristics();
-            ArrayList<BluetoothGattCharacteristic> charas =
-                    new ArrayList<BluetoothGattCharacteristic>();
-
-            // Loops through available Characteristics.
-            for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
-                charas.add(gattCharacteristic);
-                HashMap<String, String> currentCharaData = new HashMap<String, String>();
-                uuid = gattCharacteristic.getUuid().toString();
-                currentCharaData.put(
-                        LIST_NAME, SampleGattAttributes.lookup(uuid, unknownCharaString));
-                currentCharaData.put(LIST_UUID, uuid);
-                gattCharacteristicGroupData.add(currentCharaData);
-            }
-            mGattCharacteristics.add(charas);
-            gattCharacteristicData.add(gattCharacteristicGroupData);
-
-            if(mGattCharacteristics.size() == 3)
-            {
-                BlueToothData.getInstance().mClickCharacteristic = mGattCharacteristics.get(2).get(0);
-                mClickCharacteristic =  BlueToothData.getInstance().mClickCharacteristic;
-//                checkButtonState();
-
-            }
-//            Log.e("XXX", String.valueOf(mGattCharacteristics.size()));
-        }
     }
 }
