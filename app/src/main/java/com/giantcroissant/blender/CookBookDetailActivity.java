@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
@@ -99,6 +101,8 @@ public class CookBookDetailActivity extends AppCompatActivity
         cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
         cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
         cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
+        cookBook.setImageID(intent.getIntExtra("cookBookImageId", 0));
+        cookBook.setImage(BitmapFactory.decodeResource(getResources(),cookBook.getImageID()));
         if(intent.getIntExtra("requestCode",0) != -1)
         {
             requestCode = intent.getIntExtra("requestCode",0);

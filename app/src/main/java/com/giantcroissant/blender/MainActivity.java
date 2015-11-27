@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -521,6 +522,17 @@ public class MainActivity extends AppCompatActivity
         cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃芒果汁", "美味的水蜜桃和芒果。好吃好吃。做成果汁也很棒喔。", "Http://xd.com", "https://www.dropbox.com/s/pw4fyjhfs1kqsxa/pictures_03.png?dl=0", "水蜜桃、蜂蜜、芒果",newSteps, 60, 60, true,newTimeOfSteps,newSpeedOfSteps));
         cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "水蜜桃汁", "美味的水蜜桃。好吃好吃。做成果汁也很棒喔。", "Http://xd.com", "https://www.dropbox.com/s/1u136gj6nvu8mjw/pictures_04.png?dl=0", "水蜜桃、蜂蜜",newSteps, 80, 40, true,newTimeOfSteps,newSpeedOfSteps));
         cookBooks.add(new Cookbook(UUID.randomUUID().toString(), "雪梨香蕉生菜汁", "美味的雪梨和香蕉。好吃好吃。做成果汁也很棒喔。", "Http://xd.com", "https://www.dropbox.com/s/gqvvaquqaqs978s/pictures_05.png?dl=0", "芒果、蜂蜜",newSteps, 100, 20, true,newTimeOfSteps,newSpeedOfSteps));
+        cookBooks.get(0).setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_01));
+        cookBooks.get(1).setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_02));
+        cookBooks.get(2).setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_03));
+        cookBooks.get(3).setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_04));
+        cookBooks.get(4).setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_05));
+        cookBooks.get(0).setImageID(R.drawable.pictures_01);
+        cookBooks.get(1).setImageID(R.drawable.pictures_02);
+        cookBooks.get(2).setImageID(R.drawable.pictures_03);
+        cookBooks.get(3).setImageID(R.drawable.pictures_04);
+        cookBooks.get(4).setImageID(R.drawable.pictures_05);
+
 
         for (Cookbook cookBook : cookBooks) {
             String tmpStep = "";
@@ -555,6 +567,7 @@ public class MainActivity extends AppCompatActivity
             cookBookRealm.setCreateTime(cookBook.getCreateTime());
             cookBookRealm.setTimeOfSteps(tmpTimeOfStep);
             cookBookRealm.setSpeedOfSteps(tmpSpeedOfStep);
+            cookBookRealm.setImageID(cookBook.getImageID());
 
             realm.commitTransaction();
         }
@@ -582,6 +595,9 @@ public class MainActivity extends AppCompatActivity
             }
             Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
+            newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
+            newCookBook.setImageID(cookBookRealm.getImageID());
+
             cookBooks.add(newCookBook);
         }
     }

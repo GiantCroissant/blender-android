@@ -1,6 +1,8 @@
 package com.giantcroissant.blender;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Debug;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -13,17 +15,26 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 
 public class CompanyItemActivity extends AppCompatActivity {
 
     private String itemID;
     private String itemTitle;
-    private String itemContent;
+    private String itemName;
+    private ArrayList<String> itemContents;
     private String itemIconUrl;
     private ActionBar actionBar;                              // Declaring the Toolbar Object
-    private TextView titelText;
-    private TextView contentText;
+    TextView titleView ;
+    ImageView companyItemIcon ;
+    TextView contentViewW ;
+    TextView contentViewAC;
+    TextView contentViewCC ;
+    TextView contentViewMM ;
+    TextView contentViewKG ;
     private ImageView iconImage;
+    Bitmap icon;
 
 
     @Override
@@ -36,32 +47,66 @@ public class CompanyItemActivity extends AppCompatActivity {
 
         itemID = intent.getStringExtra("itemListViewID");
         itemTitle = intent.getStringExtra("itemListViewTitle");
-        itemContent = intent.getStringExtra("itemListViewContent");
+        itemName = intent.getStringExtra("itemListViewName");
+        itemContents = intent.getStringArrayListExtra("itemListViewContent");
         itemIconUrl = intent.getStringExtra("itemListViewIconUrl");
+        byte[] tmpitemIcon = intent.getByteArrayExtra("itemListViewIcon");
+        icon = Bytes2Bimap(tmpitemIcon);
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
-
+        actionBar.setTitle(itemTitle);
         setValueToView();
 //        ReplaceFont.replaceDefaultFont(this, "DEFAULT", "fonts/NotoSansCJKjp-Medium.otf");
 
     }
 
+    private Bitmap Bytes2Bimap(byte[] b){
+
+        if(b.length!=0){
+
+            return BitmapFactory.decodeByteArray(b, 0, b.length);
+
+        }
+
+        else {
+
+            return null;
+
+        }
+
+    }
+
     private void getView()
     {
-        titelText = (TextView) findViewById(R.id.item_title_text);
-        contentText = (TextView) findViewById(R.id.item_content_text);
-        iconImage = (ImageView) findViewById(R.id.item_icon);
+        iconImage = (ImageView) findViewById(R.id.company_item_icon);
+
+
+        // 讀取記事顏色、已選擇、標題與日期時間元件
+        titleView = (TextView) findViewById(R.id.company_item_name);
+        contentViewW = (TextView) findViewById(R.id.company_item_w);
+        contentViewAC = (TextView) findViewById(R.id.company_item_ac);
+        contentViewCC = (TextView) findViewById(R.id.company_item_cc);
+        contentViewMM = (TextView) findViewById(R.id.company_item_mm);
+        contentViewKG = (TextView) findViewById(R.id.company_item_kg);
+
     }
 
 
 
     private void setValueToView()
     {
-        titelText.setText(itemTitle);
-        contentText.setText(itemContent);
+        // 設定標題
+        titleView.setText(itemName);
+        contentViewW.setText(itemContents.get(1));
+        contentViewAC.setText(itemContents.get(2));
+        contentViewCC.setText(itemContents.get(3));
+        contentViewMM.setText(itemContents.get(4));
+        contentViewKG.setText(itemContents.get(5));
+        iconImage.setImageBitmap(CompanyData.getInstance().currentCompanyItem.getIcon());
+
 
 //        Spannable span = (Spannable) contentText.getText();
 ////        span.setSpan(new RelativeSizeSpan(0.8f), 0, questions.getOwnerName().length(), 0);

@@ -1,5 +1,8 @@
 package com.giantcroissant.blender;
 
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -10,17 +13,31 @@ public class CompanyItem {
 
     private String id;
     private String title;
-    private String content;
+    private String name;
+    private ArrayList<String> contents;
     private String iconUrl;
     private Date createTime;
     private String systemId;
+    private Bitmap icon;
 
-    public CompanyItem(String id,String title,String content,String iconUrl,String systemId)
+    public CompanyItem(String id, String title, String name, ArrayList<String> contents, String iconUrl, String systemId)
     {
         this.id = id;
         this.title = title;
-        this.content = content;
+        this.name = name;
+        this.contents = contents;
         this.iconUrl = iconUrl;
+        this.createTime = new Date(System.currentTimeMillis());
+        this.systemId = systemId;
+    }
+
+    public CompanyItem(String id, String title, String name, ArrayList<String> contents, Bitmap icon, String systemId)
+    {
+        this.id = id;
+        this.title = title;
+        this.name = name;
+        this.contents = contents;
+        this.icon = icon;
         this.createTime = new Date(System.currentTimeMillis());
         this.systemId = systemId;
     }
@@ -63,12 +80,20 @@ public class CompanyItem {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ArrayList<String> getContents() {
+        return contents;
+    }
+
+    public void setContents( ArrayList<String> contents) {
+        this.contents = contents;
     }
 
     public String getIconUrl() {
@@ -86,6 +111,15 @@ public class CompanyItem {
 
     public void setSystemId(String systemId) {
         this.systemId = systemId;
+    }
+
+
+    public Bitmap getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Bitmap icon) {
+        this.icon = icon;
     }
 
 

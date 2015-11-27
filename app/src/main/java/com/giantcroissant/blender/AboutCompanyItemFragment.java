@@ -2,6 +2,7 @@ package com.giantcroissant.blender;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.giantcroissant.blender.dummy.DummyContent;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -113,10 +115,21 @@ public class AboutCompanyItemFragment extends android.support.v4.app.Fragment  i
         intent.putExtra("itemListViewTitle", CompanyData.getInstance().companyItemSystems.get(position).getTitle());
         intent.putExtra("itemListViewContent", CompanyData.getInstance().companyItemSystems.get(position).getContent());
         intent.putExtra("itemListViewIconUrl", CompanyData.getInstance().companyItemSystems.get(position).getIconUrl());
-
+//        byte[] tmpIconByteArray = Bitmap2Bytes(CompanyData.getInstance().companyItemSystems.get(position).getIcon());
+//        intent.putExtra("itemListViewIcon", tmpIconByteArray);
         startActivityForResult(intent, 0);
 
     }
+
+//    private byte[] Bitmap2Bytes(Bitmap bm){
+//
+//    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//
+//    bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//
+//    return baos.toByteArray();
+//
+//    }
 
     @Override
     public void onAttach(Activity activity) {

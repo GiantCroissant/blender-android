@@ -2,6 +2,7 @@ package com.giantcroissant.blender;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -125,6 +126,8 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
             }
             Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
+            newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
+            newCookBook.setImageID(cookBookRealm.getImageID());
             userRecordCookBooks.add(newCookBook);
         }
     }
@@ -155,6 +158,9 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
             }
             Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
+
+            newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
+            newCookBook.setImageID(cookBookRealm.getImageID());
             userLikeCookBooks.add(newCookBook);
         }
     }
@@ -212,6 +218,7 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
         intent.putExtra("cookBookListIsCollected", currentCookBooks.get(position).getIsCollected());
         intent.putExtra("cookBookListViewTimeOfSteps", currentCookBooks.get(position).getTimeOfSteps());
         intent.putExtra("cookBookListViewSpeedOfSteps", currentCookBooks.get(position).getSpeedOfSteps());
+        intent.putExtra("cookBookImageId",currentCookBooks.get(position).getImageID());
 
         intent.putExtra("requestCode", 104);
         getActivity().startActivityFromFragment(this, intent, 104);

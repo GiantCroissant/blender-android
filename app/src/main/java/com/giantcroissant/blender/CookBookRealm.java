@@ -31,6 +31,7 @@ public class CookBookRealm extends RealmObject {
 
     private String timeOfSteps;
     private String speedOfSteps;
+    private int imageID;
 
     public String getId() { return Id; }
     public void   setId(String Id) { this.Id = Id; }
@@ -98,5 +99,7 @@ public class CookBookRealm extends RealmObject {
     public void setSpeedOfSteps(String speedOfSteps) {
         this.speedOfSteps = speedOfSteps;
     }
+    public int getImageID() { return imageID; }
+    public void   setImageID(int imageID) { this.imageID = imageID;}
 }
 

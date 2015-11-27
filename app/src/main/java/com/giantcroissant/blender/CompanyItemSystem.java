@@ -1,5 +1,7 @@
 package com.giantcroissant.blender;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -15,6 +17,7 @@ public class CompanyItemSystem {
     private String iconUrl;
     private Date createTime;
     public ArrayList<CompanyItem> contentIds;
+    Bitmap icon;
 
     public CompanyItemSystem(String id, String title, String content, String iconUrl)
     {
@@ -22,6 +25,16 @@ public class CompanyItemSystem {
         this.title = title;
         this.content = content;
         this.iconUrl = iconUrl;
+        this.createTime = new Date(System.currentTimeMillis());
+        contentIds = new ArrayList<CompanyItem>();
+    }
+
+    public CompanyItemSystem(String id, String title, String content, Bitmap icon)
+    {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.icon = icon;
         this.createTime = new Date(System.currentTimeMillis());
         contentIds = new ArrayList<CompanyItem>();
     }

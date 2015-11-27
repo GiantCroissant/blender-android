@@ -26,6 +26,7 @@ public class Cookbook {
     private int collectedPeople;
     private boolean beCollected;
     private Bitmap image;
+    private int imageID;
     private ArrayList<String> timeofsteps;
     private ArrayList<String> speedofsteps;
 
@@ -161,6 +162,15 @@ public class Cookbook {
     public void setIsCollected(boolean beCollected) {
         this.beCollected = beCollected;
     }
+
+    public int getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(int imageID) {
+        this.imageID = imageID;
+    }
+
 
     public Bitmap getImage() {
         return image;

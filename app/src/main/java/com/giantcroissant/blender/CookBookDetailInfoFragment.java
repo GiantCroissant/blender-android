@@ -1,6 +1,7 @@
 package com.giantcroissant.blender;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -104,7 +105,9 @@ public class CookBookDetailInfoFragment extends Fragment {
             likeCookbookButton.setImageResource(R.drawable.icon_collect_n) ;
         }
 
-        ImageView cookbookicon = (ImageView) rootView.findViewById(R.id.cookbookicon);
+        ImageView cookbookicon = (ImageView) rootView.findViewById(R.id.cookBookIcon);
+        cookbookicon.setImageBitmap(BitmapFactory.decodeResource(getResources(),cookBook.getImageID()));
+
 //        cookbookicon.setImageURI(Uri.parse(cookBook.getImageUrl()));
     }
 

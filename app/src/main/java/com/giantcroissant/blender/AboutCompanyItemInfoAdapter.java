@@ -51,8 +51,8 @@ public class AboutCompanyItemInfoAdapter extends ArrayAdapter<CompanyItem> {
 
         // 設定標題
         titleView.setText(companyItem.getTitle());
-        contentView.setText(companyItem.getContent());
-//        companyItemIcon.setImageResource();
+        contentView.setText(companyItem.getContents().get(0));
+        companyItemIcon.setImageBitmap(companyItem.getIcon());
 
         return itemView;
     }

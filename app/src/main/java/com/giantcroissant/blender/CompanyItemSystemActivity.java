@@ -1,6 +1,7 @@
 package com.giantcroissant.blender;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.io.ByteArrayOutputStream;
 
 public class CompanyItemSystemActivity extends AppCompatActivity {
 
@@ -63,10 +66,23 @@ public class CompanyItemSystemActivity extends AppCompatActivity {
         intent.putExtra("position", position);
         intent.putExtra("itemListViewID", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getId());
         intent.putExtra("itemListViewTitle", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getTitle());
-        intent.putExtra("itemListViewContent", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getContent());
+        intent.putExtra("itemListViewName", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getName());
+        intent.putExtra("itemListViewContent", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getContents());
         intent.putExtra("itemListViewIconUrl", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getIconUrl());
-
+        byte[] tmpIconByteArray = Bitmap2Bytes(CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getIcon());
+        intent.putExtra("itemListViewIcon", tmpIconByteArray);
+        CompanyData.getInstance().currentCompanyItem = CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position);
         startActivityForResult(intent, 0);
+
+    }
+
+    private byte[] Bitmap2Bytes(Bitmap bm){
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+
+        return baos.toByteArray();
 
     }
 

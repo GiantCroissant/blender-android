@@ -2,6 +2,9 @@ package com.giantcroissant.blender;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -138,64 +142,79 @@ public class AboutCompanyFragment extends Fragment
     private void createFakeData()
     {
         companyItemSystems = new ArrayList<CompanyItemSystem>();
-        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "萃取、調理機系列", "磨豆機 很棒喔", "Http://xd.com"));
-        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "料理、調製機系列", "快煮壺 一級棒", "Http://xd.com"));
-        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "純進濾水系列", "咖啡機 提神醒腦", "Http://xd.com"));
-        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "廚房用品系列", "咖啡機 提神醒腦", "Http://xd.com"));
-        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "生活家電系列", "咖啡機 提神醒腦", "Http://xd.com"));
+        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "专业养生调理机", "磨豆機 很棒喔", BitmapFactory.decodeResource(getResources() ,R.drawable.as_128)));
+        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "冰沙果汁机", "快煮壺 一級棒", BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w)));
+        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "食物料理机", "咖啡機 提神醒腦", BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w)));
+
+        ArrayList<String> tmpContents1 = new ArrayList<String>();
+        tmpContents1.add("電動食品混和器，料理肉品魚泥、醬料、蛋糕、沙拉醬等，方便好用又實惠的廚房好幫手。電動食品混和器，料理肉品魚泥、醬料、蛋糕方便好用又實惠的廚房好幫手。");
+        tmpContents1.add("功  率：1200W");
+        tmpContents1.add("電  壓：AC 220V/50Hz");
+        tmpContents1.add("容  量：2000cc");
+        tmpContents1.add("尺  寸：230*05*212mm");
+        tmpContents1.add("淨  重：5.0KG");
+
+        ArrayList<String> tmpContents2 = new ArrayList<String>();
+        tmpContents2.add("日本規格800c.c 厚體玻璃杯 + 日本規格玻璃磨粉料理杯。\n" +
+                "天然美味輕鬆製作，生活上的好幫手。電動食品混和器，料理肉品魚泥、醬料、蛋糕、沙拉醬等，方便好用又實惠的廚房好幫手。");
+        tmpContents2.add("功  率：1200W");
+        tmpContents2.add("電  壓：AC 220V/50Hz");
+        tmpContents2.add("容  量：2000cc");
+        tmpContents2.add("尺  寸：230*05*212mm");
+        tmpContents2.add("淨  重：5.0KG");
+
 
         companyItems = new ArrayList<CompanyItem>();
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "調理機1", "調理機1 很棒喔", "Http://xd.com",companyItemSystems.get(0).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "調理機2", "調理機2 一級棒", "Http://xd.com",companyItemSystems.get(0).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "調理機3", "調理機3 提神醒腦", "Http://xd.com",companyItemSystems.get(0).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-128(灰)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_128),companyItemSystems.get(0).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-128(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(0).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-128(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(0).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-128(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(0).getId()));
         companyItemSystems.get(0).contentIds.add(companyItems.get(0));
         companyItemSystems.get(0).contentIds.add(companyItems.get(1));
         companyItemSystems.get(0).contentIds.add(companyItems.get(2));
+        companyItemSystems.get(0).contentIds.add(companyItems.get(3));
 
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "料理機1", "料理機1 很棒喔", "Http://xd.com",companyItemSystems.get(1).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "料理機2", "料理機2 一級棒", "Http://xd.com",companyItemSystems.get(1).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "料理機3", "料理機3 提神醒腦", "Http://xd.com",companyItemSystems.get(1).getId()));
-        companyItemSystems.get(1).contentIds.add(companyItems.get(3));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-129(灰)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_128),companyItemSystems.get(1).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-129(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(1).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-129(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(1).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-129(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(1).getId()));
         companyItemSystems.get(1).contentIds.add(companyItems.get(4));
         companyItemSystems.get(1).contentIds.add(companyItems.get(5));
+        companyItemSystems.get(1).contentIds.add(companyItems.get(6));
+        companyItemSystems.get(1).contentIds.add(companyItems.get(7));
 
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "濾水壺1", "濾水壺1 很棒喔", "Http://xd.com",companyItemSystems.get(2).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "濾水壺2", "濾水壺2 一級棒", "Http://xd.com",companyItemSystems.get(2).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "濾水壺3", "濾水壺3 提神醒腦", "Http://xd.com",companyItemSystems.get(2).getId()));
-        companyItemSystems.get(2).contentIds.add(companyItems.get(6));
-        companyItemSystems.get(2).contentIds.add(companyItems.get(7));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-130(灰)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_128),companyItemSystems.get(2).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-130(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(2).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-130(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(2).getId()));
+        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-130(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(2).getId()));
         companyItemSystems.get(2).contentIds.add(companyItems.get(8));
+        companyItemSystems.get(2).contentIds.add(companyItems.get(9));
+        companyItemSystems.get(2).contentIds.add(companyItems.get(10));
+        companyItemSystems.get(2).contentIds.add(companyItems.get(11));
 
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "咖啡機", "咖啡機 很棒喔", "Http://xd.com",companyItemSystems.get(3).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "微波爐", "微波爐 一級棒", "Http://xd.com",companyItemSystems.get(3).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "果汁機", "果汁機 提神醒腦", "Http://xd.com",companyItemSystems.get(3).getId()));
-        companyItemSystems.get(3).contentIds.add(companyItems.get(9));
-        companyItemSystems.get(3).contentIds.add(companyItems.get(10));
-        companyItemSystems.get(3).contentIds.add(companyItems.get(11));
-
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "吸塵器", "吸塵器 很棒喔", "Http://xd.com",companyItemSystems.get(4).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "電風扇", "電風扇 一級棒", "Http://xd.com",companyItemSystems.get(4).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "吹風機", "吹風機 提神醒腦", "Http://xd.com",companyItemSystems.get(4).getId()));
-        companyItemSystems.get(4).contentIds.add(companyItems.get(12));
-        companyItemSystems.get(4).contentIds.add(companyItems.get(13));
-        companyItemSystems.get(4).contentIds.add(companyItems.get(14));
         CompanyData.getInstance().companyItems = companyItems;
         CompanyData.getInstance().companyItemSystems = companyItemSystems;
     }
 
-    private void selectItem(int position) {
+//    private void selectItem(int position) {
+//
+//        Intent intent = new Intent(this.getActivity(), CompanyItemActivity.class);
+//
+//        intent.putExtra("position", position);
+//        intent.putExtra("itemListViewID", companyItems.get(position).getId());
+//        intent.putExtra("itemListViewTitle", companyItems.get(position).getTitle());
+//        intent.putExtra("itemListViewName", companyItems.get(position).getName());
+//        intent.putExtra("itemListViewContent", companyItems.get(position).getContents());
+//        intent.putExtra("itemListViewIconUrl", companyItems.get(position).getIconUrl());
+//        byte[] tmpIconByteArray = Bitmap2Bytes(companyItems.get(position).getIcon());
+//
+//        intent.putExtra("itemListViewIcon", tmpIconByteArray);
+//
+//        startActivityForResult(intent, 0);
+//
+//    }
 
-        Intent intent = new Intent(this.getActivity(), CompanyItemActivity.class);
 
-        intent.putExtra("position", position);
-        intent.putExtra("itemListViewID", companyItems.get(position).getId());
-        intent.putExtra("itemListViewTitle", companyItems.get(position).getTitle());
-        intent.putExtra("itemListViewContent", companyItems.get(position).getContent());
-        intent.putExtra("itemListViewIconUrl", companyItems.get(position).getIconUrl());
-
-        startActivityForResult(intent, 0);
-
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

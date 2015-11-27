@@ -17,10 +17,10 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:layout_width="156dp"
-                android:layout_height="54dp"
+                android:layout_width="128dp"
+                android:layout_height="76dp"
                 android:id="@+id/imageView5"
-                android:src="@drawable/ig"
+                android:src="@drawable/mrblender_logo_01"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginLeft="16dp"
@@ -29,7 +29,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="根盈企業股份有限公司"
+                android:text="洋盛兴业有限公司"
                 android:id="@+id/textView9"
                 android:textSize="@dimen/Headline"
                 android:textColor="@color/c87000000"
@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="貴夫人公司 之關係企業，成立於民國 72 年，本 公司 秉持著良心與道德之理念，不斷研發各種家電產品，以滿足消費者之需求，在這科技進步的時代，為提升大眾的生活品質，我們研發了更先進、高科技、更符合人性化的生機食品調製機。 由沒沒無聞的品牌，延伸到 1999 年的「生機食品調製機」開創始者，至 2006 年「生機精華萃取機」走上國際品牌，榮獲發明金牌獎，由〞貴夫人〞 Ladyship 雷迪迅浦，揚名國際市場。 貴夫人 公司 不斷提供消費者生機飲食相關資料，秉持「完美－是所有細節的加總」呼籲「天然 純淨 粗簡的生機飲食才是天賜美食」，是希望消費大眾都能有生理健康的提昇與改善，及高品質的生活。 本 公司 也將繼續貫徹永續經營之理念，為消費者提供更完善的售後服務"
+                android:text="洋盛兴业有限公司(TASCO)成立于西元1981年，拥有台湾CNS认证、大陆CCC认证、CB认证，及已获得ISO 9001:2008验证。专业于设计、制造家庭及厨房用电器产品，坚持以最好的质量服务客户，在台湾、大陆、瑞士、菲律宾及东南亚市场已有口碑。\n\n在台湾市场我司主做OEM代工，替知名家电厂大同、尚朋堂、锅宝、东龙、捷宝、新格、勋风……等代工，在台湾知名卖场大润发、家乐福、爱买，及台湾三大购物台(森森购物、MOMO购物、VIVA购物)，及各大入口虚拟网站购物网，皆有贩卖我司产品，我司坚持质量第一、顾客满意为最终原则。\n\n本公司于2011年6月获得台湾制MIT微笑标章殊荣。在台湾生产冰沙调理机厂商中，有大陆CCC认证及MIT微笑标章目前只有我司一家。为增加外销出口量，2010年本司自创品牌布兰德先生(Mr.Blender) &amp; 欧斯乐(OLSER)，并于台湾及北京完成商标注册，期望以自有品牌Mr.Blender &amp; OLSER 在全球市场打出响亮名声。\n\nECFA 于2011年1月生效，本公司立即响应，并将拥有大陆CCC认证之冰沙调理机进军至北京餐饮市场，并于华北区北京成立一总代理(奥华世纪(北京)科技发展有限公司)，循正当合法程序，完税检疫合格方式，出口至大陆市场，进一步也将与购物台合作来推广市场，期希在大陆市场共创双2011年起本公司已陆续参与，台湾外贸协会举办的大陆各地台湾名品博览会，及台湾MIT微笑标章推动办公室举办印尼、新加坡、泰国、马来西亚等海外台湾制MIT产品巡回展览，藉以开拓大陆及海外市场，来增加品牌知名度。\n\n2012年起本公司产品也与客户配合，以置入型行销的方式在大陆知名的频道(如旅游卫视、寻味大中华、魔幻厨房、幸福鉴定团、番茄生活王、时代风尚、料理达人等各大电视台)来置入本公司产品，以打响品牌知名度。\n\n经由5年在大陆市场品牌开拓，2013年陆续参与大陆的购物频道，如：四川星空购物、北京央广购物，2013年9月更置入到中央电视台体系-北京中视购物，成绩斐然，可说已在大陆市场开启一扇门。 为配合大陆市场内需及销售服务网，2014年2月在华南地区成立一代理商(深圳京洋科技有限公司)，以符大陆市场日渐扩大，建立销售服务网及售后服务驻点，后续也将在华中、大西北地区成立销售及售后服务驻点，以加速服务日渐成长的消费族群。"
                 android:id="@+id/textView6"
                 android:textSize="@dimen/Body1"
                 android:textColor="@color/c54000000"
@@ -47,25 +47,6 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="經營理念"
-                android:id="@+id/textView7"
-                android:textColor="@color/c87000000"
-                android:textSize="@dimen/Headline"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="貴夫人企業自從創業以來，就深深受到社會各界的提攜與指導，本 公司 的經營管理本質從「傳統家電」的範疇，一舉進化到「科技家電」更人性、更精緻的新領域 。"
-                android:id="@+id/textView8"
-                android:textSize="@dimen/Body1"
-                android:textColor="@color/c54000000"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

@@ -43,9 +43,11 @@
 
     <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
     <!-- Search button icon -->
-    <item name="searchIcon">@drawable/ic_search</item>
-    <item name="closeIcon">@drawable/ic_clear</item>
-    <item name="searchHintIcon">@drawable/ic_search</item>
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="closeIcon">@drawable/ic_clear</item>
+        <item name="searchHintIcon">@drawable/ic_search</item>
+        <item name="android:textSize">@dimen/Body1</item>
+
     </style>
 
     <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">

@@ -11,6 +11,7 @@ public class CompanyData {
 
     public ArrayList<CompanyItemSystem> companyItemSystems;
     public ArrayList<CompanyItem> companyItems;
+    public CompanyItem currentCompanyItem;
 
 
     private static CompanyData uniqueInstance;
