@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         mCallbacks = (NavigationDrawerFragment.NavigationDrawerCallbacks) this;
         selectItem(mCurrentSelectedPosition);
 
-        BlueToothData.getInstance().startBlueTooth((AppCompatActivity)this);
+        BlenderBluetoothManager.getInstance().startBlueTooth((AppCompatActivity)this);
     }
 
     @Override
@@ -167,7 +166,7 @@ public class MainActivity extends AppCompatActivity
 
         if((Button)findViewById(R.id.startBlenderButton) != null)
         {
-           BlueToothData.getInstance().startBlender(this, mGattUpdateReceiver);
+           BlenderBluetoothManager.getInstance().connectBlender(this, mGattUpdateReceiver);
 
         }
 
@@ -633,7 +632,7 @@ public class MainActivity extends AppCompatActivity
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
             fragment.setCurrentTab(1);
-            BlueToothData.getInstance().startBlender(this, mGattUpdateReceiver);
+            BlenderBluetoothManager.getInstance().connectBlender(this, mGattUpdateReceiver);
         }
         else if (view.getId() == R.id.AboutCompanyButton)
         {
@@ -650,7 +649,7 @@ public class MainActivity extends AppCompatActivity
         else if (view.getId() == R.id.startBlenderButton)
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
-            if(BlueToothData.getInstance().getConnected() == false)
+            if(BlenderBluetoothManager.getInstance().getConnected() == false)
             {
                 fragment.setSwitchChecked(switchIsChecked);
                 fragment.setCurrentTab(0);
@@ -658,53 +657,56 @@ public class MainActivity extends AppCompatActivity
 
             EditText setTimeEditText = (EditText) findViewById(R.id.setTimeEditText);
             EditText setSpeedEditText = (EditText) findViewById(R.id.setSpeedEditText);
-            byte[] sendmsg = new byte[10];
-            sendmsg[0] = (byte) 0xA5;
-            sendmsg[1] = (byte) 0x5A;
-            sendmsg[9] = (byte) 0xB3;
-            sendmsg[2] = (byte) 0x07;
-            sendmsg[3] = (byte) 0x01;
-            sendmsg[4] = (byte) (Integer.parseInt(setTimeEditText.getText().toString()) - 1 % 256);//((npTime.getValue()+1)*5 % 256);
-            sendmsg[5] = (byte) (Integer.parseInt(setTimeEditText.getText().toString()) - 1 / 256);//((npTime.getValue()+1)*5 / 256);
-            sendmsg[6] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) % 256);//(npSpeed.getValue() % 256);
-            sendmsg[7] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) / 256);//(npSpeed.getValue() / 256);
-            sendmsg[8] = (byte) 0x01;
+            BlenderBluetoothManager.getInstance().startBlending(Integer.parseInt(setTimeEditText.getText().toString()),Integer.parseInt(setSpeedEditText.getText().toString()));
 
-            if(BlueToothData.getInstance().mClickCharacteristic != null && BlueToothData.getInstance().mBluetoothLeService != null)
-            {
-                BlueToothData.getInstance().mClickCharacteristic.setValue(sendmsg);
-                BlueToothData.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-                BlueToothData.getInstance().mBluetoothLeService.writeCharacteristic(BlueToothData.getInstance().mClickCharacteristic);
-            }
+//            byte[] sendmsg = new byte[10];
+//            sendmsg[0] = (byte) 0xA5;
+//            sendmsg[1] = (byte) 0x5A;
+//            sendmsg[9] = (byte) 0xB3;
+//            sendmsg[2] = (byte) 0x07;
+//            sendmsg[3] = (byte) 0x01;
+//            sendmsg[4] = (byte) (Integer.parseInt(setTimeEditText.getText().toString()) - 1 % 256);//((npTime.getValue()+1)*5 % 256);
+//            sendmsg[5] = (byte) (Integer.parseInt(setTimeEditText.getText().toString()) - 1 / 256);//((npTime.getValue()+1)*5 / 256);
+//            sendmsg[6] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) % 256);//(npSpeed.getValue() % 256);
+//            sendmsg[7] = (byte) (Integer.parseInt(setSpeedEditText.getText().toString()) / 256);//(npSpeed.getValue() / 256);
+//            sendmsg[8] = (byte) 0x01;
+//
+//            if(BlenderBluetoothManager.getInstance().mClickCharacteristic != null && BlenderBluetoothManager.getInstance().mBluetoothLeService != null)
+//            {
+//                BlenderBluetoothManager.getInstance().mClickCharacteristic.setValue(sendmsg);
+//                BlenderBluetoothManager.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+//                BlenderBluetoothManager.getInstance().mBluetoothLeService.writeCharacteristic(BlenderBluetoothManager.getInstance().mClickCharacteristic);
+//            }
 
         }
         else if (view.getId() == R.id.stopBlenderButton)
         {
             AutoTestFragment fragment = (AutoTestFragment)fm.findFragmentById(R.id.main_content);
-            if(BlueToothData.getInstance().getConnected() == false)
+            if(BlenderBluetoothManager.getInstance().getConnected() == false)
             {
                 fragment.setSwitchChecked(switchIsChecked);
                 fragment.setCurrentTab(0);
             }
+            BlenderBluetoothManager.getInstance().stopBlending();
 
-            byte[] sendmsg = new byte[10];
-            sendmsg[0] = (byte) 0xA5;
-            sendmsg[1] = (byte) 0x5A;
-            sendmsg[9] = (byte) 0xB3;
-            sendmsg[2] = (byte) 0x07;
-            sendmsg[3] = (byte) 0x01;
-            sendmsg[4] = (byte) 0x00;
-            sendmsg[5] = (byte) 0x00;
-            sendmsg[6] = (byte) 0x00;
-            sendmsg[7] = (byte) 0x00;
-            sendmsg[8] = (byte) 0x00;
-
-            if(BlueToothData.getInstance().mClickCharacteristic != null && BlueToothData.getInstance().mBluetoothLeService != null)
-            {
-                BlueToothData.getInstance().mClickCharacteristic.setValue(sendmsg);
-                BlueToothData.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-                BlueToothData.getInstance().mBluetoothLeService.writeCharacteristic(BlueToothData.getInstance().mClickCharacteristic);
-            }
+//            byte[] sendmsg = new byte[10];
+//            sendmsg[0] = (byte) 0xA5;
+//            sendmsg[1] = (byte) 0x5A;
+//            sendmsg[9] = (byte) 0xB3;
+//            sendmsg[2] = (byte) 0x07;
+//            sendmsg[3] = (byte) 0x01;
+//            sendmsg[4] = (byte) 0x00;
+//            sendmsg[5] = (byte) 0x00;
+//            sendmsg[6] = (byte) 0x00;
+//            sendmsg[7] = (byte) 0x00;
+//            sendmsg[8] = (byte) 0x00;
+//
+//            if(BlenderBluetoothManager.getInstance().mClickCharacteristic != null && BlenderBluetoothManager.getInstance().mBluetoothLeService != null)
+//            {
+//                BlenderBluetoothManager.getInstance().mClickCharacteristic.setValue(sendmsg);
+//                BlenderBluetoothManager.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+//                BlenderBluetoothManager.getInstance().mBluetoothLeService.writeCharacteristic(BlenderBluetoothManager.getInstance().mClickCharacteristic);
+//            }
 
         }
         else if (view.getId() == R.id.cancelSettingButton)
@@ -751,13 +753,13 @@ public class MainActivity extends AppCompatActivity
 
             if(switchIsChecked)
             {
-                if(BlueToothData.getInstance().mBluetoothAdapter.isEnabled())
+                if(BlenderBluetoothManager.getInstance().mBluetoothAdapter.isEnabled())
                 {
                     blueToothHint.setText("");
                     blenderHint.setText(R.string.hint_blender);
 
-                    BlueToothData.getInstance().mLeDeviceListAdapter.clear();
-                    BlueToothData.getInstance().scanLeDevice(true);
+                    BlenderBluetoothManager.getInstance().mLeDeviceListAdapter.clear();
+                    BlenderBluetoothManager.getInstance().scanLeDevice(true);
                 }
             }
             else
@@ -765,7 +767,7 @@ public class MainActivity extends AppCompatActivity
 
                 blenderHint.setText("");
                 blueToothHint.setText(R.string.hint_to_connect_bluetooth);
-                BlueToothData.getInstance().stopConnectBlueTooth();
+                BlenderBluetoothManager.getInstance().stopConnectBlueTooth();
             }
         }
 
@@ -833,7 +835,7 @@ public class MainActivity extends AppCompatActivity
 
     void checkSupportBlueTooth()
     {
-        if (BlueToothData.getInstance().mBluetoothAdapter == null) {
+        if (BlenderBluetoothManager.getInstance().mBluetoothAdapter == null) {
             Toast.makeText(this, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
             if(blueToothSwitch != null)
             {
@@ -845,7 +847,7 @@ public class MainActivity extends AppCompatActivity
 
     void enableBlueToothIntent()
     {
-        if (!BlueToothData.getInstance().mBluetoothAdapter.isEnabled()) {
+        if (!BlenderBluetoothManager.getInstance().mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
@@ -853,15 +855,15 @@ public class MainActivity extends AppCompatActivity
 
     void initializesListViewAdapter()
     {
-        if(BlueToothData.getInstance().mLeDeviceListAdapter == null)
+        if(BlenderBluetoothManager.getInstance().mLeDeviceListAdapter == null)
         {
-            BlueToothData.getInstance().mLeDeviceListAdapter = new LeDeviceListAdapter(MainActivity.this.getLayoutInflater());
+            BlenderBluetoothManager.getInstance().mLeDeviceListAdapter = new LeDeviceListAdapter(MainActivity.this.getLayoutInflater());
         }
-        BlueToothData.getInstance().mGattServicesList = (ListView) findViewById(R.id.gattServicesList);
-        if(BlueToothData.getInstance().mGattServicesList != null)
+        BlenderBluetoothManager.getInstance().mGattServicesList = (ListView) findViewById(R.id.gattServicesList);
+        if(BlenderBluetoothManager.getInstance().mGattServicesList != null)
         {
-            BlueToothData.getInstance().mGattServicesList.setAdapter(BlueToothData.getInstance().mLeDeviceListAdapter);
-            BlueToothData.getInstance().mGattServicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            BlenderBluetoothManager.getInstance().mGattServicesList.setAdapter(BlenderBluetoothManager.getInstance().mLeDeviceListAdapter);
+            BlenderBluetoothManager.getInstance().mGattServicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -876,21 +878,21 @@ public class MainActivity extends AppCompatActivity
         TextView textView = (TextView)view.findViewById(R.id.device_name);
 
         if(textView.getText().toString().compareTo("ITRI_JUICER_v1.0") != 0) return;
-        if(BlueToothData.getInstance().mBluetoothAdapter.isEnabled())
+        if(BlenderBluetoothManager.getInstance().mBluetoothAdapter.isEnabled())
         {
-            final BluetoothDevice device = BlueToothData.getInstance().mLeDeviceListAdapter.getDevice(position);
+            final BluetoothDevice device = BlenderBluetoothManager.getInstance().mLeDeviceListAdapter.getDevice(position);
             if (device == null) return;
 
             final Intent intent = new Intent(this, DeviceControlActivity.class);
             intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
             intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
-            if (BlueToothData.getInstance().mScanning) {
-                BlueToothData.getInstance().mBluetoothAdapter.stopLeScan(BlueToothData.getInstance().mLeScanCallback);
-                BlueToothData.getInstance().mScanning = false;
+            if (BlenderBluetoothManager.getInstance().mScanning) {
+                BlenderBluetoothManager.getInstance().mBluetoothAdapter.stopLeScan(BlenderBluetoothManager.getInstance().mLeScanCallback);
+                BlenderBluetoothManager.getInstance().mScanning = false;
             }
 
-            BlueToothData.getInstance().mDeviceName = device.getName();
-            BlueToothData.getInstance().mDeviceAddress = device.getAddress();
+            BlenderBluetoothManager.getInstance().mDeviceName = device.getName();
+            BlenderBluetoothManager.getInstance().mDeviceAddress = device.getAddress();
 
             if(resultCode == 100)
             {
@@ -905,11 +907,11 @@ public class MainActivity extends AppCompatActivity
         {
             switchIsChecked = false;
             blueToothSwitch.setChecked(false);
-            BlueToothData.getInstance().stopConnectBlueTooth();
+            BlenderBluetoothManager.getInstance().stopConnectBlueTooth();
             enableBlueToothIntent();
         }
 
-        BlueToothData.getInstance().mLeDeviceListAdapter.notifyDataSetChanged();
+        BlenderBluetoothManager.getInstance().mLeDeviceListAdapter.notifyDataSetChanged();
     }
 
     void openCookBookDetial()
@@ -998,7 +1000,7 @@ public class MainActivity extends AppCompatActivity
 //                clearUI();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
-                BlueToothData.getInstance().displayGattServices(BlueToothData.getInstance().mBluetoothLeService.getSupportedGattServices());
+                BlenderBluetoothManager.getInstance().displayGattServices(BlenderBluetoothManager.getInstance().mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
 //                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             }
@@ -1008,7 +1010,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
-        registerReceiver(mGattUpdateReceiver,BlueToothData.getInstance().makeGattUpdateIntentFilter());
+        registerReceiver(mGattUpdateReceiver, BlenderBluetoothManager.getInstance().makeGattUpdateIntentFilter());
         unregisterReceiver(mGattUpdateReceiver);
     }
 
@@ -1047,7 +1049,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if(string.compareTo("Exit") == 0)
         {
-            BlueToothData.getInstance().stopConnectBlueTooth();
+            BlenderBluetoothManager.getInstance().stopConnectBlueTooth();
         }
         else if(string.compareTo("blueToothSwitchOnCheckedChangedtrue") == 0)
         {
@@ -1057,7 +1059,7 @@ public class MainActivity extends AppCompatActivity
         }
         else if(string.compareTo("blueToothSwitchOnCheckedChangedfalse") == 0) {
 
-            BlueToothData.getInstance().stopConnectBlueTooth();
+            BlenderBluetoothManager.getInstance().stopConnectBlueTooth();
 
         }
     }

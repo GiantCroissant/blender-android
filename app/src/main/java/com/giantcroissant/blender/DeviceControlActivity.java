@@ -16,11 +16,9 @@
 
 package com.giantcroissant.blender;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
-import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -142,7 +140,7 @@ public class DeviceControlActivity extends AppCompatActivity {
                                 mGattCharacteristics.get(groupPosition).get(childPosition);
 //                        Log.e("XXX",String.valueOf(groupPosition));
 //                        Log.e("XXX",String.valueOf(childPosition));
-                        BlueToothData.getInstance().mClickCharacteristic = characteristic;
+                        BlenderBluetoothManager.getInstance().mClickCharacteristic = characteristic;
 
 
                         if(UUID_BLENDER.equals(characteristic.getUuid())){
@@ -275,8 +273,8 @@ public class DeviceControlActivity extends AppCompatActivity {
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-        BlueToothData.getInstance().mDeviceName = mDeviceName;
-        BlueToothData.getInstance().mDeviceAddress = mDeviceAddress;
+        BlenderBluetoothManager.getInstance().mDeviceName = mDeviceName;
+        BlenderBluetoothManager.getInstance().mDeviceAddress = mDeviceAddress;
 //        BlueToothManager.getInstance().bluetoothLeService = mBluetoothLeService;
     }
 

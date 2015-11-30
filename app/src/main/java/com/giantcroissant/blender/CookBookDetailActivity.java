@@ -1,18 +1,12 @@
 package com.giantcroissant.blender;
 
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
@@ -26,11 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -397,10 +387,10 @@ public class CookBookDetailActivity extends AppCompatActivity
             IsConnectedBlueToothText = (TextView) findViewById(R.id.IsConnectedBlueToothText);
 
 //            Log.e("xxx", String.valueOf(connectBlueToothbutton == null));
-            BlueToothData.getInstance().getConnected();
+            BlenderBluetoothManager.getInstance().getConnected();
 
 //            BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
-            if(BlueToothData.getInstance().getConnected() == false)
+            if(BlenderBluetoothManager.getInstance().getConnected() == false)
             {
 //                Intent intent = new Intent(this, DeviceScanActivity.class);
 //                intent.putExtra("Name", "ToDoList");
@@ -435,17 +425,18 @@ public class CookBookDetailActivity extends AppCompatActivity
             {
                 cookToDoData.getInstance().doing = true;
             }
-            byte[] sendmsg = new byte[10];
-            sendmsg[0] = (byte) 0xA5;
-            sendmsg[1] = (byte) 0x5A;
-            sendmsg[9] = (byte) 0xB3;
-            sendmsg[2] = (byte) 0x07;
-            sendmsg[3] = (byte) 0x01;
-            sendmsg[4] = (byte) (cookBookDetailToDoFragment.getCookBoookTimeOfSteps()-1 % 256);//((npTime.getValue()+1)*5 % 256);
-            sendmsg[5] = (byte) (cookBookDetailToDoFragment.getCookBoookTimeOfSteps()-1 / 256);//((npTime.getValue()+1)*5 / 256);
-            sendmsg[6] = (byte) (cookBookDetailToDoFragment.getCookBoookSpeedOfSteps() % 256);//(npSpeed.getValue() % 256);
-            sendmsg[7] = (byte) (cookBookDetailToDoFragment.getCookBoookSpeedOfSteps() / 256);//(npSpeed.getValue() / 256);
-            sendmsg[8] = (byte) 0x01;
+
+//            byte[] sendmsg = new byte[10];
+//            sendmsg[0] = (byte) 0xA5;
+//            sendmsg[1] = (byte) 0x5A;
+//            sendmsg[9] = (byte) 0xB3;
+//            sendmsg[2] = (byte) 0x07;
+//            sendmsg[3] = (byte) 0x01;
+//            sendmsg[4] = (byte) (cookBookDetailToDoFragment.getCookBoookTimeOfSteps()-1 % 256);//((npTime.getValue()+1)*5 % 256);
+//            sendmsg[5] = (byte) (cookBookDetailToDoFragment.getCookBoookTimeOfSteps()-1 / 256);//((npTime.getValue()+1)*5 / 256);
+//            sendmsg[6] = (byte) (cookBookDetailToDoFragment.getCookBoookSpeedOfSteps() % 256);//(npSpeed.getValue() % 256);
+//            sendmsg[7] = (byte) (cookBookDetailToDoFragment.getCookBoookSpeedOfSteps() / 256);//(npSpeed.getValue() / 256);
+//            sendmsg[8] = (byte) 0x01;
 
 //            Log.e("getCookBoookSpeedOfSteps", String.valueOf(cookBookDetailToDoFragment.getCookBoookSpeedOfSteps()));
 //            Log.e("getCookBoookTimeOfSteps", String.valueOf(cookBookDetailToDoFragment.getCookBoookTimeOfSteps()));
@@ -467,13 +458,14 @@ public class CookBookDetailActivity extends AppCompatActivity
 //            bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 //            Log.e("XXX", String.valueOf(mClickCharacteristic != null));
 //            Log.e("XXX", String.valueOf(mBluetoothLeService != null));
-            if(BlueToothData.getInstance().mClickCharacteristic != null && BlueToothData.getInstance().mBluetoothLeService != null)
-            {
-
-                BlueToothData.getInstance().mClickCharacteristic.setValue(sendmsg);
-                BlueToothData.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
-                BlueToothData.getInstance().mBluetoothLeService.writeCharacteristic(BlueToothData.getInstance().mClickCharacteristic);
-            }
+            BlenderBluetoothManager.getInstance().startBlending(cookBookDetailToDoFragment.getCookBoookTimeOfSteps(),cookBookDetailToDoFragment.getCookBoookSpeedOfSteps());
+//            if(BlenderBluetoothManager.getInstance().mClickCharacteristic != null && BlenderBluetoothManager.getInstance().mBluetoothLeService != null)
+//            {
+//
+//                BlenderBluetoothManager.getInstance().mClickCharacteristic.setValue(sendmsg);
+//                BlenderBluetoothManager.getInstance().mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+//                BlenderBluetoothManager.getInstance().mBluetoothLeService.writeCharacteristic(BlenderBluetoothManager.getInstance().mClickCharacteristic);
+//            }
 
         }
         else if(view.getId() == R.id.SkipBlenderButton)
@@ -497,7 +489,7 @@ public class CookBookDetailActivity extends AppCompatActivity
                 cookToDoData.getInstance().doing = false;
             }
             finishhbutton = (Button) findViewById(R.id.FinishButton);
-            BlueToothData.getInstance().getConnected();
+            BlenderBluetoothManager.getInstance().getConnected();
             cookBookDetailToDoFragment.setReStart();
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             isFinished = cookBookDetailToDoFragment.getFinished();
@@ -523,7 +515,7 @@ public class CookBookDetailActivity extends AppCompatActivity
             }
             else
             {
-                if(BlueToothData.getInstance().getConnected() == false)
+                if(BlenderBluetoothManager.getInstance().getConnected() == false)
                 {
                     connectBlueToothbutton.setVisibility(View.VISIBLE);
                     confrimhbutton.setVisibility(View.INVISIBLE);
@@ -588,7 +580,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     public void onCookBookDetailToDoFragmentInteraction(String string)
     {
-        cookBookDetailToDoFragment.setIsConnected(BlueToothData.getInstance().getConnected());
+        cookBookDetailToDoFragment.setIsConnected(BlenderBluetoothManager.getInstance().getConnected());
         cookBookDetailToDoFragment.setCurrentIndex(cookToDoData.getInstance().currentStateIndex);
 
         mHandler.post(checkIsConnected);
@@ -598,7 +590,7 @@ public class CookBookDetailActivity extends AppCompatActivity
     private Runnable checkIsConnected = new Runnable() {
         @Override
         public void run() {
-            new checkConnected().execute(String.valueOf(BlueToothData.getInstance().getConnected()));
+            new checkConnected().execute(String.valueOf(BlenderBluetoothManager.getInstance().getConnected()));
         }
     };
 
@@ -608,8 +600,8 @@ public class CookBookDetailActivity extends AppCompatActivity
         protected Boolean doInBackground(String... args) {
 
 //            BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
-            BlueToothData.getInstance().getConnected();
-            return BlueToothData.getInstance().getConnected();
+            BlenderBluetoothManager.getInstance().getConnected();
+            return BlenderBluetoothManager.getInstance().getConnected();
         }
 
         // UI
@@ -640,7 +632,7 @@ public class CookBookDetailActivity extends AppCompatActivity
         super.onPostResume();
 
 //        BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
-        BlueToothData.getInstance().getConnected();
+        BlenderBluetoothManager.getInstance().getConnected();
         if(currentFragmentIndex == 1 && resultCode != 102)
         {
             connectBlueToothbutton = (Button) findViewById(R.id.connectBlueToothButton);
@@ -695,7 +687,7 @@ public class CookBookDetailActivity extends AppCompatActivity
 //                clearUI();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
-                BlueToothData.getInstance().displayGattServices(BlueToothData.getInstance().mBluetoothLeService.getSupportedGattServices());
+                BlenderBluetoothManager.getInstance().displayGattServices(BlenderBluetoothManager.getInstance().mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
 //                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
             }
@@ -708,10 +700,10 @@ public class CookBookDetailActivity extends AppCompatActivity
 //        Log.e("XXX3", String.valueOf(requestCode));
 
         setDefaultFragment();
-        BlueToothData.getInstance().startBlender(this, mGattUpdateReceiver);
+        BlenderBluetoothManager.getInstance().connectBlender(this, mGattUpdateReceiver);
 
 //        BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
-        BlueToothData.getInstance().getConnected();
+        BlenderBluetoothManager.getInstance().getConnected();
     }
 
     @Override
@@ -746,7 +738,7 @@ public class CookBookDetailActivity extends AppCompatActivity
                 {
                     IsConnectedBlueToothText.setText(resourceId);
                 }
-                BlueToothData.getInstance().getConnected();
+                BlenderBluetoothManager.getInstance().getConnected();
 
 //                BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
             }

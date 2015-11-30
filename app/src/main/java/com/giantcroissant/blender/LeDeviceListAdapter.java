@@ -1,7 +1,6 @@
 package com.giantcroissant.blender;
 
 import android.bluetooth.BluetoothDevice;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,9 +94,9 @@ public class LeDeviceListAdapter extends BaseAdapter {
         viewHolder.deviceAddress.setText(R.string.disconnected);
         ImageView contectImage = (ImageView) view.findViewById(R.id.contectImage);
         contectImage.setVisibility(View.VISIBLE);
-        if(BlueToothData.getInstance().mDeviceAddress != null)
+        if(BlenderBluetoothManager.getInstance().mDeviceAddress != null)
         {
-            if(BlueToothData.getInstance().mDeviceAddress.compareTo(device.getAddress()) == 0)
+            if(BlenderBluetoothManager.getInstance().mDeviceAddress.compareTo(device.getAddress()) == 0)
             {
                 viewHolder.deviceAddress.setText(R.string.connected);
                 contectImage.setVisibility(View.INVISIBLE);

@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by liyihao on 15/8/29.
  */
-public class BlueToothData {
+public class BlenderBluetoothManager {
 
     public String mDeviceName;
     public String mDeviceAddress;
@@ -48,16 +48,16 @@ public class BlueToothData {
     public AppCompatActivity currentActicity;
     private static final long SCAN_PERIOD = 1000;
 
-    private static BlueToothData uniqueInstance;
-    private BlueToothData(){} // 使用Private 建構子, 確保類別CameraManager 的物件化只能透過 API:getInstance()
-    public static synchronized BlueToothData getInstance() { // 使用 synchronized 關鍵字避免同時兩支Thread 進入函數
-        if(uniqueInstance == null ) {uniqueInstance = new BlueToothData();}
+    private static BlenderBluetoothManager uniqueInstance;
+    private BlenderBluetoothManager(){} // 使用Private 建構子, 確保類別CameraManager 的物件化只能透過 API:getInstance()
+    public static synchronized BlenderBluetoothManager getInstance() { // 使用 synchronized 關鍵字避免同時兩支Thread 進入函數
+        if(uniqueInstance == null ) {uniqueInstance = new BlenderBluetoothManager();}
         return uniqueInstance;
     }
 
     public boolean getConnected()
     {
-        return BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
+        return mBluetoothLeService != null && mClickCharacteristic != null;
 
     }
 
@@ -95,7 +95,7 @@ public class BlueToothData {
         mBluetoothAdapter = bluetoothManager.getAdapter();
     }
 
-    public void startBlender(AppCompatActivity activity,BroadcastReceiver mGattUpdateReceiver)
+    public void connectBlender(AppCompatActivity activity,BroadcastReceiver mGattUpdateReceiver)
     {
         currentActicity = activity;
 
@@ -108,8 +108,8 @@ public class BlueToothData {
         else
         {
 
-            mDeviceName = BlueToothData.getInstance().mDeviceName;
-            mDeviceAddress = BlueToothData.getInstance().mDeviceAddress;
+//            mDeviceName = BlenderBluetoothManager.getInstance().mDeviceName;
+//            mDeviceAddress = BlenderBluetoothManager.getInstance().mDeviceAddress;
 
             if(mDeviceName != null && mDeviceAddress != null )
             {
@@ -117,7 +117,7 @@ public class BlueToothData {
                 activity.bindService(gattServiceIntent, mServiceConnection, currentActicity.BIND_AUTO_CREATE);
             }
 
-            mClickCharacteristic = BlueToothData.getInstance().mClickCharacteristic;
+//            mClickCharacteristic = BlenderBluetoothManager.getInstance().mClickCharacteristic;
 
         }
     }
@@ -144,6 +144,50 @@ public class BlueToothData {
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
 
+    }
+
+    public void startBlending(int time,int speed)
+    {
+        byte[] sendmsg = new byte[10];
+        sendmsg[0] = (byte) 0xA5;
+        sendmsg[1] = (byte) 0x5A;
+        sendmsg[9] = (byte) 0xB3;
+        sendmsg[2] = (byte) 0x07;
+        sendmsg[3] = (byte) 0x01;
+        sendmsg[4] = (byte) (time - 1 % 256);//((npTime.getValue()+1)*5 % 256);
+        sendmsg[5] = (byte) (time - 1 / 256);//((npTime.getValue()+1)*5 / 256);
+        sendmsg[6] = (byte) (speed % 256);//(npSpeed.getValue() % 256);
+        sendmsg[7] = (byte) (speed / 256);//(npSpeed.getValue() / 256);
+        sendmsg[8] = (byte) 0x01;
+
+        if(mClickCharacteristic != null && mBluetoothLeService != null)
+        {
+            mClickCharacteristic.setValue(sendmsg);
+            mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+            mBluetoothLeService.writeCharacteristic(mClickCharacteristic);
+        }
+    }
+
+    public void stopBlending()
+    {
+        byte[] sendmsg = new byte[10];
+        sendmsg[0] = (byte) 0xA5;
+        sendmsg[1] = (byte) 0x5A;
+        sendmsg[9] = (byte) 0xB3;
+        sendmsg[2] = (byte) 0x07;
+        sendmsg[3] = (byte) 0x01;
+        sendmsg[4] = (byte) 0x00;
+        sendmsg[5] = (byte) 0x00;
+        sendmsg[6] = (byte) 0x00;
+        sendmsg[7] = (byte) 0x00;
+        sendmsg[8] = (byte) 0x00;
+
+        if(mClickCharacteristic != null && mBluetoothLeService != null)
+        {
+            mClickCharacteristic.setValue(sendmsg);
+            mClickCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+            mBluetoothLeService.writeCharacteristic(mClickCharacteristic);
+        }
     }
 
     void stopConnectBlueTooth()
@@ -195,7 +239,7 @@ public class BlueToothData {
         ArrayList<HashMap<String, String>> gattServiceData = new ArrayList<HashMap<String, String>>();
         ArrayList<ArrayList<HashMap<String, String>>> gattCharacteristicData
                 = new ArrayList<ArrayList<HashMap<String, String>>>();
-        BlueToothData.getInstance().mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
+        mGattCharacteristics = new ArrayList<ArrayList<BluetoothGattCharacteristic>>();
 
         // Loops through available GATT Services.
         for (BluetoothGattService gattService : gattServices) {
