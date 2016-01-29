@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -51,8 +52,8 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
     private OnCookBooksFragmentInteractionListener mListener;
     private Realm realm;
 //    private RealmQuery<CookBookRealm> cookBookRealmQuery;
-    private RealmResults<CookBookRealm> newCookBooksRealmResult;
-    private RealmResults<CookBookRealm> hotCookBooksRealmResult;
+//    private RealmResults<CookBookRealm> newCookBooksRealmResult;
+//    private RealmResults<CookBookRealm> hotCookBooksRealmResult;
 
     public static CookBooksFragment newInstance(int sectionNumber,  Realm realm) {
         CookBooksFragment cookBooksFragment = new CookBooksFragment();
@@ -103,8 +104,12 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 
     private void getNewCookBooks(Realm realm)
     {
-        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
-        newCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("createTime",false);
+        RealmResults<CookBookRealm> newCookBooksRealmResult = realm.where(CookBookRealm.class).findAll();
+        newCookBooksRealmResult.sort("createTime");
+
+//        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
+//        newCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("createTime");
+        //newCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("createTime",false);
         newCookBooks = new ArrayList<Cookbook>();
         for (CookBookRealm cookBookRealm : newCookBooksRealmResult) {
             ArrayList<String> tmpSteps = new ArrayList<String>();
@@ -124,7 +129,31 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
 //            Log.e("XXX", tmpStepPart);
             }
-            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
+
+            List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
+            for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
+                CookbookStep cookbookStep = new CookbookStep();
+                cookbookStep.setStepDesc(cookbookStepRealm.getStepDesc());
+                cookbookStep.setStepSpeed(cookbookStepRealm.getStepSpeed());
+                cookbookStep.setStepTime(cookbookStepRealm.getStepTime());
+
+                cookbookSteps.add(cookbookStep);
+            }
+
+            Cookbook newCookBook = new Cookbook(
+                    cookBookRealm.getId(),
+                    cookBookRealm.getName(),
+                    cookBookRealm.getDescription(),
+                    cookBookRealm.getUrl(),
+                    cookBookRealm.getImageUrl(),
+                    cookBookRealm.getIngredient(),
+                    tmpSteps,
+                    cookbookSteps,
+                    cookBookRealm.getViewedPeopleCount(),
+                    cookBookRealm.getCollectedPeopleCount(),
+                    cookBookRealm.getBeCollected(),
+                    tmpTimeOfSteps,
+                    tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
 
             newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
@@ -135,8 +164,10 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 
     private void getHotCookBooks(Realm realm)
     {
-        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
-        hotCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("viewedPeopleCount",false);
+//        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
+//        hotCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("viewedPeopleCount",false);
+        RealmResults<CookBookRealm> hotCookBooksRealmResult = realm.where(CookBookRealm.class).findAll();
+        hotCookBooksRealmResult.sort("viewedPeopleCount");
         hotCookBooks = new ArrayList<Cookbook>();
         for (CookBookRealm cookBookRealm : hotCookBooksRealmResult) {
             ArrayList<String> tmpSteps = new ArrayList<String>();
@@ -156,7 +187,31 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
 //            Log.e("XXX", tmpSpeedOfStepPart);
             }
-            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
+
+            List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
+            for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
+                CookbookStep cookbookStep = new CookbookStep();
+                cookbookStep.setStepDesc(cookbookStepRealm.getStepDesc());
+                cookbookStep.setStepSpeed(cookbookStepRealm.getStepSpeed());
+                cookbookStep.setStepTime(cookbookStepRealm.getStepTime());
+
+                cookbookSteps.add(cookbookStep);
+            }
+
+            Cookbook newCookBook = new Cookbook(
+                    cookBookRealm.getId(),
+                    cookBookRealm.getName(),
+                    cookBookRealm.getDescription(),
+                    cookBookRealm.getUrl(),
+                    cookBookRealm.getImageUrl(),
+                    cookBookRealm.getIngredient(),
+                    tmpSteps,
+                    cookbookSteps,
+                    cookBookRealm.getViewedPeopleCount(),
+                    cookBookRealm.getCollectedPeopleCount(),
+                    cookBookRealm.getBeCollected(),
+                    tmpTimeOfSteps,
+                    tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
 
             newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));

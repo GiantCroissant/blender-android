@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -20,6 +21,9 @@ public class Cookbook {
     private String description;
     private String ingredient;
     private ArrayList<String> steps;
+
+    private List<CookbookStep> steps1;
+
     private Date uploadTimestamp;
     private Date createTime;
     private int viewedPeople;
@@ -36,7 +40,20 @@ public class Cookbook {
         this.createTime = new Date(System.currentTimeMillis());
     }
 
-    public Cookbook(String id, String name, String description, String url, String image_url, String ingredient, ArrayList<String> steps, int viewedPeople, int collectedPeople, boolean beCollected,ArrayList<String> timeofsteps,ArrayList<String> speedofsteps)
+    public Cookbook(
+            String id,
+            String name,
+            String description,
+            String url,
+            String image_url,
+            String ingredient,
+            ArrayList<String> steps,
+            List<CookbookStep> steps1,
+            int viewedPeople,
+            int collectedPeople,
+            boolean beCollected,
+            ArrayList<String> timeofsteps,
+            ArrayList<String> speedofsteps)
     {
         this.id = id;
         this.name = name;
@@ -45,6 +62,9 @@ public class Cookbook {
         this.image_url = image_url;
         this.ingredient = ingredient;
         this.steps = steps;
+
+        this.steps1 = steps1;
+
         this.uploadTimestamp = new Date(System.currentTimeMillis());
         this.createTime = new Date(System.currentTimeMillis());
         this.viewedPeople = viewedPeople;
@@ -137,6 +157,11 @@ public class Cookbook {
 
     public void setStep(ArrayList<String> steps) {
         this.steps = steps;
+    }
+
+    public List<CookbookStep> getSteps1() { return steps1; }
+    public void setSteps1(List<CookbookStep> steps1) {
+        this.steps1 = steps1;
     }
 
     public int getViewedPeopleCount() {

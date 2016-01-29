@@ -23,6 +23,9 @@ public class CookBookRealm extends RealmObject {
     private String description;
     private String ingredient;
     private String steps;
+
+    private RealmList<CookbookStepRealm> steps1;
+
     private Date uploadTimestamp;
     private Date createTime;
     private int viewedPeopleCount;
@@ -47,12 +50,17 @@ public class CookBookRealm extends RealmObject {
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
+
     public String getSteps() {
         return steps;
     }
     public void setSteps(String steps) {
         this.steps = steps;
     }
+
+    public RealmList<CookbookStepRealm> getSteps1() { return steps1; }
+    public void setSteps1(RealmList<CookbookStepRealm> steps1) { this.steps1 = steps1; }
+
     public Date getUploadTimestamp() {
         return uploadTimestamp;
     }

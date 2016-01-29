@@ -78,7 +78,31 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
             for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
                 tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
             }
-            Cookbook newCookBook = new Cookbook(cookBookRealm.getId(), cookBookRealm.getName(), cookBookRealm.getDescription(), cookBookRealm.getUrl(), cookBookRealm.getImageUrl(), cookBookRealm.getIngredient(), tmpSteps, cookBookRealm.getViewedPeopleCount(), cookBookRealm.getCollectedPeopleCount(), cookBookRealm.getBeCollected() , tmpTimeOfSteps, tmpSpeedOfSteps);
+
+            List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
+            for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
+                CookbookStep cookbookStep = new CookbookStep();
+                cookbookStep.setStepDesc(cookbookStepRealm.getStepDesc());
+                cookbookStep.setStepSpeed(cookbookStepRealm.getStepSpeed());
+                cookbookStep.setStepTime(cookbookStepRealm.getStepTime());
+
+                cookbookSteps.add(cookbookStep);
+            }
+
+            Cookbook newCookBook = new Cookbook(
+                    cookBookRealm.getId(),
+                    cookBookRealm.getName(),
+                    cookBookRealm.getDescription(),
+                    cookBookRealm.getUrl(),
+                    cookBookRealm.getImageUrl(),
+                    cookBookRealm.getIngredient(),
+                    tmpSteps,
+                    cookbookSteps,
+                    cookBookRealm.getViewedPeopleCount(),
+                    cookBookRealm.getCollectedPeopleCount(),
+                    cookBookRealm.getBeCollected(),
+                    tmpTimeOfSteps,
+                    tmpSpeedOfSteps);
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());
