@@ -1,7 +1,6 @@
 package com.giantcroissant.blender;
 
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,25 +35,27 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.giantcroissant.blender.jsonModel.RecipesCollectionDataJsonObject;
+import com.giantcroissant.blender.jsonModel.RecipesIngredientJsonObject;
+import com.giantcroissant.blender.jsonModel.RecipesJsonObject;
+import com.giantcroissant.blender.jsonModel.RecipesStepJsonObject;
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.UUID;
 
-import com.giantcroissant.blender.jsonModel.RecipesCollectionDataJsonObject;
-import com.giantcroissant.blender.jsonModel.RecipesIngredientJsonObject;
-import com.giantcroissant.blender.jsonModel.RecipesJsonObject;
-import com.giantcroissant.blender.jsonModel.RecipesStepJsonObject;
-import com.giantcroissant.blender.util.SystemUiHider;
-import com.google.gson.Gson;
-import io.realm.*;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmList;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 import rx.Subscriber;
 import rx.functions.Func1;
 
-import static android.bluetooth.BluetoothAdapter.*;
+import static android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE;
 
 // adb pull /data/data/com.giantcroissant.blender/files/default.realm
 // adb shell rm -r /data/data/com.giantcroissant.blender/files
@@ -1055,6 +1056,10 @@ public class MainActivity extends AppCompatActivity
 
     void enableBlueToothIntent()
     {
+        if (BlenderBluetoothManager.getInstance().mBluetoothAdapter == null) {
+            return;
+        }
+
         if (!BlenderBluetoothManager.getInstance().mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -1236,11 +1241,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if(BlueToothData.getInstance().mConnected)
-//        {
-//            unbindService(BlueToothData.getInstance().mServiceConnection);
-//            BlueToothData.getInstance().mBluetoothLeService = null;
-//        }
     }
 
     private void updateConnectionState(final int resourceId) {
@@ -1259,27 +1259,17 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(String string) {
-//        Log.e("XXX",string);
-        if(string.compareTo("Ok") == 0)
-        {
-//            updateConnectionState(connectStateId);
-            switchConnectBlueTooth();
-//            Log.e("XXX",string);
-        }
-        else if(string.compareTo("Exit") == 0)
-        {
-            BlenderBluetoothManager.getInstance().stopConnectBlueTooth();
-        }
-        else if(string.compareTo("blueToothSwitchOnCheckedChangedtrue") == 0)
-        {
-
+        if (string.compareTo("Ok") == 0) {
             switchConnectBlueTooth();
 
-        }
-        else if(string.compareTo("blueToothSwitchOnCheckedChangedfalse") == 0) {
-
+        } else if (string.compareTo("Exit") == 0) {
             BlenderBluetoothManager.getInstance().stopConnectBlueTooth();
 
+        } else if (string.compareTo("blueToothSwitchOnCheckedChangedtrue") == 0) {
+            switchConnectBlueTooth();
+
+        } else if(string.compareTo("blueToothSwitchOnCheckedChangedfalse") == 0) {
+            BlenderBluetoothManager.getInstance().stopConnectBlueTooth();
         }
     }
 

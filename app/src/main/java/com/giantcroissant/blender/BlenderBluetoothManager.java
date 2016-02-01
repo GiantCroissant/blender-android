@@ -73,8 +73,8 @@ public class BlenderBluetoothManager {
             public void onServiceConnected(ComponentName componentName, IBinder service) {
                 mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
                 if (!mBluetoothLeService.initialize()) {
-                    Log.e("Unable to initialize Bluetooth", "Unable to initialize Bluetooth");
-                    if(currentActicity != null)
+                    Log.e("BlenderBluetoothManager", "Unable to initialize Bluetooth");
+                    if (currentActicity != null)
                     {
                         currentActicity.finish();
                     }
@@ -123,6 +123,8 @@ public class BlenderBluetoothManager {
     }
 
     public void scanLeDevice(final boolean enable) {
+        if (mBluetoothAdapter == null) return;
+
         if (enable) {
             // Stops scanning after a pre-defined scan period.
             bluetoothHandler.postDelayed(new Runnable() {
