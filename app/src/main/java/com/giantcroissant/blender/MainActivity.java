@@ -48,11 +48,9 @@ import com.giantcroissant.blender.jsonModel.RecipesCollectionDataJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesIngredientJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesStepJsonObject;
+import com.giantcroissant.blender.util.SystemUiHider;
 import com.google.gson.Gson;
-import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmQuery;
-import io.realm.RealmResults;
+import io.realm.*;
 import rx.Subscriber;
 import rx.functions.Func1;
 
@@ -118,6 +116,8 @@ public class MainActivity extends AppCompatActivity
     private TextView blenderHint;
     private TextView IsConnectedBlueToothText;
 
+    private RealmConfiguration config;
+
     private rx.Observable<String> recipesJsonStringData = rx.Observable.create(new rx.Observable.OnSubscribe<String>() {
         @Override
         public void call(rx.Subscriber<? super String> sub) {
@@ -144,6 +144,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        config = new RealmConfiguration.Builder(this).build();
+
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
         if (savedInstanceState != null) {
@@ -552,20 +555,20 @@ public class MainActivity extends AppCompatActivity
                                 }
                             }
 
-                            ArrayList<String> stepDescs = new ArrayList<String>();
-                            ArrayList<String> stepTimes = new ArrayList<String>();
-                            ArrayList<String> stepSpeeds = new ArrayList<String>();
-
-                            for (RecipesStepJsonObject rsjo : rjo.getSetps()) {
-                                stepDescs.add(rsjo.getAction());
-                                if (rsjo.getMachineAction() != null) {
-                                    stepSpeeds.add("" + rsjo.getMachineAction().getSpeed());
-                                    stepTimes.add("" + rsjo.getMachineAction().getTime());
-                                } else {
-                                    stepSpeeds.add("0");
-                                    stepTimes.add("0");
-                                }
-                            }
+//                            ArrayList<String> stepDescs = new ArrayList<String>();
+//                            ArrayList<String> stepTimes = new ArrayList<String>();
+//                            ArrayList<String> stepSpeeds = new ArrayList<String>();
+//
+//                            for (RecipesStepJsonObject rsjo : rjo.getSetps()) {
+//                                stepDescs.add(rsjo.getAction());
+//                                if (rsjo.getMachineAction() != null) {
+//                                    stepSpeeds.add("" + rsjo.getMachineAction().getSpeed());
+//                                    stepTimes.add("" + rsjo.getMachineAction().getTime());
+//                                } else {
+//                                    stepSpeeds.add("0");
+//                                    stepTimes.add("0");
+//                                }
+//                            }
 
                             List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
                             for (RecipesStepJsonObject rsjo : rjo.getSetps()) {
@@ -578,27 +581,26 @@ public class MainActivity extends AppCompatActivity
                                     cookbookStep.setStepSpeed("0");
                                     cookbookStep.setStepTime("0");
                                 }
+                                cookbookSteps.add(cookbookStep);
                             }
 
                             Cookbook cookbook = new Cookbook(
                                     rjo.getId(),
-                                    "",
-                                    "",
                                     rjo.getTitle(),
                                     rjo.getDescription(),
+                                    "",
+                                    "",
                                     ingredientDesc,
-                                    stepDescs,
                                     cookbookSteps,
                                     10,
                                     20,
-                                    true,
-                                    stepTimes,
-                                    stepSpeeds);
+                                    true);
                             cookbook.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_01));
                             cookbook.setImageID(R.drawable.pictures_01);
 
                             cookbooks.add(cookbook);
                         }
+
                         return cookbooks;
                     }
                 })
@@ -623,8 +625,10 @@ public class MainActivity extends AppCompatActivity
                                 cookbookStepRealms.add(cookbookStepRealm);
                             }
 
-                            CookBookRealm cookBookRealm = realm.createObject(CookBookRealm.class);
+                            CookBookRealm cookBookRealm = new CookBookRealm();
                             cookBookRealm.setId(cookbook.getId());
+                            cookBookRealm.setUrl(cookbook.getUrl());
+                            cookBookRealm.setImageUrl(cookbook.getImageUrl());
                             cookBookRealm.setName(cookbook.getName());
                             cookBookRealm.setIngredient(cookbook.getIngredient());
                             cookBookRealm.setDescription(cookbook.getDescription());
@@ -643,9 +647,12 @@ public class MainActivity extends AppCompatActivity
                             //cookBookRealm.setTimeOfSteps(tmpTimeOfStep);
                             //cookBookRealm.setSpeedOfSteps(tmpSpeedOfStep);
                             cookBookRealm.setImageID(cookbook.getImageID());
+
+                            cookbookRealms.add(cookBookRealm);
                         }
 
-
+                        System.out.println("something should be here");
+                        System.out.println(cookbookRealms);
                         return cookbookRealms;
                     }
                 })
@@ -659,7 +666,12 @@ public class MainActivity extends AppCompatActivity
 
                     @Override
                     public void onNext(List<CookBookRealm> cookbookRealms) {
-
+                        Realm r = Realm.getInstance(config);
+                        r.beginTransaction();
+                        for (CookBookRealm cr : cookbookRealms) {
+                            r.copyToRealmOrUpdate(cr);
+                        }
+                        r.commitTransaction();
                     }
                 });
 
@@ -752,21 +764,21 @@ public class MainActivity extends AppCompatActivity
     {
         cookBooks = new ArrayList<Cookbook>();
         for (CookBookRealm cookBookRealm : cookBookRealmResult) {
-            ArrayList<String> tmpSteps = new ArrayList<String>();
-            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
-            for (String tmpStepPart : tmpStepParts) {
-                tmpSteps.add(tmpStepPart);
-            }
-            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
-            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
-            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                tmpTimeOfSteps.add(tmpTimeOfStepPart);
-            }
-            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
-            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
-            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-            }
+//            ArrayList<String> tmpSteps = new ArrayList<String>();
+//            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+//            for (String tmpStepPart : tmpStepParts) {
+//                tmpSteps.add(tmpStepPart);
+//            }
+//            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+//            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+//            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+//                tmpTimeOfSteps.add(tmpTimeOfStepPart);
+//            }
+//            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+//            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+//            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+//                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+//            }
 
             List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
             for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
@@ -785,13 +797,10 @@ public class MainActivity extends AppCompatActivity
                     cookBookRealm.getUrl(),
                     cookBookRealm.getImageUrl(),
                     cookBookRealm.getIngredient(),
-                    tmpSteps,
                     cookbookSteps,
                     cookBookRealm.getViewedPeopleCount(),
                     cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected(),
-                    tmpTimeOfSteps,
-                    tmpSpeedOfSteps);
+                    cookBookRealm.getBeCollected());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());
@@ -1123,23 +1132,23 @@ public class MainActivity extends AppCompatActivity
 
         for (CookBookRealm cookBookRealm : tempCookBookRealmResult) {
 
-            ArrayList<String> tmpSteps = new ArrayList<String>();
-            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
-            for (String tmpStepPart : tmpStepParts) {
-                tmpSteps.add(tmpStepPart);
-            }
-
-            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
-            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
-            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                tmpTimeOfSteps.add(tmpTimeOfStepPart);
-            }
-
-            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
-            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
-            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-            }
+//            ArrayList<String> tmpSteps = new ArrayList<String>();
+//            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+//            for (String tmpStepPart : tmpStepParts) {
+//                tmpSteps.add(tmpStepPart);
+//            }
+//
+//            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+//            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+//            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+//                tmpTimeOfSteps.add(tmpTimeOfStepPart);
+//            }
+//
+//            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+//            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+//            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+//                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+//            }
 
             List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
             for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
@@ -1158,32 +1167,32 @@ public class MainActivity extends AppCompatActivity
                             cookBookRealm.getUrl(),
                             cookBookRealm.getImageUrl(),
                             cookBookRealm.getIngredient(),
-                            tmpSteps,
                             cookbookSteps,
                             cookBookRealm.getViewedPeopleCount(),
                             cookBookRealm.getCollectedPeopleCount(),
-                            cookBookRealm.getBeCollected() ,
-                            tmpTimeOfSteps,
-                            tmpSpeedOfSteps);
+                            cookBookRealm.getBeCollected());
 
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             tmpCookBooks.add(newCookBook);
         }
         cookbookDetailIntent.putExtra("requestCode", 2);
         cookbookDetailIntent.putExtra("position", resultPosition);
-        cookbookDetailIntent.putExtra("cookBookListViewID", tmpCookBooks.get(0).getId());
-        cookbookDetailIntent.putExtra("cookBookListViewName", tmpCookBooks.get(0).getName());
-        cookbookDetailIntent.putExtra("cookBookListViewDescription", tmpCookBooks.get(0).getDescription());
-        cookbookDetailIntent.putExtra("cookBookListViewUrl", tmpCookBooks.get(0).getUrl());
-        cookbookDetailIntent.putExtra("cookBookListViewImageUrl", tmpCookBooks.get(0).getImageUrl());
-        cookbookDetailIntent.putExtra("cookBookListViewIngredient", tmpCookBooks.get(0).getIngredient());
-        cookbookDetailIntent.putExtra("cookBookListViewSteps", tmpCookBooks.get(0).getSteps());
-        cookbookDetailIntent.putExtra("cookBookListViewViewPeople", tmpCookBooks.get(0).getViewedPeopleCount());
-        cookbookDetailIntent.putExtra("cookBookListViewCollectedPeople", tmpCookBooks.get(0).getCollectedPeopleCount());
-        cookbookDetailIntent.putExtra("cookBookListIsCollected", tmpCookBooks.get(0).getIsCollected());
-        cookbookDetailIntent.putExtra("cookBookListViewTimeOfSteps", tmpCookBooks.get(0).getTimeOfSteps());
-        cookbookDetailIntent.putExtra("cookBookListViewSpeedOfSteps", tmpCookBooks.get(0).getSpeedOfSteps());
-//        cookbookDetailIntent.putExtra("requestCode", -1);
+
+        cookbookDetailIntent.putExtra("cookbook", ConvertToCookbook.convertToParceable(tmpCookBooks.get(0)));
+
+//        cookbookDetailIntent.putExtra("cookBookListViewID", tmpCookBooks.get(0).getId());
+//        cookbookDetailIntent.putExtra("cookBookListViewName", tmpCookBooks.get(0).getName());
+//        cookbookDetailIntent.putExtra("cookBookListViewDescription", tmpCookBooks.get(0).getDescription());
+//        cookbookDetailIntent.putExtra("cookBookListViewUrl", tmpCookBooks.get(0).getUrl());
+//        cookbookDetailIntent.putExtra("cookBookListViewImageUrl", tmpCookBooks.get(0).getImageUrl());
+//        cookbookDetailIntent.putExtra("cookBookListViewIngredient", tmpCookBooks.get(0).getIngredient());
+//        cookbookDetailIntent.putExtra("cookBookListViewSteps", tmpCookBooks.get(0).getSteps());
+//        cookbookDetailIntent.putExtra("cookBookListViewViewPeople", tmpCookBooks.get(0).getViewedPeopleCount());
+//        cookbookDetailIntent.putExtra("cookBookListViewCollectedPeople", tmpCookBooks.get(0).getCollectedPeopleCount());
+//        cookbookDetailIntent.putExtra("cookBookListIsCollected", tmpCookBooks.get(0).getIsCollected());
+//        cookbookDetailIntent.putExtra("cookBookListViewTimeOfSteps", tmpCookBooks.get(0).getTimeOfSteps());
+//        cookbookDetailIntent.putExtra("cookBookListViewSpeedOfSteps", tmpCookBooks.get(0).getSpeedOfSteps());
+////        cookbookDetailIntent.putExtra("requestCode", -1);
 
         startActivityForResult(cookbookDetailIntent, REQUEST_COOKBOOK);
         resultCode = 0;

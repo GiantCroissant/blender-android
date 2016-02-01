@@ -78,21 +78,26 @@ public class CookBookDetailActivity extends AppCompatActivity
         requestCode = intent.getIntExtra("requestCode",0);
         position = intent.getIntExtra("position",0);
         currentFragmentIndex = intent.getIntExtra("currentFragmentIndex",0);
-        cookBook = new Cookbook();
-        cookBook.setId(intent.getStringExtra("cookBookListViewID"));
-        cookBook.setName(intent.getStringExtra("cookBookListViewName"));
-        cookBook.setDescription(intent.getStringExtra("cookBookListViewDescription"));
-        cookBook.setUrl(intent.getStringExtra("cookBookListViewUrl"));
-        cookBook.setImageUrl(intent.getStringExtra("cookBookListViewImageUrl"));
-        cookBook.setIngredient(intent.getStringExtra("cookBookListViewIngredient"));
-        cookBook.setStep(intent.getStringArrayListExtra("cookBookListViewSteps"));
-        cookBook.setViewedPeopleCount(intent.getIntExtra("cookBookListViewViewPeople", 0));
-        cookBook.setCollectedPeopleCount(intent.getIntExtra("cookBookListViewCollectedPeople", 0));
-        cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
-        cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
-        cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
-        cookBook.setImageID(intent.getIntExtra("cookBookImageId", 0));
-        cookBook.setImage(BitmapFactory.decodeResource(getResources(),cookBook.getImageID()));
+
+        CookbookParcelable cp = (CookbookParcelable)intent.getParcelableExtra("cookbook");
+        cookBook = ConvertToCookbook.convertFromParceable(cp);
+
+//        cookBook = new Cookbook();
+//        cookBook.setId(intent.getStringExtra("cookBookListViewID"));
+//        cookBook.setName(intent.getStringExtra("cookBookListViewName"));
+//        cookBook.setDescription(intent.getStringExtra("cookBookListViewDescription"));
+//        cookBook.setUrl(intent.getStringExtra("cookBookListViewUrl"));
+//        cookBook.setImageUrl(intent.getStringExtra("cookBookListViewImageUrl"));
+//        cookBook.setIngredient(intent.getStringExtra("cookBookListViewIngredient"));
+//        cookBook.setStep(intent.getStringArrayListExtra("cookBookListViewSteps"));
+//        cookBook.setViewedPeopleCount(intent.getIntExtra("cookBookListViewViewPeople", 0));
+//        cookBook.setCollectedPeopleCount(intent.getIntExtra("cookBookListViewCollectedPeople", 0));
+//        cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
+//        cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
+//        cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
+//        cookBook.setImageID(intent.getIntExtra("cookBookImageId", 0));
+//        cookBook.setImage(BitmapFactory.decodeResource(getResources(),cookBook.getImageID()));
+
         if(intent.getIntExtra("requestCode",0) != -1)
         {
             requestCode = intent.getIntExtra("requestCode",0);
@@ -310,18 +315,21 @@ public class CookBookDetailActivity extends AppCompatActivity
         else if (view.getId() == R.id.cook_book_video_button) {
 
             Intent intent = new Intent(this, CookBookDetailVideoActivity.class);
-            intent.putExtra("cookBookListViewID", cookBook.getId());
-            intent.putExtra("cookBookListViewName", cookBook.getName());
-            intent.putExtra("cookBookListViewDescription", cookBook.getDescription());
-            intent.putExtra("cookBookListViewUrl", cookBook.getUrl());
-            intent.putExtra("cookBookListViewImageUrl", cookBook.getImageUrl());
-            intent.putExtra("cookBookListViewIngredient", cookBook.getIngredient());
-            intent.putExtra("cookBookListViewSteps", cookBook.getSteps());
-            intent.putExtra("cookBookListViewViewPeople", cookBook.getViewedPeopleCount());
-            intent.putExtra("cookBookListViewCollectedPeople", cookBook.getCollectedPeopleCount());
-            intent.putExtra("cookBookListIsCollected", cookBook.getIsCollected());
-            intent.putExtra("cookBookListViewTimeOfSteps", cookBook.getTimeOfSteps());
-            intent.putExtra("cookBookListViewSpeedOfSteps", cookBook.getSpeedOfSteps());
+
+            intent.putExtra("cookbook", ConvertToCookbook.convertToParceable(cookBook));
+
+//            intent.putExtra("cookBookListViewID", cookBook.getId());
+//            intent.putExtra("cookBookListViewName", cookBook.getName());
+//            intent.putExtra("cookBookListViewDescription", cookBook.getDescription());
+//            intent.putExtra("cookBookListViewUrl", cookBook.getUrl());
+//            intent.putExtra("cookBookListViewImageUrl", cookBook.getImageUrl());
+//            intent.putExtra("cookBookListViewIngredient", cookBook.getIngredient());
+//            intent.putExtra("cookBookListViewSteps", cookBook.getSteps());
+//            intent.putExtra("cookBookListViewViewPeople", cookBook.getViewedPeopleCount());
+//            intent.putExtra("cookBookListViewCollectedPeople", cookBook.getCollectedPeopleCount());
+//            intent.putExtra("cookBookListIsCollected", cookBook.getIsCollected());
+//            intent.putExtra("cookBookListViewTimeOfSteps", cookBook.getTimeOfSteps());
+//            intent.putExtra("cookBookListViewSpeedOfSteps", cookBook.getSpeedOfSteps());
 
             startActivityForResult(intent, 0);
         }

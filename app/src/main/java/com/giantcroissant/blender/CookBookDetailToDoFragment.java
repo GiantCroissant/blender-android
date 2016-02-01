@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -173,22 +174,34 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     private void setStepsList()
     {
+        List<CookbookStep> cooksteps = cookBook.getSteps1();
 
-        ArrayList<String> newSteps = cookBook.getSteps();
-        ArrayList<String> newTimeOfSteps = cookBook.getTimeOfSteps();
-        ArrayList<String> newSpeedOfSteps = cookBook.getSpeedOfSteps();
+//        ArrayList<String> newSteps = cookBook.getSteps();
+//        ArrayList<String> newTimeOfSteps = cookBook.getTimeOfSteps();
+//        ArrayList<String> newSpeedOfSteps = cookBook.getSpeedOfSteps();
 
         newCheckListItems = new ArrayList<CheckListItem>();
 
-        for (int i = 0; i < newSteps.size(); i++) {
-            String tmpStep = newSteps.get(i)+"";
-            if(Integer.parseInt(newTimeOfSteps.get(i)) > 0 && Integer.parseInt(newSpeedOfSteps.get(i))> 0)
-            {
-                tmpStep = tmpStep + "轉速" + newSpeedOfSteps.get(i) + "，" + newTimeOfSteps.get(i) + "秒。";
+        for (int i = 0; i < cooksteps.size(); ++ i) {
+            CookbookStep cs = cooksteps.get(i);
+            String tmpStep = cs.getStepDesc() + "";
+            int speed = Integer.parseInt(cs.getStepSpeed());
+            int time = Integer.parseInt(cs.getStepTime());
+            if (speed > 0 && time > 0) {
+                tmpStep = tmpStep + "轉速" + cs.getStepSpeed() + "，" + cs.getStepTime() + "秒。";
             }
             newCheckListItems.add(new CheckListItem(UUID.randomUUID().toString(), tmpStep, false));
-
         }
+
+//        for (int i = 0; i < newSteps.size(); i++) {
+//            String tmpStep = newSteps.get(i)+"";
+//            if(Integer.parseInt(newTimeOfSteps.get(i)) > 0 && Integer.parseInt(newSpeedOfSteps.get(i))> 0)
+//            {
+//                tmpStep = tmpStep + "轉速" + newSpeedOfSteps.get(i) + "，" + newTimeOfSteps.get(i) + "秒。";
+//            }
+//            newCheckListItems.add(new CheckListItem(UUID.randomUUID().toString(), tmpStep, false));
+//
+//        }
     }
 
     private void selectItem(int position) {
@@ -227,11 +240,17 @@ public class CookBookDetailToDoFragment extends Fragment {
         {
             return false;
         }
-        ArrayList<String> newTimeOfSteps = cookBook.getTimeOfSteps();
-        ArrayList<String> newSpeedOfSteps = cookBook.getSpeedOfSteps();
+
+        CookbookStep cookbookStep = cookBook.getSteps1().get(currentIndex);
+        int speed = Integer.parseInt(cookbookStep.getStepSpeed());
+        int time = Integer.parseInt(cookbookStep.getStepTime());
+
+//        ArrayList<String> newTimeOfSteps = cookBook.getTimeOfSteps();
+//        ArrayList<String> newSpeedOfSteps = cookBook.getSpeedOfSteps();
 
 //        mCheckListAdapter.notifyDataSetChanged();
-        return Integer.parseInt(newTimeOfSteps.get(currentIndex)) > 0 && Integer.parseInt(newSpeedOfSteps.get(currentIndex))> 0;
+        return (speed > 0 && time > 0);
+//        return Integer.parseInt(newTimeOfSteps.get(currentIndex)) > 0 && Integer.parseInt(newSpeedOfSteps.get(currentIndex))> 0;
     }
 
     public int getCookBoookTimeOfSteps()
@@ -240,7 +259,12 @@ public class CookBookDetailToDoFragment extends Fragment {
         {
             return 0;
         }
-        return Integer.parseInt(cookBook.getTimeOfSteps().get(currentIndex));
+
+        CookbookStep cookbookStep = cookBook.getSteps1().get(currentIndex);
+        int time = Integer.parseInt(cookbookStep.getStepTime());
+
+        return time;
+        //return Integer.parseInt(cookBook.getTimeOfSteps().get(currentIndex));
     }
 
     public int getCookBoookSpeedOfSteps()
@@ -249,7 +273,12 @@ public class CookBookDetailToDoFragment extends Fragment {
         {
             return 0;
         }
-        return Integer.parseInt(cookBook.getSpeedOfSteps().get(currentIndex));
+
+        CookbookStep cookbookStep = cookBook.getSteps1().get(currentIndex);
+        int speed = Integer.parseInt(cookbookStep.getStepSpeed());
+
+        return speed;
+        //return Integer.parseInt(cookBook.getSpeedOfSteps().get(currentIndex));
     }
 
     public boolean getFinished()

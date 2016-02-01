@@ -70,19 +70,22 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Yo
         Intent intent = getIntent();
         getView();
 
-        cookBook = new Cookbook();
-        cookBook.setId(intent.getStringExtra("cookBookListViewID"));
-        cookBook.setName(intent.getStringExtra("cookBookListViewName"));
-        cookBook.setDescription(intent.getStringExtra("cookBookListViewDescription"));
-        cookBook.setUrl(intent.getStringExtra("cookBookListViewUrl"));
-        cookBook.setImageUrl(intent.getStringExtra("cookBookListViewImageUrl"));
-        cookBook.setIngredient(intent.getStringExtra("cookBookListViewIngredient"));
-        cookBook.setStep(intent.getStringArrayListExtra("cookBookListViewSteps"));
-        cookBook.setViewedPeopleCount(intent.getIntExtra("cookBookListViewViewPeople", 0));
-        cookBook.setCollectedPeopleCount(intent.getIntExtra("cookBookListViewCollectedPeople", 0));
-        cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
-        cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
-        cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
+        CookbookParcelable cp = (CookbookParcelable)intent.getParcelableExtra("cookbook");
+        cookBook = ConvertToCookbook.convertFromParceable(cp);
+
+//        cookBook = new Cookbook();
+//        cookBook.setId(intent.getStringExtra("cookBookListViewID"));
+//        cookBook.setName(intent.getStringExtra("cookBookListViewName"));
+//        cookBook.setDescription(intent.getStringExtra("cookBookListViewDescription"));
+//        cookBook.setUrl(intent.getStringExtra("cookBookListViewUrl"));
+//        cookBook.setImageUrl(intent.getStringExtra("cookBookListViewImageUrl"));
+//        cookBook.setIngredient(intent.getStringExtra("cookBookListViewIngredient"));
+//        cookBook.setStep(intent.getStringArrayListExtra("cookBookListViewSteps"));
+//        cookBook.setViewedPeopleCount(intent.getIntExtra("cookBookListViewViewPeople", 0));
+//        cookBook.setCollectedPeopleCount(intent.getIntExtra("cookBookListViewCollectedPeople", 0));
+//        cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
+//        cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
+//        cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
         getRealm();
 
 

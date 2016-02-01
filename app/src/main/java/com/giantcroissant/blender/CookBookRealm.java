@@ -22,7 +22,7 @@ public class CookBookRealm extends RealmObject {
     private String name;
     private String description;
     private String ingredient;
-    private String steps;
+//    private String steps;
 
     private RealmList<CookbookStepRealm> steps1;
 
@@ -32,8 +32,8 @@ public class CookBookRealm extends RealmObject {
     private int collectedPeopleCount;
     private boolean beCollected;
 
-    private String timeOfSteps;
-    private String speedOfSteps;
+//    private String timeOfSteps;
+//    private String speedOfSteps;
     private int imageID;
 
     public String getId() { return Id; }
@@ -51,12 +51,12 @@ public class CookBookRealm extends RealmObject {
         this.ingredient = ingredient;
     }
 
-    public String getSteps() {
-        return steps;
-    }
-    public void setSteps(String steps) {
-        this.steps = steps;
-    }
+//    public String getSteps() {
+//        return steps;
+//    }
+//    public void setSteps(String steps) {
+//        this.steps = steps;
+//    }
 
     public RealmList<CookbookStepRealm> getSteps1() { return steps1; }
     public void setSteps1(RealmList<CookbookStepRealm> steps1) { this.steps1 = steps1; }
@@ -68,8 +68,8 @@ public class CookBookRealm extends RealmObject {
         this.uploadTimestamp = uploadTimestamp;
     }
 
-    public Date   getCreateTime() { return createTime; }
-    public void   setCreateTime(Date createTime) { this.createTime = createTime; }
+    public Date getCreateTime() { return createTime; }
+    public void setCreateTime(Date createTime) { this.createTime = createTime; }
 
     public int getViewedPeopleCount() {
         return viewedPeopleCount;
@@ -94,19 +94,20 @@ public class CookBookRealm extends RealmObject {
         this.beCollected = beCollected;
     }
 
-    public String getTimeOfSteps() {
-        return timeOfSteps;
-    }
-    public void setTimeOfSteps(String timeOfSteps) {
-        this.timeOfSteps = timeOfSteps;
-    }
+//    public String getTimeOfSteps() {
+//        return timeOfSteps;
+//    }
+//    public void setTimeOfSteps(String timeOfSteps) {
+//        this.timeOfSteps = timeOfSteps;
+//    }
+//
+//    public String getSpeedOfSteps() {
+//        return speedOfSteps;
+//    }
+//    public void setSpeedOfSteps(String speedOfSteps) {
+//        this.speedOfSteps = speedOfSteps;
+//    }
 
-    public String getSpeedOfSteps() {
-        return speedOfSteps;
-    }
-    public void setSpeedOfSteps(String speedOfSteps) {
-        this.speedOfSteps = speedOfSteps;
-    }
     public int getImageID() { return imageID; }
     public void   setImageID(int imageID) { this.imageID = imageID;}
 }

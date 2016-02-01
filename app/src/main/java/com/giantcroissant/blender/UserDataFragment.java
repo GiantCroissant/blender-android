@@ -109,23 +109,23 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
         userRecordCookBooks = new ArrayList<Cookbook>();
 
         for (CookBookRealm cookBookRealm : userRecordRealmResult) {
-            ArrayList<String> tmpSteps = new ArrayList<String>();
-            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
-            for (String tmpStepPart : tmpStepParts) {
-                tmpSteps.add(tmpStepPart);
-            }
-            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
-            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
-            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                tmpTimeOfSteps.add(tmpTimeOfStepPart);
-//            Log.e("XXX", tmpStepPart);
-            }
-            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
-            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
-            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-//            Log.e("XXX", tmpStepPart);
-            }
+//            ArrayList<String> tmpSteps = new ArrayList<String>();
+//            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+//            for (String tmpStepPart : tmpStepParts) {
+//                tmpSteps.add(tmpStepPart);
+//            }
+//            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+//            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+//            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+//                tmpTimeOfSteps.add(tmpTimeOfStepPart);
+////            Log.e("XXX", tmpStepPart);
+//            }
+//            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+//            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+//            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+//                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+////            Log.e("XXX", tmpStepPart);
+//            }
 
             List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
             for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
@@ -144,15 +144,12 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
                     cookBookRealm.getUrl(),
                     cookBookRealm.getImageUrl(),
                     cookBookRealm.getIngredient(),
-                    tmpSteps,
                     cookbookSteps,
                     cookBookRealm.getViewedPeopleCount(),
                     cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected(),
-                    tmpTimeOfSteps,
-                    tmpSpeedOfSteps);
+                    cookBookRealm.getBeCollected());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
-            newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
+            //newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());
             userRecordCookBooks.add(newCookBook);
         }
@@ -167,23 +164,23 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
         userLikeRealmResult.sort("uploadTimestamp");
         userLikeCookBooks = new ArrayList<Cookbook>();
         for (CookBookRealm cookBookRealm : userLikeRealmResult) {
-            ArrayList<String> tmpSteps = new ArrayList<String>();
-            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
-            for (String tmpStepPart : tmpStepParts) {
-                tmpSteps.add(tmpStepPart);
-            }
-            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
-            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
-            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                tmpTimeOfSteps.add(tmpTimeOfStepPart);
-//            Log.e("XXX", tmpStepPart);
-            }
-            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
-            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
-            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-//            Log.e("XXX", tmpStepPart);
-            }
+//            ArrayList<String> tmpSteps = new ArrayList<String>();
+//            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+//            for (String tmpStepPart : tmpStepParts) {
+//                tmpSteps.add(tmpStepPart);
+//            }
+//            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+//            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+//            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+//                tmpTimeOfSteps.add(tmpTimeOfStepPart);
+////            Log.e("XXX", tmpStepPart);
+//            }
+//            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+//            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+//            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+//                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+////            Log.e("XXX", tmpStepPart);
+//            }
 
             List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
             for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
@@ -202,16 +199,13 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
                     cookBookRealm.getUrl(),
                     cookBookRealm.getImageUrl(),
                     cookBookRealm.getIngredient(),
-                    tmpSteps,
                     cookbookSteps,
                     cookBookRealm.getViewedPeopleCount(),
                     cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected(),
-                    tmpTimeOfSteps,
-                    tmpSpeedOfSteps);
+                    cookBookRealm.getBeCollected());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
 
-            newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
+            //newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());
             userLikeCookBooks.add(newCookBook);
         }
@@ -258,19 +252,22 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
         Intent intent = new Intent(this.getActivity(), CookBookDetailActivity.class);
 
         intent.putExtra("position", position);
-        intent.putExtra("cookBookListViewID", currentCookBooks.get(position).getId());
-        intent.putExtra("cookBookListViewName", currentCookBooks.get(position).getName());
-        intent.putExtra("cookBookListViewDescription", currentCookBooks.get(position).getDescription());
-        intent.putExtra("cookBookListViewUrl", currentCookBooks.get(position).getUrl());
-        intent.putExtra("cookBookListViewImageUrl", currentCookBooks.get(position).getImageUrl());
-        intent.putExtra("cookBookListViewIngredient", currentCookBooks.get(position).getIngredient());
-        intent.putExtra("cookBookListViewSteps", currentCookBooks.get(position).getSteps());
-        intent.putExtra("cookBookListViewViewPeople", currentCookBooks.get(position).getViewedPeopleCount());
-        intent.putExtra("cookBookListViewCollectedPeople", currentCookBooks.get(position).getCollectedPeopleCount());
-        intent.putExtra("cookBookListIsCollected", currentCookBooks.get(position).getIsCollected());
-        intent.putExtra("cookBookListViewTimeOfSteps", currentCookBooks.get(position).getTimeOfSteps());
-        intent.putExtra("cookBookListViewSpeedOfSteps", currentCookBooks.get(position).getSpeedOfSteps());
-        intent.putExtra("cookBookImageId",currentCookBooks.get(position).getImageID());
+
+        intent.putExtra("cookbook", ConvertToCookbook.convertToParceable(currentCookBooks.get(position)));
+
+//        intent.putExtra("cookBookListViewID", currentCookBooks.get(position).getId());
+//        intent.putExtra("cookBookListViewName", currentCookBooks.get(position).getName());
+//        intent.putExtra("cookBookListViewDescription", currentCookBooks.get(position).getDescription());
+//        intent.putExtra("cookBookListViewUrl", currentCookBooks.get(position).getUrl());
+//        intent.putExtra("cookBookListViewImageUrl", currentCookBooks.get(position).getImageUrl());
+//        intent.putExtra("cookBookListViewIngredient", currentCookBooks.get(position).getIngredient());
+//        intent.putExtra("cookBookListViewSteps", currentCookBooks.get(position).getSteps());
+//        intent.putExtra("cookBookListViewViewPeople", currentCookBooks.get(position).getViewedPeopleCount());
+//        intent.putExtra("cookBookListViewCollectedPeople", currentCookBooks.get(position).getCollectedPeopleCount());
+//        intent.putExtra("cookBookListIsCollected", currentCookBooks.get(position).getIsCollected());
+//        intent.putExtra("cookBookListViewTimeOfSteps", currentCookBooks.get(position).getTimeOfSteps());
+//        intent.putExtra("cookBookListViewSpeedOfSteps", currentCookBooks.get(position).getSpeedOfSteps());
+//        intent.putExtra("cookBookImageId",currentCookBooks.get(position).getImageID());
 
         intent.putExtra("requestCode", 104);
         getActivity().startActivityFromFragment(this, intent, 104);

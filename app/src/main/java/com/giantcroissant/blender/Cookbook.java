@@ -20,7 +20,6 @@ public class Cookbook {
     private String name;
     private String description;
     private String ingredient;
-    private ArrayList<String> steps;
 
     private List<CookbookStep> steps1;
 
@@ -31,8 +30,6 @@ public class Cookbook {
     private boolean beCollected;
     private Bitmap image;
     private int imageID;
-    private ArrayList<String> timeofsteps;
-    private ArrayList<String> speedofsteps;
 
     public Cookbook()
     {
@@ -47,13 +44,10 @@ public class Cookbook {
             String url,
             String image_url,
             String ingredient,
-            ArrayList<String> steps,
             List<CookbookStep> steps1,
             int viewedPeople,
             int collectedPeople,
-            boolean beCollected,
-            ArrayList<String> timeofsteps,
-            ArrayList<String> speedofsteps)
+            boolean beCollected)
     {
         this.id = id;
         this.name = name;
@@ -61,7 +55,6 @@ public class Cookbook {
         this.url = url;
         this.image_url = image_url;
         this.ingredient = ingredient;
-        this.steps = steps;
 
         this.steps1 = steps1;
 
@@ -70,8 +63,6 @@ public class Cookbook {
         this.viewedPeople = viewedPeople;
         this.collectedPeople = collectedPeople;
         this.beCollected = beCollected;
-        this.timeofsteps = timeofsteps;
-        this.speedofsteps = speedofsteps;
     }
 
 
@@ -151,14 +142,6 @@ public class Cookbook {
         this.ingredient = ingredient;
     }
 
-    public ArrayList<String> getSteps() {
-        return steps;
-    }
-
-    public void setStep(ArrayList<String> steps) {
-        this.steps = steps;
-    }
-
     public List<CookbookStep> getSteps1() { return steps1; }
     public void setSteps1(List<CookbookStep> steps1) {
         this.steps1 = steps1;
@@ -203,22 +186,6 @@ public class Cookbook {
 
     public void setImage(Bitmap image) {
         this.image = image;
-    }
-
-    public ArrayList<String> getTimeOfSteps() {
-        return timeofsteps;
-    }
-
-    public void setTimeOfStep(ArrayList<String> timeofsteps) {
-        this.timeofsteps = timeofsteps;
-    }
-
-    public ArrayList<String> getSpeedOfSteps() {
-        return speedofsteps;
-    }
-
-    public void setSpeedOfStep(ArrayList<String> speedofsteps) {
-        this.speedofsteps = speedofsteps;
     }
 
 }

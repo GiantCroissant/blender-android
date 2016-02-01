@@ -71,15 +71,29 @@ public class CookBookDetailInfoFragment extends Fragment {
         TextView cookBookStepsText = (TextView) rootView.findViewById(R.id.cookBookStepsText);
         String tmpSteps = "";
 //        Log.e("XXX",String.valueOf(cookBook.getSteps().size()));
-        for (int i = 0; i < cookBook.getSteps().size(); i++) {
 
-            tmpSteps += (i+1)+" "+cookBook.getSteps().get(i) + "";
-            if(Integer.parseInt(cookBook.getTimeOfSteps().get(i)) > 0 && Integer.parseInt(cookBook.getSpeedOfSteps().get(i))> 0)
-            {
-                tmpSteps = tmpSteps + "轉速" + cookBook.getSpeedOfSteps().get(i) + "，" + cookBook.getTimeOfSteps().get(i) + "秒。";
+        for (int i = 0; i < cookBook.getSteps1().size(); ++ i) {
+            CookbookStep cs = cookBook.getSteps1().get(i);
+
+            tmpSteps += (i + 1) + " " + cs.getStepDesc() + "";
+            int speed = Integer.parseInt(cs.getStepSpeed());
+            int time = Integer.parseInt(cs.getStepTime());
+            if (speed > 0 && time > 0) {
+                tmpSteps = tmpSteps + "轉速" + cs.getStepSpeed() + "，" + cs.getStepTime() + "秒。";
+                tmpSteps +="\n\n";
             }
-            tmpSteps +="\n\n";
+
         }
+
+//        for (int i = 0; i < cookBook.getSteps().size(); i++) {
+//
+//            tmpSteps += (i+1)+" "+cookBook.getSteps().get(i) + "";
+//            if(Integer.parseInt(cookBook.getTimeOfSteps().get(i)) > 0 && Integer.parseInt(cookBook.getSpeedOfSteps().get(i))> 0)
+//            {
+//                tmpSteps = tmpSteps + "轉速" + cookBook.getSpeedOfSteps().get(i) + "，" + cookBook.getTimeOfSteps().get(i) + "秒。";
+//            }
+//            tmpSteps +="\n\n";
+//        }
 
 
         cookBookStepsText.setText(getResources().getTextArray(R.array.menu_items_labels)[1]+"\n" + tmpSteps, TextView.BufferType.SPANNABLE);

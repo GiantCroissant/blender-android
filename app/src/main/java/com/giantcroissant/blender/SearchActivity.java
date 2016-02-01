@@ -63,21 +63,21 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
     {
         cookbooks = new ArrayList<Cookbook>();
         for (CookBookRealm cookBookRealm : cookBookRealmResult) {
-            ArrayList<String> tmpSteps = new ArrayList<String>();
-            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
-            for (String tmpStepPart : tmpStepParts) {
-                tmpSteps.add(tmpStepPart);
-            }
-            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
-            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
-            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-                tmpTimeOfSteps.add(tmpTimeOfStepPart);
-            }
-            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
-            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
-            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-            }
+//            ArrayList<String> tmpSteps = new ArrayList<String>();
+//            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
+//            for (String tmpStepPart : tmpStepParts) {
+//                tmpSteps.add(tmpStepPart);
+//            }
+//            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
+//            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
+//            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
+//                tmpTimeOfSteps.add(tmpTimeOfStepPart);
+//            }
+//            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
+//            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
+//            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
+//                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
+//            }
 
             List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
             for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
@@ -96,13 +96,10 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
                     cookBookRealm.getUrl(),
                     cookBookRealm.getImageUrl(),
                     cookBookRealm.getIngredient(),
-                    tmpSteps,
                     cookbookSteps,
                     cookBookRealm.getViewedPeopleCount(),
                     cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected(),
-                    tmpTimeOfSteps,
-                    tmpSpeedOfSteps);
+                    cookBookRealm.getBeCollected());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());
@@ -180,19 +177,22 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
         Intent intent = new Intent(this, CookBookDetailActivity.class);
 
         intent.putExtra("position", position);
-        intent.putExtra("cookBookListViewID", newcookbooks.get(position).getId());
-        intent.putExtra("cookBookListViewName", newcookbooks.get(position).getName());
-        intent.putExtra("cookBookListViewDescription", newcookbooks.get(position).getDescription());
-        intent.putExtra("cookBookListViewUrl", newcookbooks.get(position).getUrl());
-        intent.putExtra("cookBookListViewImageUrl", newcookbooks.get(position).getImageUrl());
-        intent.putExtra("cookBookListViewIngredient", newcookbooks.get(position).getIngredient());
-        intent.putExtra("cookBookListViewSteps", newcookbooks.get(position).getSteps());
-        intent.putExtra("cookBookListViewViewPeople", newcookbooks.get(position).getViewedPeopleCount());
-        intent.putExtra("cookBookListViewCollectedPeople", newcookbooks.get(position).getCollectedPeopleCount());
-        intent.putExtra("cookBookListIsCollected", newcookbooks.get(position).getIsCollected());
-        intent.putExtra("cookBookListViewTimeOfSteps", newcookbooks.get(position).getTimeOfSteps());
-        intent.putExtra("cookBookListViewSpeedOfSteps", newcookbooks.get(position).getSpeedOfSteps());
-        intent.putExtra("cookBookImageId",newcookbooks.get(position).getImageID());
+
+        intent.putExtra("cookbook", ConvertToCookbook.convertToParceable(newcookbooks.get(position)));
+
+//        intent.putExtra("cookBookListViewID", newcookbooks.get(position).getId());
+//        intent.putExtra("cookBookListViewName", newcookbooks.get(position).getName());
+//        intent.putExtra("cookBookListViewDescription", newcookbooks.get(position).getDescription());
+//        intent.putExtra("cookBookListViewUrl", newcookbooks.get(position).getUrl());
+//        intent.putExtra("cookBookListViewImageUrl", newcookbooks.get(position).getImageUrl());
+//        intent.putExtra("cookBookListViewIngredient", newcookbooks.get(position).getIngredient());
+//        intent.putExtra("cookBookListViewSteps", newcookbooks.get(position).getSteps());
+//        intent.putExtra("cookBookListViewViewPeople", newcookbooks.get(position).getViewedPeopleCount());
+//        intent.putExtra("cookBookListViewCollectedPeople", newcookbooks.get(position).getCollectedPeopleCount());
+//        intent.putExtra("cookBookListIsCollected", newcookbooks.get(position).getIsCollected());
+//        intent.putExtra("cookBookListViewTimeOfSteps", newcookbooks.get(position).getTimeOfSteps());
+//        intent.putExtra("cookBookListViewSpeedOfSteps", newcookbooks.get(position).getSpeedOfSteps());
+//        intent.putExtra("cookBookImageId",newcookbooks.get(position).getImageID());
 
         intent.putExtra("requestCode", 104);
         startActivity(intent);
