@@ -1,62 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="#EEEEEE">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#EEEEEE"
+    android:orientation="horizontal">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#EEEEEE"
-        android:elevation="2dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:background="#EEEEEE"
+        android:elevation="2dp"
+        android:orientation="horizontal"
+        tools:ignore="UnusedAttribute">
 
         <ImageView
+            android:id="@+id/cookbookicon"
             android:layout_width="160dp"
             android:layout_height="124dp"
-            android:id="@+id/cookbookicon"
-            android:layout_weight="1"
+            android:background="@color/White"
             android:scaleType="fitCenter"
-            android:src="@drawable/pictures_01"
-            android:background="@color/White" />
+            android:src="@drawable/pictures_01" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="124dp"
-            android:layout_weight="0.7"
-            android:paddingTop="20dp"
             android:layout_toRightOf="@+id/cookbookicon"
-            android:layout_toEndOf="@+id/cookbookicon"
-            android:background="@color/White">
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@color/White"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="葡萄檸檬汁"
                 android:id="@+id/cookbooknameTextView"
-                android:layout_weight="2"
-                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="葡萄檸檬汁"
+                android:textColor="@color/ColorPrimaryDark"
                 android:textSize="@dimen/Subheader"
-                android:paddingLeft="20dp"
                 android:textStyle="bold"
-                android:textColor="@color/ColorPrimaryDark" />
+                tools:ignore="HardcodedText" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="葡萄、檸檬、蜂蜜"
                 android:id="@+id/ingredientTextView"
-                android:layout_weight="1"
-                android:textSize="@dimen/Body1"
-                android:paddingLeft="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="top"
-                android:paddingTop="5dp"
-                android:textColor="@color/c54000000" />
+                android:text="Test"
+                android:textColor="@color/c54000000"
+                android:textSize="@dimen/Body1"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
+
     </RelativeLayout>
 </RelativeLayout>
