@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="160dp"
             android:layout_height="124dp"
-            android:id="@+id/cookbookicon"
+            android:id="@+id/recipe_icon"
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:src="@drawable/pictures_01"
@@ -29,8 +29,8 @@
             android:layout_height="124dp"
             android:layout_weight="0.7"
             android:paddingTop="20dp"
-            android:layout_toRightOf="@+id/cookbookicon"
-            android:layout_toEndOf="@+id/cookbookicon"
+            android:layout_toRightOf="@+id/recipe_icon"
+            android:layout_toEndOf="@+id/recipe_icon"
             android:background="@color/White">
 
             <TextView

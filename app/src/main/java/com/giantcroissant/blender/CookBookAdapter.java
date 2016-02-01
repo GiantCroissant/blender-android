@@ -48,7 +48,7 @@ public class CookBookAdapter extends ArrayAdapter<Cookbook> {
         // 讀取記事顏色、已選擇、標題與日期時間元件
         TextView cookBookNameTextView = (TextView) itemView.findViewById(R.id.cookbooknameTextView);
         TextView ingredientTextView = (TextView) itemView.findViewById(R.id.ingredientTextView);
-        ImageView cookbookImage = (ImageView) itemView.findViewById(R.id.cookbookicon);
+        ImageView cookbookImage = (ImageView) itemView.findViewById(R.id.recipe_icon);
 
 //        new loadImageAsync().execute(cookBook.getImageUrl());
         // 設定標題
