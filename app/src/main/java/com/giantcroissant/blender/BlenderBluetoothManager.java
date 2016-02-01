@@ -95,11 +95,11 @@ public class BlenderBluetoothManager {
         mBluetoothAdapter = bluetoothManager.getAdapter();
     }
 
-    public void connectBlender(AppCompatActivity activity,BroadcastReceiver mGattUpdateReceiver)
+    public void connectBlender(AppCompatActivity activity,BroadcastReceiver gattUpdateReceiver)
     {
         currentActicity = activity;
 
-        activity.registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        activity.registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
             Log.d("Connect request result", "Connect request result=" + result);

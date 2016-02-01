@@ -960,7 +960,7 @@ public class MainActivity extends AppCompatActivity
 //        Log.e("XXX",String.valueOf(switchIsChecked));
 //        Log.e("XXX", String.valueOf(mBluetoothAdapter.isEnabled()));
 
-            if(switchIsChecked)
+            if (switchIsChecked)
             {
                 if(BlenderBluetoothManager.getInstance().mBluetoothAdapter.isEnabled())
                 {

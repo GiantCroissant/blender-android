@@ -1,15 +1,13 @@
 package com.giantcroissant.blender;
 
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -705,19 +703,15 @@ public class CookBookDetailActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        Log.e("XXX3", String.valueOf(requestCode));
-
         setDefaultFragment();
         BlenderBluetoothManager.getInstance().connectBlender(this, mGattUpdateReceiver);
-
-//        BlueToothData.getInstance().mConnected = BlueToothData.getInstance().mBluetoothLeService != null && BlueToothData.getInstance().mClickCharacteristic != null;
         BlenderBluetoothManager.getInstance().getConnected();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-//        unregisterReceiver(mGattUpdateReceiver);
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     @Override

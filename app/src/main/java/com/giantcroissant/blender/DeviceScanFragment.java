@@ -1,9 +1,8 @@
 package com.giantcroissant.blender;
 
 import android.app.Activity;
-import android.net.Uri;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,22 +63,25 @@ public class DeviceScanFragment extends android.support.v4.app.Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_device_scan, container, false);
-        blueToothSwitch = (Switch)rootView.findViewById(R.id.blueToothSwitch);
-        blueToothSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        blueToothSwitch = (Switch) rootView.findViewById(R.id.blueToothSwitch);
 
-                mListener.onFragmentInteraction("blueToothSwitchOnCheckedChanged"+String.valueOf(b));
-            }
-        });
+        if (BlenderBluetoothManager.getInstance().mBluetoothAdapter == null) {
+            blueToothSwitch.setEnabled(false);
+
+        } else {
+            blueToothSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    mListener.onFragmentInteraction("blueToothSwitchOnCheckedChanged" + String.valueOf(b));
+                }
+            });
+        }
 
         setSwitchIsChecked(switchIsChecked);
         return rootView;
