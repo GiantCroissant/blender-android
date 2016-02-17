@@ -1,158 +1,161 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:context="com.giantcroissant.blender.CookBookDetailToDoFragment"
-    android:orientation="vertical"
-    android:background="@color/White">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/White"
+                android:orientation="vertical"
+                tools:context="com.giantcroissant.blender.CookBookDetailToDoFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <RelativeLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/BackgroundColor">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <android.support.v7.widget.CardView
+            android:id="@+id/checkboxListView"
             android:layout_width="match_parent"
-            android:layout_height="348dp"
-            android:elevation="5dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layoutButtons"
+            android:layout_alignParentTop="true"
+            android:layout_margin="16dp"
             android:background="@color/White"
-            android:id="@+id/checkboxListView">
-
-            <RelativeLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="6"
-                android:background="@color/White">
-
-                <TextView android:layout_width="wrap_content" android:layout_height="match_parent"
-                    android:text="水蜜桃汁"
-                    android:layout_weight="1"
-                    android:background="@color/White"
-                    android:textSize="@dimen/Headline"
-                    android:gravity="bottom"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="20dp"
-                    android:id="@+id/cookBookNameText"
-                    android:textColor="@color/cFF336900" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/disconnected"
-                    android:layout_weight="1.2"
-                    android:background="@color/White"
-                    android:textSize="@dimen/Caption"
-                    android:gravity="bottom|right"
-                    android:paddingBottom="10dp"
-                    android:id="@+id/IsConnectedBlueToothText"
-                    android:layout_toRightOf="@+id/cookBookNameText"
-                    android:textColor="@color/c26000000"
-                    android:layout_marginRight="16dp" />
-            </RelativeLayout>
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/checkListView"
-                android:layout_weight="1"
-                android:background="@color/White" />
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="32dp"
-            android:elevation="5dp"
-            android:background="@color/White"
-            android:layout_below="@+id/checkboxListView">
-
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/imageButton"
-                android:src="@drawable/start"
-                android:layout_weight="1.8"
-                android:background="@color/White"
-                android:visibility="invisible" />
-
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="@string/btn_confrim"
-                android:id="@+id/ConfrimButton"
-                android:textColor="@color/White"
-                android:background="@color/ColorPrimary"
-                android:visibility="visible"
-                android:clickable="true"
-                android:onClick="onClick" />
+            app:cardCornerRadius="@dimen/cardview_default_radius"
+            app:cardElevation="@dimen/cardview_default_elevation">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:elevation="2dp">
+
+                    <TextView
+                        android:id="@+id/cookBookNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:background="@color/White"
+                        android:text="水蜜桃汁"
+                        android:textColor="@color/cFF336900"
+                        android:textSize="@dimen/Headline"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/IsConnectedBlueToothText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="16dp"
+                        android:background="@color/White"
+                        android:text="@string/disconnected"
+                        android:textColor="@color/c26000000"
+                        android:textSize="@dimen/Body2"/>
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/checkListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/White"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:id="@+id/layoutButtons"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="32dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/White"
+            android:elevation="2dp">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/White"
+                android:src="@drawable/start"
+                android:visibility="invisible"/>
+
+            <Button
+                android:id="@+id/ConfrimButton"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/ColorPrimary"
+                android:clickable="true"
+                android:onClick="onClick"
+                android:text="@string/btn_confrim"
+                android:textColor="@color/White"
+                android:visibility="visible"/>
+
+            <LinearLayout
                 android:id="@+id/StartOrSkip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:visibility="visible">
 
                 <Button
+                    android:id="@+id/StartBlenderButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/btn_start"
-                    android:id="@+id/StartBlenderButton"
-                    android:textColor="@color/White"
-                    android:background="@color/ColorPrimary"
+                    android:layout_marginRight="2.5dp"
                     android:layout_weight="1"
-                    android:visibility="visible"
+                    android:background="@color/ColorPrimary"
                     android:clickable="true"
                     android:onClick="onClick"
-                    android:layout_marginRight="2.5dp" />
+                    android:text="@string/btn_start"
+                    android:textColor="@color/White"
+                    android:visibility="visible"/>
 
                 <Button
+                    android:id="@+id/SkipBlenderButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/btn_skip"
-                    android:id="@+id/SkipBlenderButton"
-                    android:textColor="@color/White"
-                    android:background="@color/ColorPrimary"
+                    android:layout_marginLeft="2.5dp"
                     android:layout_weight="1"
-                    android:visibility="visible"
+                    android:background="@color/ColorPrimary"
                     android:clickable="true"
                     android:onClick="onClick"
-                    android:layout_marginLeft="2.5dp" />
+                    android:text="@string/btn_skip"
+                    android:textColor="@color/White"
+                    android:visibility="visible"/>
             </LinearLayout>
 
             <Button
+                android:id="@+id/FinishButton"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/btn_finish"
-                android:id="@+id/FinishButton"
-                android:textColor="@color/White"
                 android:background="@color/ColorPrimaryDark"
-                android:visibility="visible"
                 android:clickable="true"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:text="@string/btn_finish"
+                android:textColor="@color/White"
+                android:visibility="visible"/>
 
             <Button
+                android:id="@+id/connectBlueToothButton"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:text="@string/btn_connect"
-                android:id="@+id/connectBlueToothButton"
-                android:textColor="@color/White"
                 android:background="@color/ColorPrimary"
-                android:visibility="visible"
                 android:clickable="true"
-                android:onClick="onClick" />
+                android:onClick="onClick"
+                android:text="@string/btn_connect"
+                android:textColor="@color/White"
+                android:visibility="visible"/>
         </RelativeLayout>
 
         <FrameLayout
@@ -163,10 +166,10 @@
             android:visibility="invisible">
 
             <ProgressBar
+                android:id="@+id/checkProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/checkProgressBar" />
+                android:layout_height="match_parent"/>
         </FrameLayout>
     </RelativeLayout>
 

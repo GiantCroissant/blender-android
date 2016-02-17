@@ -37,7 +37,7 @@ public class CookBookDetailToDoFragment extends Fragment {
     private ArrayList<CheckListItem> newCheckListItems;
     private int currentIndex;
 
-    public static CookBookDetailToDoFragment newInstance(int sectionNumber ,Cookbook cookBook) {
+    public static CookBookDetailToDoFragment newInstance(int sectionNumber, Cookbook cookBook) {
         CookBookDetailToDoFragment fragment = new CookBookDetailToDoFragment();
         fragment.cookBook = cookBook;
         Bundle args = new Bundle();
@@ -88,7 +88,7 @@ public class CookBookDetailToDoFragment extends Fragment {
             }
         };
 
-        mCheckListAdapter = new CheckListAdapter(this.getActivity() , R.layout.check_list_item, newCheckListItems, newOnCheckedChangeListener);
+        mCheckListAdapter = new CheckListAdapter(this.getActivity(), R.layout.check_list_item, newCheckListItems, newOnCheckedChangeListener);
         checkListListView.setAdapter(mCheckListAdapter);
         // Inflate the layout for this fragment
         return rootView;
@@ -102,12 +102,11 @@ public class CookBookDetailToDoFragment extends Fragment {
         }
     }
 
-    private void checkAllcheckBox()
-    {
+    private void checkAllcheckBox() {
         checkProgressBar.setMax(newCheckListItems.size());
         int currentCheckIndex = 0;
         for (CheckListItem newCheckListItem : newCheckListItems) {
-            if(newCheckListItem.getIsFinished()) //newCheckListItem.checkBox.isChecked()
+            if (newCheckListItem.getIsFinished()) //newCheckListItem.checkBox.isChecked()
             {
                 currentCheckIndex += 1;
             }
@@ -115,8 +114,7 @@ public class CookBookDetailToDoFragment extends Fragment {
         checkProgressBar.setProgress(currentCheckIndex);
     }
 
-    private void createFakeData()
-    {
+    private void createFakeData() {
         ArrayList<String> newSteps = new ArrayList<String>();
         newSteps.add("步驟1");
         newSteps.add("步驟2");
@@ -131,18 +129,15 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     }
 
-    public int getCurrentIndex()
-    {
+    public int getCurrentIndex() {
         return currentIndex;
     }
 
-    public void setCurrentIndex(int index)
-    {
+    public void setCurrentIndex(int index) {
         currentIndex = index;
 
         for (int i = 0; i < newCheckListItems.size(); i++) {
-            if(i < currentIndex)
-            {
+            if (i < currentIndex) {
                 newCheckListItems.get(i).setIsFinished(true);
             }
         }
@@ -150,26 +145,21 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     }
 
-    public void setIsConnected(boolean isConnected)
-    {
-        if(isConnected)
-        {
+    public void setIsConnected(boolean isConnected) {
+        if (isConnected) {
             TextView IsConnectedBlueToothText = (TextView) rootView.findViewById(R.id.IsConnectedBlueToothText);
-            if(IsConnectedBlueToothText != null)
-            {
+            if (IsConnectedBlueToothText != null) {
                 IsConnectedBlueToothText.setText(R.string.connected);
             }
         }
     }
 
-    private void setUIValue()
-    {
+    private void setUIValue() {
         TextView cookBookNameText = (TextView) rootView.findViewById(R.id.cookBookNameText);
         cookBookNameText.setText(cookBook.getName());
     }
 
-    private void setStepsList()
-    {
+    private void setStepsList() {
         List<CookbookStep> cooksteps = cookBook.getSteps1();
 
 //        ArrayList<String> newSteps = cookBook.getSteps();
@@ -178,7 +168,7 @@ public class CookBookDetailToDoFragment extends Fragment {
 
         newCheckListItems = new ArrayList<CheckListItem>();
 
-        for (int i = 0; i < cooksteps.size(); ++ i) {
+        for (int i = 0; i < cooksteps.size(); ++i) {
             CookbookStep cs = cooksteps.get(i);
             String tmpStep = cs.getStepDesc() + "";
             int speed = Integer.parseInt(cs.getStepSpeed());
@@ -204,10 +194,8 @@ public class CookBookDetailToDoFragment extends Fragment {
 
     }
 
-    public void setConfrim()
-    {
-        if(getFinished())
-        {
+    public void setConfrim() {
+        if (getFinished()) {
             return;
         }
 //        Log.e("currentIndex", String.valueOf(currentIndex));
@@ -219,8 +207,7 @@ public class CookBookDetailToDoFragment extends Fragment {
         currentIndex++;
     }
 
-    public void setReStart()
-    {
+    public void setReStart() {
         for (CheckListItem newCheckListItem : newCheckListItems) {
             newCheckListItem.setIsFinished(false);
 //            newCheckListItem.imageView.setVisibility(View.INVISIBLE);
@@ -230,10 +217,8 @@ public class CookBookDetailToDoFragment extends Fragment {
         currentIndex = 0;
     }
 
-    public boolean getIsNeedStartBlender()
-    {
-        if(getFinished())
-        {
+    public boolean getIsNeedStartBlender() {
+        if (getFinished()) {
             return false;
         }
 
@@ -249,10 +234,8 @@ public class CookBookDetailToDoFragment extends Fragment {
 //        return Integer.parseInt(newTimeOfSteps.get(currentIndex)) > 0 && Integer.parseInt(newSpeedOfSteps.get(currentIndex))> 0;
     }
 
-    public int getCookBoookTimeOfSteps()
-    {
-        if(getFinished())
-        {
+    public int getCookBoookTimeOfSteps() {
+        if (getFinished()) {
             return 0;
         }
 
@@ -263,10 +246,8 @@ public class CookBookDetailToDoFragment extends Fragment {
         //return Integer.parseInt(cookBook.getTimeOfSteps().get(currentIndex));
     }
 
-    public int getCookBoookSpeedOfSteps()
-    {
-        if(getFinished())
-        {
+    public int getCookBoookSpeedOfSteps() {
+        if (getFinished()) {
             return 0;
         }
 
@@ -277,16 +258,14 @@ public class CookBookDetailToDoFragment extends Fragment {
         //return Integer.parseInt(cookBook.getSpeedOfSteps().get(currentIndex));
     }
 
-    public boolean getFinished()
-    {
+    public boolean getFinished() {
 
 //        mCheckListAdapter.notifyDataSetChanged();
         return currentIndex >= newCheckListItems.size();
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         mListener.onCookBookDetailToDoFragmentInteraction("Ok");
     }
@@ -296,13 +275,13 @@ public class CookBookDetailToDoFragment extends Fragment {
         super.onAttach(activity);
 
         ((CookBookDetailActivity) activity).onFragmentAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+            getArguments().getInt(ARG_SECTION_NUMBER));
 
         try {
             mListener = (OnCookBookDetailToDoFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -317,7 +296,7 @@ public class CookBookDetailToDoFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

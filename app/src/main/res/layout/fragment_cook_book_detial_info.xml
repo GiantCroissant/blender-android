@@ -46,6 +46,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:text="水蜜桃汁"
+                            android:textStyle="bold"
                             android:textColor="@color/ColorPrimaryDark"
                             android:textSize="@dimen/Headline"/>
 

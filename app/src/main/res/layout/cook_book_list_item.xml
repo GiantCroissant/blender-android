@@ -1,62 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#EEEEEE"
                 android:orientation="horizontal">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#EEEEEE"
-                    android:elevation="2dp"
-                    android:orientation="horizontal"
-                    tools:ignore="UnusedAttribute">
-
-        <ImageView
-            android:id="@+id/recipe_icon"
-            android:layout_width="160dp"
-            android:layout_height="124dp"
-            android:background="@color/White"
-            android:contentDescription="Recipe Image"
-            android:src="@drawable/pictures_01"
-            tools:ignore="HardcodedText"/>
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="#EEEEEE"
+        android:orientation="horizontal"
+        app:cardCornerRadius="@dimen/cardview_default_radius"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        tools:ignore="UnusedAttribute">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="124dp"
-            android:layout_toRightOf="@+id/recipe_icon"
+            android:layout_height="wrap_content"
             android:background="@color/White"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp">
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/recipe_icon"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@color/White"
+                android:contentDescription="Recipe Image"
+                android:scaleType="centerCrop"
+                android:src="@drawable/pictures_01"
+                tools:ignore="HardcodedText"/>
+
 
             <TextView
                 android:id="@+id/cookbooknameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="葡萄檸檬汁"
                 android:textColor="@color/ColorPrimaryDark"
-                android:textSize="@dimen/Subheader"
+                android:textSize="@dimen/Headline"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText"/>
 
-            <TextView
-                android:id="@+id/ingredientTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="top"
-                android:text="Test"
-                android:textColor="@color/c54000000"
-                android:textSize="@dimen/Body1"
-                tools:ignore="HardcodedText"/>
         </LinearLayout>
 
-    </RelativeLayout>
+    </android.support.v7.widget.CardView>
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.giantcroissant.blender;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
@@ -124,8 +125,12 @@ public class CookBookDetailInfoFragment extends Fragment {
         likeCookbookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 cookBook.setIsCollected(!cookBook.getIsCollected());
                 updateLikeButtonImage();
+
+                String msg = cookBook.getName() + " " + (cookBook.getIsCollected() ? "已加入收藏" : "已取消收藏");
+                Snackbar.make(v, msg, Snackbar.LENGTH_LONG).show();
 
                 CookBookRealm cookBookRealm = realm.where(CookBookRealm.class)
                     .equalTo("Id", recipeId)
