@@ -7,62 +7,69 @@ import java.util.ArrayList;
  */
 public class ConvertToCookbook {
 
-//    public static CookbookParcelable ConvertFromRealmToParceable(CookBookRealm cookbookRealm) {
-//
-//    }
+    public static CookbookParcelable convertToParcelable(Cookbook cookbook) {
 
-    public static CookbookParcelable convertToParceable(Cookbook cookbook) {
-
-        ArrayList<CookbookStepParcelable> cookbookStepParcelables = new ArrayList<CookbookStepParcelable>();
-        for(CookbookStep cookbookStep : cookbook.getSteps1()) {
+        ArrayList<CookbookStepParcelable> cookbookStepParcelables = new ArrayList<>();
+        for (CookbookStep cookbookStep : cookbook.getSteps1()) {
             CookbookStepParcelable csp = new CookbookStepParcelable(
-                    cookbookStep.getStepDesc(),
-                    cookbookStep.getStepSpeed(),
-                    cookbookStep.getStepTime()
+                cookbookStep.getStepDesc(),
+                cookbookStep.getStepSpeed(),
+                cookbookStep.getStepTime()
             );
             cookbookStepParcelables.add(csp);
         }
 
-        CookbookParcelable cp = new CookbookParcelable(
-                cookbook.getId(),
-                cookbook.getUrl(),
-                cookbook.getImageUrl(),
-                cookbook.getName(),
-                cookbook.getDescription(),
-                cookbook.getIngredient(),
-                cookbookStepParcelables,
-                cookbook.getViewedPeopleCount(),
-                cookbook.getCollectedPeopleCount(),
-                cookbook.getIsCollected()
+        return new CookbookParcelable(
+            cookbook.getId(),
+            cookbook.getUrl(),
+            cookbook.getImageUrl(),
+            cookbook.getName(),
+            cookbook.getDescription(),
+            cookbook.getIngredient(),
+            cookbookStepParcelables,
+            cookbook.getViewedPeopleCount(),
+            cookbook.getCollectedPeopleCount(),
+            cookbook.getIsCollected(),
+            cookbook.getImageName()
         );
-
-        return cp;
     }
 
-    public static Cookbook convertFromParceable(CookbookParcelable cookbookParcelable) {
-        ArrayList<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
-        for(CookbookStepParcelable csp : cookbookParcelable.steps) {
+    public static Cookbook convertFromParcelable(CookbookParcelable cookbookParcelable) {
+        ArrayList<CookbookStep> cookbookSteps = new ArrayList<>();
+        for (CookbookStepParcelable csp : cookbookParcelable.steps) {
             CookbookStep cs = new CookbookStep();
             cs.setStepDesc(csp.stepDesc);
             cs.setStepSpeed(csp.stepSpeed);
             cs.setStepTime(csp.stepTime);
-
             cookbookSteps.add(cs);
         }
 
-        Cookbook c = new Cookbook(
-                cookbookParcelable.id,
-                cookbookParcelable.url,
-                cookbookParcelable.imageUrl,
-                cookbookParcelable.name,
-                cookbookParcelable.description,
-                cookbookParcelable.ingredient,
-                cookbookSteps,
-                cookbookParcelable.viewedPeople,
-                cookbookParcelable.collectedPeople,
-                cookbookParcelable.beCollected
-        );
+        /*
+        String id,
+            String name,
+            String description,
+            String url,
+            String image_url,
+            String ingredient,
+            List<CookbookStep> steps1,
+            int viewedPeople,
+            int collectedPeople,
+            boolean beCollected,
+            String imageName)
+         */
 
-        return c;
+        return new Cookbook(
+            cookbookParcelable.id,
+            cookbookParcelable.name,
+            cookbookParcelable.description,
+            cookbookParcelable.url,
+            cookbookParcelable.imageUrl,
+            cookbookParcelable.ingredient,
+            cookbookSteps,
+            cookbookParcelable.viewedPeople,
+            cookbookParcelable.collectedPeople,
+            cookbookParcelable.beCollected,
+            cookbookParcelable.imageName
+        );
     }
 }

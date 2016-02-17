@@ -98,7 +98,6 @@ public class BlenderBluetoothManager {
     public void connectBlender(AppCompatActivity activity,BroadcastReceiver gattUpdateReceiver)
     {
         currentActicity = activity;
-
         activity.registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
@@ -107,18 +106,11 @@ public class BlenderBluetoothManager {
         }
         else
         {
-
-//            mDeviceName = BlenderBluetoothManager.getInstance().mDeviceName;
-//            mDeviceAddress = BlenderBluetoothManager.getInstance().mDeviceAddress;
-
-            if(mDeviceName != null && mDeviceAddress != null )
+            if (mDeviceName != null && mDeviceAddress != null )
             {
                 Intent gattServiceIntent = new Intent(activity, BluetoothLeService.class);
                 activity.bindService(gattServiceIntent, mServiceConnection, currentActicity.BIND_AUTO_CREATE);
             }
-
-//            mClickCharacteristic = BlenderBluetoothManager.getInstance().mClickCharacteristic;
-
         }
     }
 

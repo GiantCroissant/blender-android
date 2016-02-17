@@ -46,7 +46,8 @@ public class Cookbook {
             List<CookbookStep> steps1,
             int viewedPeople,
             int collectedPeople,
-            boolean beCollected)
+            boolean beCollected,
+            String imageName)
     {
         this.id = id;
         this.name = name;
@@ -62,6 +63,7 @@ public class Cookbook {
         this.viewedPeople = viewedPeople;
         this.collectedPeople = collectedPeople;
         this.beCollected = beCollected;
+        this.imageName = imageName;
     }
 
 

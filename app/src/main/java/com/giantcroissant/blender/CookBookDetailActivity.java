@@ -63,7 +63,7 @@ public class CookBookDetailActivity extends AppCompatActivity
         position = intent.getIntExtra("position", 0);
         currentFragmentIndex = intent.getIntExtra("currentFragmentIndex", 0);
         CookbookParcelable cp = intent.getParcelableExtra("cookbook");
-        cookBook = ConvertToCookbook.convertFromParceable(cp);
+        cookBook = ConvertToCookbook.convertFromParcelable(cp);
 
         if (intent.getIntExtra("requestCode", 0) != -1) {
             requestCode = intent.getIntExtra("requestCode", 0);
@@ -83,6 +83,7 @@ public class CookBookDetailActivity extends AppCompatActivity
 
     private void setDefaultFragment() {
         if (requestCode == 2) {
+
             currentFragmentIndex = 1;
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             if (cookBookDetailToDoFragment == null) {
@@ -107,6 +108,7 @@ public class CookBookDetailActivity extends AppCompatActivity
             toDoButtonColor.setImageResource(R.color.TabSelectColor);
 
             fragmentTransaction.commit();
+
         } else {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
@@ -217,7 +219,7 @@ public class CookBookDetailActivity extends AppCompatActivity
 
         } else if (view.getId() == R.id.cook_book_video_button) {
             Intent intent = new Intent(this, CookBookDetailVideoActivity.class);
-            intent.putExtra("cookbook", ConvertToCookbook.convertToParceable(cookBook));
+            intent.putExtra("cookbook", ConvertToCookbook.convertToParcelable(cookBook));
             startActivityForResult(intent, 0);
 
         } else if (view.getId() == R.id.cook_book_to_do_button) {

@@ -1,8 +1,6 @@
 package com.giantcroissant.blender;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -71,7 +69,7 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Yo
         getView();
 
         CookbookParcelable cp = (CookbookParcelable)intent.getParcelableExtra("cookbook");
-        cookBook = ConvertToCookbook.convertFromParceable(cp);
+        cookBook = ConvertToCookbook.convertFromParcelable(cp);
 
 //        cookBook = new Cookbook();
 //        cookBook.setId(intent.getStringExtra("cookBookListViewID"));

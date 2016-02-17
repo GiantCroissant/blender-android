@@ -1,11 +1,9 @@
 package com.giantcroissant.blender;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by apprentice on 1/29/16.
@@ -17,26 +15,24 @@ public class CookbookParcelable implements Parcelable {
     public String name;
     public String description;
     public String ingredient;
-    public ArrayList<CookbookStepParcelable> steps = new ArrayList<CookbookStepParcelable>();
-//    private Date uploadTimestamp;
-//    private Date createTime;
+    public ArrayList<CookbookStepParcelable> steps = new ArrayList<>();
     public int viewedPeople;
     public int collectedPeople;
     public boolean beCollected;
-//    private Bitmap image;
-//    private int imageID;
+    public String imageName;
 
     public CookbookParcelable(
-            String id,
-            String url,
-            String imageUrl,
-            String name,
-            String description,
-            String ingredient,
-            ArrayList<CookbookStepParcelable> steps,
-            int viewedPeople,
-            int collectedPeople,
-            boolean beCollected) {
+        String id,
+        String url,
+        String imageUrl,
+        String name,
+        String description,
+        String ingredient,
+        ArrayList<CookbookStepParcelable> steps,
+        int viewedPeople,
+        int collectedPeople,
+        boolean beCollected, String imageName)
+    {
         this.id = id;
         this.url = url;
         this.imageUrl = imageUrl;
@@ -47,6 +43,7 @@ public class CookbookParcelable implements Parcelable {
         this.viewedPeople = viewedPeople;
         this.collectedPeople = collectedPeople;
         this.beCollected = beCollected;
+        this.imageName = imageName;
     }
 
     @Override
@@ -67,6 +64,7 @@ public class CookbookParcelable implements Parcelable {
         dest.writeInt(viewedPeople);
         dest.writeInt(collectedPeople);
         dest.writeByte((byte) (beCollected ? 1 : 0));
+        dest.writeString(imageName);
     }
 
     public CookbookParcelable(Parcel in) {
@@ -80,6 +78,7 @@ public class CookbookParcelable implements Parcelable {
         viewedPeople = in.readInt();
         collectedPeople = in.readInt();
         beCollected = (in.readByte() != 0);
+        imageName = in.readString();
     }
 
     public static final Parcelable.Creator<CookbookParcelable> CREATOR = new Parcelable.Creator<CookbookParcelable>() {

@@ -19,13 +19,13 @@ import java.util.List;
  * Created by liyihao on 15/7/14.
  */
 public class CookBookAdapter extends ArrayAdapter<Cookbook> {
-
     private static final String TAG = CookBookAdapter.class.getName();
+
     // 畫面資源編號
     private int resource;
+
     // 包裝的記事資料
     private List<Cookbook> cookBooks;
-
 
     public CookBookAdapter(Context context, int resource, List<Cookbook> cookBooks) {
         super(context, resource, cookBooks);
@@ -66,8 +66,6 @@ public class CookBookAdapter extends ArrayAdapter<Cookbook> {
                 .load(Uri.parse(imagePath))
                 .centerCrop()
                 .into(cookbookImage);
-
-            Log.e(TAG, cookBook.getName() + ": imagePath = " + imagePath);
 
         } else {
             Log.e(TAG, cookBook.getName() + ": cookBook.getImageName() == null");

@@ -158,15 +158,7 @@ public class MainActivity extends AppCompatActivity
         initDrawer();
 
 
-//        int fragmentId = 0;
-//        View mFragmentContainerView = findViewById(fragmentId);
-
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-//        if (!mUserLearnedDrawer && !mFromSavedInstanceState) {
-////            mDrawerLayout.openDrawer(mDrawerLayout);
-//        }
-
         mDrawerLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -230,7 +222,8 @@ public class MainActivity extends AppCompatActivity
                             cookbookSteps,
                             10,
                             20,
-                            true);
+                            true,
+                            recipeJson.getImage());
 
                         cookbook.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_01));
                         cookbook.setImageID(R.drawable.pictures_01);
@@ -346,30 +339,30 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        if (resultCode == 100) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_content, AutoTestFragment.newInstance(2 + 1, switchIsChecked));
-            fragmentTransaction.commit();
-
-            checkSupportBLE();
-            checkSupportBlueTooth();
-            enableBlueToothIntent();
-
-        } else if (resultCode == 103) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            //noinspection PointlessArithmeticExpression
-            fragmentTransaction.replace(R.id.main_content, CookBooksFragment.newInstance(0 + 1, realm));
-            fragmentTransaction.commit();
-
-        } else if (resultCode == 104) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.main_content, UserDataFragment.newInstance(1 + 1, realm));
-            fragmentTransaction.commit();
-        }
-    }
+//    @Override
+//    protected void onPostResume() {
+//        super.onPostResume();
+//        if (resultCode == 100) {
+//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.main_content, AutoTestFragment.newInstance(2 + 1, switchIsChecked));
+//            fragmentTransaction.commit();
+//
+//            checkSupportBLE();
+//            checkSupportBlueTooth();
+//            enableBlueToothIntent();
+//
+//        } else if (resultCode == 103) {
+//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//            //noinspection PointlessArithmeticExpression
+//            fragmentTransaction.replace(R.id.main_content, CookBooksFragment.newInstance(0 + 1, realm));
+//            fragmentTransaction.commit();
+//
+//        } else if (resultCode == 104) {
+//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//            fragmentTransaction.replace(R.id.main_content, UserDataFragment.newInstance(1 + 1, realm));
+//            fragmentTransaction.commit();
+//        }
+//    }
 
     private void moveDrawerToTop() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -417,7 +410,7 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        mDrawerToggle.syncState();
+//        mDrawerToggle.syncState();
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -850,18 +843,20 @@ public class MainActivity extends AppCompatActivity
                     cookbookSteps,
                     cookBookRealm.getViewedPeopleCount(),
                     cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected());
+                    cookBookRealm.getBeCollected(),
+                    cookBookRealm.getImageName()
+                );
 
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             tmpCookBooks.add(newCookBook);
         }
         cookbookDetailIntent.putExtra("requestCode", 2);
         cookbookDetailIntent.putExtra("position", resultPosition);
-        cookbookDetailIntent.putExtra("cookbook", ConvertToCookbook.convertToParceable(tmpCookBooks.get(0)));
+        cookbookDetailIntent.putExtra("cookbook", ConvertToCookbook.convertToParcelable(tmpCookBooks.get(0)));
         startActivityForResult(cookbookDetailIntent, REQUEST_COOKBOOK);
         resultCode = 0;
 
-
+        overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
     }
 
     // Handles various events fired by the Service.

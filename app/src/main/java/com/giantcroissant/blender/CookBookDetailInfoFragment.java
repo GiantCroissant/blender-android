@@ -1,9 +1,9 @@
 package com.giantcroissant.blender;
 
 import android.app.Activity;
-import android.graphics.BitmapFactory;
-import android.support.v4.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 
 /**
@@ -27,6 +29,7 @@ public class CookBookDetailInfoFragment extends Fragment {
 
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String TAG = CookBookDetailInfoFragment.class.getName();
     private OnCookBookDetailInfoFragmentInteractionListener mListener;
     private Cookbook cookBook;
     private View rootView;
@@ -49,8 +52,7 @@ public class CookBookDetailInfoFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_cook_book_detial_info, container, false);
         setUIValue();
         return rootView;
@@ -119,10 +121,15 @@ public class CookBookDetailInfoFragment extends Fragment {
             likeCookbookButton.setImageResource(R.drawable.icon_collect_n) ;
         }
 
-        ImageView cookbookicon = (ImageView) rootView.findViewById(R.id.cookBookIcon);
-        cookbookicon.setImageBitmap(BitmapFactory.decodeResource(getResources(),cookBook.getImageID()));
 
-//        cookbookicon.setImageURI(Uri.parse(cookBook.getImageUrl()));
+        ImageView imageView = (ImageView) rootView.findViewById(R.id.cookBookIcon);
+        String imagePath = "file:///android_asset/recipe_images/" + cookBook.getImageName();
+        Log.e(TAG, "imagePath = " + imagePath);
+
+        Glide.with(this)
+        .load(Uri.parse(imagePath))
+        .centerCrop()
+        .into(imageView);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

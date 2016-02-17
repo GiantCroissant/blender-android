@@ -2,7 +2,6 @@ package com.giantcroissant.blender;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
@@ -42,7 +40,7 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
     private ArrayList<Cookbook> userRecordCookBooks;
     private ArrayList<Cookbook> userLikeCookBooks;
     private ArrayList<Cookbook> currentCookBooks;
-//    private ArrayList<CookBook> cookBooks;
+    //    private ArrayList<CookBook> cookBooks;
     private int tabIndex = 0;
 
     private OnUserDataFragmentInteractionListener mListener;
@@ -101,8 +99,7 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
         }
     }
 
-    private void getUserRecordCookBooks(Realm realm)
-    {
+    private void getUserRecordCookBooks(Realm realm) {
         //RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
         RealmResults<CookBookRealm> userRecordRealmResult = realm.where(CookBookRealm.class).findAll();//.findAllSorted("uploadTimestamp", false);
         userRecordRealmResult.sort("uploadTimestamp");
@@ -138,16 +135,19 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
             }
 
             Cookbook newCookBook = new Cookbook(
-                    cookBookRealm.getId(),
-                    cookBookRealm.getName(),
-                    cookBookRealm.getDescription(),
-                    cookBookRealm.getUrl(),
-                    cookBookRealm.getImageUrl(),
-                    cookBookRealm.getIngredient(),
-                    cookbookSteps,
-                    cookBookRealm.getViewedPeopleCount(),
-                    cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected());
+                cookBookRealm.getId(),
+                cookBookRealm.getName(),
+                cookBookRealm.getDescription(),
+                cookBookRealm.getUrl(),
+                cookBookRealm.getImageUrl(),
+                cookBookRealm.getIngredient(),
+                cookbookSteps,
+                cookBookRealm.getViewedPeopleCount(),
+                cookBookRealm.getCollectedPeopleCount(),
+                cookBookRealm.getBeCollected(),
+                cookBookRealm.getImageName()
+            );
+
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             //newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());
@@ -155,8 +155,7 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
         }
     }
 
-    private void getUserLikeCookBooks(Realm realm)
-    {
+    private void getUserLikeCookBooks(Realm realm) {
 //        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
 //        tmpCookBookRealmQuery = tmpCookBookRealmQuery.equalTo("beCollected", true);
 //        userLikeRealmResult = tmpCookBookRealmQuery.findAllSorted("uploadTimestamp", false);
@@ -193,16 +192,18 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
             }
 
             Cookbook newCookBook = new Cookbook(
-                    cookBookRealm.getId(),
-                    cookBookRealm.getName(),
-                    cookBookRealm.getDescription(),
-                    cookBookRealm.getUrl(),
-                    cookBookRealm.getImageUrl(),
-                    cookBookRealm.getIngredient(),
-                    cookbookSteps,
-                    cookBookRealm.getViewedPeopleCount(),
-                    cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected());
+                cookBookRealm.getId(),
+                cookBookRealm.getName(),
+                cookBookRealm.getDescription(),
+                cookBookRealm.getUrl(),
+                cookBookRealm.getImageUrl(),
+                cookBookRealm.getIngredient(),
+                cookbookSteps,
+                cookBookRealm.getViewedPeopleCount(),
+                cookBookRealm.getCollectedPeopleCount(),
+                cookBookRealm.getBeCollected(),
+                cookBookRealm.getImageName()
+            );
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
 
             //newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
@@ -211,17 +212,16 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
         }
     }
 
-    public void setCurrentCookBooks(Realm realm,int tabIndex) {
+    public void setCurrentCookBooks(Realm realm, int tabIndex) {
         getUserRecordCookBooks(realm);
         getUserLikeCookBooks(realm);
         Button recordCookBookButton = (Button) rootView.findViewById(R.id.userRecordCookBookButton);
         Button likeCookBookButton = (Button) rootView.findViewById(R.id.userLikeCookBookButton);
         ImageButton recordCookBookButtonColor = (ImageButton) rootView.findViewById(R.id.userRecordCookBookButton_SelectColor);
         ImageButton likeCookBookButtonColor = (ImageButton) rootView.findViewById(R.id.userLikeCookBookButton_SelectColor);
-        if (tabIndex == 0)
-        {
+        if (tabIndex == 0) {
             currentCookBooks = userRecordCookBooks;
-            mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.user_cook_book_list_item, currentCookBooks);
+            mCookBookAdapter = new CookBookAdapter(this.getActivity(), R.layout.user_cook_book_list_item, currentCookBooks);
             cookbookListView.setAdapter(mCookBookAdapter);
 
             recordCookBookButton.setTextColor(getResources().getColor(R.color.White));
@@ -230,11 +230,9 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
             likeCookBookButtonColor.setImageResource(R.color.TabNoSelectColor);
 
             this.tabIndex = 0;
-        }
-        else if(tabIndex == 1)
-        {
+        } else if (tabIndex == 1) {
             currentCookBooks = userLikeCookBooks;
-            mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.user_cook_book_list_item, currentCookBooks);
+            mCookBookAdapter = new CookBookAdapter(this.getActivity(), R.layout.user_cook_book_list_item, currentCookBooks);
             cookbookListView.setAdapter(mCookBookAdapter);
 
             recordCookBookButton.setTextColor(getResources().getColor(R.color.c70White));
@@ -253,7 +251,7 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
 
         intent.putExtra("position", position);
 
-        intent.putExtra("cookbook", ConvertToCookbook.convertToParceable(currentCookBooks.get(position)));
+        intent.putExtra("cookbook", ConvertToCookbook.convertToParcelable(currentCookBooks.get(position)));
 
 //        intent.putExtra("cookBookListViewID", currentCookBooks.get(position).getId());
 //        intent.putExtra("cookBookListViewName", currentCookBooks.get(position).getName());
@@ -278,12 +276,12 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+            getArguments().getInt(ARG_SECTION_NUMBER));
         try {
             mListener = (OnUserDataFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -299,7 +297,7 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
@@ -311,17 +309,14 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
 
     public void upDateListView(Realm realm) {
 
-        if(currentCookBooks == userRecordCookBooks)
-        {
+        if (currentCookBooks == userRecordCookBooks) {
             getUserRecordCookBooks(realm);
             currentCookBooks = userRecordCookBooks;
-        }
-        else if(currentCookBooks == userLikeCookBooks)
-        {
+        } else if (currentCookBooks == userLikeCookBooks) {
             getUserLikeCookBooks(realm);
             currentCookBooks = userLikeCookBooks;
         }
-        mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
+        mCookBookAdapter = new CookBookAdapter(this.getActivity(), R.layout.cook_book_list_item, currentCookBooks);
         cookbookListView.setAdapter(mCookBookAdapter);
     }
 

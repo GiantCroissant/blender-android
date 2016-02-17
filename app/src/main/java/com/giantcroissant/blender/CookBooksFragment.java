@@ -54,7 +54,6 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
     public static CookBooksFragment newInstance(int sectionNumber, Realm realm) {
         CookBooksFragment cookBooksFragment = new CookBooksFragment();
         cookBooksFragment.realm = realm;
-//        cookBooksFragment.cookBookRealmQuery = cookBookRealmQuery;
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         cookBooksFragment.setArguments(args);
@@ -123,7 +122,10 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 cookbookSteps,
                 cookBookRealm.getViewedPeopleCount(),
                 cookBookRealm.getCollectedPeopleCount(),
-                cookBookRealm.getBeCollected());
+                cookBookRealm.getBeCollected(),
+                cookBookRealm.getImageName()
+            );
+
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             newCookBook.setImageID(cookBookRealm.getImageID());
             newCookBook.setImageName(cookBookRealm.getImageName());
@@ -142,7 +144,6 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 cookbookStep.setStepDesc(cookbookStepRealm.getStepDesc());
                 cookbookStep.setStepSpeed(cookbookStepRealm.getStepSpeed());
                 cookbookStep.setStepTime(cookbookStepRealm.getStepTime());
-
                 cookbookSteps.add(cookbookStep);
             }
 
@@ -156,12 +157,15 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 cookbookSteps,
                 cookBookRealm.getViewedPeopleCount(),
                 cookBookRealm.getCollectedPeopleCount(),
-                cookBookRealm.getBeCollected());
+                cookBookRealm.getBeCollected(),
+                cookBookRealm.getImageName()
+            );
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
 
             // This cause out of memory exception, comment for now.
             //newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());
+            newCookBook.setImageName(cookBookRealm.getImageName());
             hotCookBooks.add(newCookBook);
         }
     }
@@ -180,11 +184,9 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
             cookbookListView.setAdapter(mCookBookAdapter);
             newCookBookButton.setTextColor(getResources().getColor(R.color.White));
             newCookBookButtonColor.setImageResource(R.color.TabSelectColor);
-
             hotCookBookButton.setTextColor(getResources().getColor(R.color.c70White));
             hotCookBookButtonColor.setImageResource(R.color.TabNoSelectColor);
 
-//                this.tabIndex = 0;
         } else if (tabIndex == 1) {
             currentCookBooks = hotCookBooks;
             mCookBookAdapter = new CookBookAdapter(this.getActivity(), R.layout.cook_book_list_item, currentCookBooks);
@@ -192,17 +194,12 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 
             newCookBookButton.setTextColor(getResources().getColor(R.color.c70White));
             newCookBookButtonColor.setImageResource(R.color.TabNoSelectColor);
-
             hotCookBookButton.setTextColor(getResources().getColor(R.color.White));
             hotCookBookButtonColor.setImageResource(R.color.TabSelectColor);
-
-//                this.tabIndex = 1;
         }
-
     }
 
     public void upDateListView(Realm realm) {
-
         if (currentCookBooks == newCookBooks) {
             getNewCookBooks(realm);
             currentCookBooks = newCookBooks;
@@ -215,9 +212,11 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
     }
 
     private void selectItem(int position) {
+        CookbookParcelable cookbook = ConvertToCookbook.convertToParcelable(currentCookBooks.get(position));
+
         Intent intent = new Intent(this.getActivity(), CookBookDetailActivity.class);
         intent.putExtra("position", position);
-        intent.putExtra("cookbook", ConvertToCookbook.convertToParceable(currentCookBooks.get(position)));
+        intent.putExtra("cookbook", cookbook);
         intent.putExtra("requestCode", 103);
 
         getActivity().startActivityFromFragment(this, intent, 103);
@@ -235,14 +234,6 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
             throw new ClassCastException(activity.toString()
                 + " must implement OnFragmentInteractionListener");
         }
-//        ((SideMenuActivity) activity).onSectionAttached(
-//                getArguments().getInt(ARG_SECTION_NUMBER));
-//        try {
-//            mListener = (OnCookBooksFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
     }
 
     @Override
@@ -263,8 +254,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
      */
     public interface OnCookBooksFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onCookBookFragmentInteraction(String string);
+        void onCookBookFragmentInteraction(String string);
     }
-
 
 }
