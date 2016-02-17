@@ -24,7 +24,7 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Yo
     private String cookBookID;
     public Cookbook cookBook;
     private ActionBar actionBar;
-    public String YOUTUBE_VIDEO_ID = "pKbac2kh0nM";                            // Declaring the Toolbar Object
+//    public String YOUTUBE_VIDEO_ID = "pKbac2kh0nM";                            // Declaring the Toolbar Object
 
     /**
      * Whether or not the system UI should be auto-hidden after
@@ -68,25 +68,10 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Yo
         Intent intent = getIntent();
         getView();
 
-        CookbookParcelable cp = (CookbookParcelable)intent.getParcelableExtra("cookbook");
+        CookbookParcelable cp = intent.getParcelableExtra("cookbook");
         cookBook = ConvertToCookbook.convertFromParcelable(cp);
 
-//        cookBook = new Cookbook();
-//        cookBook.setId(intent.getStringExtra("cookBookListViewID"));
-//        cookBook.setName(intent.getStringExtra("cookBookListViewName"));
-//        cookBook.setDescription(intent.getStringExtra("cookBookListViewDescription"));
-//        cookBook.setUrl(intent.getStringExtra("cookBookListViewUrl"));
-//        cookBook.setImageUrl(intent.getStringExtra("cookBookListViewImageUrl"));
-//        cookBook.setIngredient(intent.getStringExtra("cookBookListViewIngredient"));
-//        cookBook.setStep(intent.getStringArrayListExtra("cookBookListViewSteps"));
-//        cookBook.setViewedPeopleCount(intent.getIntExtra("cookBookListViewViewPeople", 0));
-//        cookBook.setCollectedPeopleCount(intent.getIntExtra("cookBookListViewCollectedPeople", 0));
-//        cookBook.setIsCollected(intent.getBooleanExtra("cookBookListIsCollected", false));
-//        cookBook.setTimeOfStep(intent.getStringArrayListExtra("cookBookListViewTimeOfSteps"));
-//        cookBook.setSpeedOfStep(intent.getStringArrayListExtra("cookBookListViewSpeedOfSteps"));
         getRealm();
-
-
         setActionbar();
         setButtonListener();
         setDefaultFragment();
@@ -286,7 +271,7 @@ public class CookBookDetailVideoActivity extends AppCompatActivity implements Yo
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-            player.cueVideo(YOUTUBE_VIDEO_ID);
+            player.cueVideo(cookBook.getVideoCode());
         }
     }
 

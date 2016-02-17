@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.giantcroissant.blender.realm.CookBookRealm;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,8 +97,8 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
                 cookBookRealm.getViewedPeopleCount(),
                 cookBookRealm.getCollectedPeopleCount(),
                 cookBookRealm.getBeCollected(),
-                cookBookRealm.getImageName()
-            );
+                cookBookRealm.getImageName(),
+                cookBookRealm.getVideoCode());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());

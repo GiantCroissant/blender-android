@@ -1,5 +1,7 @@
-package com.giantcroissant.blender;
+package com.giantcroissant.blender.realm;
 
+
+import com.giantcroissant.blender.CookbookStepRealm;
 
 import java.util.Date;
 
@@ -34,6 +36,7 @@ public class CookBookRealm extends RealmObject {
 //    private String speedOfSteps;
     private int imageID;
     private String imageName;
+    private String videoCode;
 
     public String getId() { return Id; }
     public void   setId(String Id) { this.Id = Id; }
@@ -112,5 +115,13 @@ public class CookBookRealm extends RealmObject {
 
     public String getImageName() { return imageName; }
     public void setImageName(String imageName) { this.imageName = imageName; }
+
+    public void setVideoCode(String videoCode) {
+        this.videoCode = videoCode;
+    }
+
+    public String getVideoCode() {
+        return videoCode;
+    }
 }
 

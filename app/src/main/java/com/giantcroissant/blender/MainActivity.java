@@ -37,6 +37,7 @@ import com.giantcroissant.blender.jsonModel.RecipesCollectionDataJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesIngredientJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesStepJsonObject;
+import com.giantcroissant.blender.realm.CookBookRealm;
 import com.giantcroissant.blender.realm.RealmHelper;
 import com.google.gson.Gson;
 
@@ -219,11 +220,13 @@ public class MainActivity extends AppCompatActivity
                             10,
                             20,
                             false,
-                            recipeJson.getImage());
+                            recipeJson.getImage(),
+                            recipeJson.getVideoCode());
 
                         cookbook.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_01));
                         cookbook.setImageID(R.drawable.pictures_01);
                         cookbook.setImageName(recipeJson.getImage());
+                        cookbook.setVideoCode(recipeJson.getVideoCode());
                         cookbooks.add(cookbook);
                     }
 
@@ -262,6 +265,7 @@ public class MainActivity extends AppCompatActivity
                         cookBookRealm.setCreateTime(cookbook.getCreateTime());
                         cookBookRealm.setImageID(cookbook.getImageID());
                         cookBookRealm.setImageName(cookbook.getImageName());
+                        cookBookRealm.setVideoCode(cookbook.getVideoCode());
                         cookbookRealms.add(cookBookRealm);
                     }
                     return cookbookRealms;
@@ -836,8 +840,8 @@ public class MainActivity extends AppCompatActivity
                     cookBookRealm.getViewedPeopleCount(),
                     cookBookRealm.getCollectedPeopleCount(),
                     cookBookRealm.getBeCollected(),
-                    cookBookRealm.getImageName()
-                );
+                    cookBookRealm.getImageName(),
+                    cookBookRealm.getVideoCode());
 
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             tmpCookBooks.add(newCookBook);

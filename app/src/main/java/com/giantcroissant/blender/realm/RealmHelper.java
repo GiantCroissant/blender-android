@@ -12,7 +12,7 @@ import io.realm.RealmSchema;
  * Created by ayo on 2/18/16.
  */
 public class RealmHelper {
-    private static final int SCHEMA_VERSION = 1;
+    private static final int SCHEMA_VERSION = 2;
 
     private static RealmConfiguration mRealmConfig;
 
@@ -24,6 +24,11 @@ public class RealmHelper {
                     RealmSchema schema = realm.getSchema();
                     if (oldVersion == 0) {
                         schema.get("CookBookRealm").addField("imageName", String.class);
+                        oldVersion++;
+                    }
+
+                    if (oldVersion == 1) {
+                        schema.get("CookBookRealm").addField("videoCode", String.class);
                         oldVersion++;
                     }
 

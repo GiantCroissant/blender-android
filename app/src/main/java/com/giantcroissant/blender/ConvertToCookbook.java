@@ -30,7 +30,8 @@ public class ConvertToCookbook {
             cookbook.getViewedPeopleCount(),
             cookbook.getCollectedPeopleCount(),
             cookbook.getIsCollected(),
-            cookbook.getImageName()
+            cookbook.getImageName(),
+            cookbook.getVideoCode()
         );
     }
 
@@ -69,7 +70,8 @@ public class ConvertToCookbook {
             cookbookParcelable.viewedPeople,
             cookbookParcelable.collectedPeople,
             cookbookParcelable.beCollected,
-            cookbookParcelable.imageName
+            cookbookParcelable.imageName,
+            cookbookParcelable.videoCode
         );
     }
 }

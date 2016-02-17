@@ -2,6 +2,8 @@ package com.giantcroissant.blender;
 
 import android.graphics.Bitmap;
 
+import com.giantcroissant.blender.realm.CookBookRealm;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +32,7 @@ public class Cookbook {
     private Bitmap image;
     private int imageID;
     private String imageName;
+    private String videoCode;
 
     public Cookbook(CookBookRealm result)
     {
@@ -60,17 +63,18 @@ public class Cookbook {
     }
 
     public Cookbook(
-            String id,
-            String name,
-            String description,
-            String url,
-            String image_url,
-            String ingredient,
-            List<CookbookStep> steps1,
-            int viewedPeople,
-            int collectedPeople,
-            boolean beCollected,
-            String imageName)
+        String id,
+        String name,
+        String description,
+        String url,
+        String image_url,
+        String ingredient,
+        List<CookbookStep> steps1,
+        int viewedPeople,
+        int collectedPeople,
+        boolean beCollected,
+        String imageName,
+        String videoCode)
     {
         this.id = id;
         this.name = name;
@@ -87,6 +91,7 @@ public class Cookbook {
         this.collectedPeople = collectedPeople;
         this.beCollected = beCollected;
         this.imageName = imageName;
+        this.videoCode = videoCode;
     }
 
 
@@ -217,6 +222,14 @@ public class Cookbook {
 
     public void setImageName(String name) {
         this.imageName = name;
+    }
+
+    public String getVideoCode() {
+        return videoCode;
+    }
+
+    public void setVideoCode(String videoCode) {
+        this.videoCode = videoCode;
     }
 
 }

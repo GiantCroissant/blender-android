@@ -20,6 +20,7 @@ public class CookbookParcelable implements Parcelable {
     public int collectedPeople;
     public boolean beCollected;
     public String imageName;
+    public String videoCode;
 
     public CookbookParcelable(
         String id,
@@ -31,7 +32,9 @@ public class CookbookParcelable implements Parcelable {
         ArrayList<CookbookStepParcelable> steps,
         int viewedPeople,
         int collectedPeople,
-        boolean beCollected, String imageName)
+        boolean beCollected,
+        String imageName,
+        String videoCode)
     {
         this.id = id;
         this.url = url;
@@ -44,6 +47,7 @@ public class CookbookParcelable implements Parcelable {
         this.collectedPeople = collectedPeople;
         this.beCollected = beCollected;
         this.imageName = imageName;
+        this.videoCode = videoCode;
     }
 
     @Override
@@ -65,6 +69,7 @@ public class CookbookParcelable implements Parcelable {
         dest.writeInt(collectedPeople);
         dest.writeByte((byte) (beCollected ? 1 : 0));
         dest.writeString(imageName);
+        dest.writeString(videoCode);
     }
 
     public CookbookParcelable(Parcel in) {
@@ -79,6 +84,7 @@ public class CookbookParcelable implements Parcelable {
         collectedPeople = in.readInt();
         beCollected = (in.readByte() != 0);
         imageName = in.readString();
+        videoCode = in.readString();
     }
 
     public static final Parcelable.Creator<CookbookParcelable> CREATOR = new Parcelable.Creator<CookbookParcelable>() {

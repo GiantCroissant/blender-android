@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.giantcroissant.blender.realm.CookBookRealm;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,8 +125,8 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 cookBookRealm.getViewedPeopleCount(),
                 cookBookRealm.getCollectedPeopleCount(),
                 cookBookRealm.getBeCollected(),
-                cookBookRealm.getImageName()
-            );
+                cookBookRealm.getImageName(),
+                cookBookRealm.getVideoCode());
 
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             newCookBook.setImageID(cookBookRealm.getImageID());
@@ -158,8 +160,8 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
                 cookBookRealm.getViewedPeopleCount(),
                 cookBookRealm.getCollectedPeopleCount(),
                 cookBookRealm.getBeCollected(),
-                cookBookRealm.getImageName()
-            );
+                cookBookRealm.getImageName(),
+                cookBookRealm.getVideoCode());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
 
             // This cause out of memory exception, comment for now.

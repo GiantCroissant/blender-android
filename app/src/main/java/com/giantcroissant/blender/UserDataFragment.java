@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.giantcroissant.blender.realm.CookBookRealm;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,8 +147,8 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
                 cookBookRealm.getViewedPeopleCount(),
                 cookBookRealm.getCollectedPeopleCount(),
                 cookBookRealm.getBeCollected(),
-                cookBookRealm.getImageName()
-            );
+                cookBookRealm.getImageName(),
+                cookBookRealm.getVideoCode());
 
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
             //newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
@@ -202,8 +204,8 @@ public class UserDataFragment extends Fragment implements CookBooksDataFragment 
                 cookBookRealm.getViewedPeopleCount(),
                 cookBookRealm.getCollectedPeopleCount(),
                 cookBookRealm.getBeCollected(),
-                cookBookRealm.getImageName()
-            );
+                cookBookRealm.getImageName(),
+                cookBookRealm.getVideoCode());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
 
             //newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));

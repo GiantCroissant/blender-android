@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.giantcroissant.blender.realm.CookBookRealm;
 import com.giantcroissant.blender.realm.RealmHelper;
 
 import io.realm.Realm;
