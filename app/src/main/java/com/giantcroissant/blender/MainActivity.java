@@ -335,30 +335,30 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    protected void onPostResume() {
-//        super.onPostResume();
-//        if (resultCode == 100) {
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.main_content, AutoTestFragment.newInstance(2 + 1, switchIsChecked));
-//            fragmentTransaction.commit();
-//
-//            checkSupportBLE();
-//            checkSupportBlueTooth();
-//            enableBlueToothIntent();
-//
-//        } else if (resultCode == 103) {
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            //noinspection PointlessArithmeticExpression
-//            fragmentTransaction.replace(R.id.main_content, CookBooksFragment.newInstance(0 + 1, realm));
-//            fragmentTransaction.commit();
-//
-//        } else if (resultCode == 104) {
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.main_content, UserDataFragment.newInstance(1 + 1, realm));
-//            fragmentTransaction.commit();
-//        }
-//    }
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (resultCode == 100) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_content, AutoTestFragment.newInstance(2 + 1, switchIsChecked));
+            fragmentTransaction.commit();
+
+            checkSupportBLE();
+            checkSupportBlueTooth();
+            enableBlueToothIntent();
+
+        } else if (resultCode == 103) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            //noinspection PointlessArithmeticExpression
+            fragmentTransaction.replace(R.id.main_content, CookBooksFragment.newInstance(0 + 1, realm));
+            fragmentTransaction.commit();
+
+        } else if (resultCode == 104) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.main_content, UserDataFragment.newInstance(1 + 1, realm));
+            fragmentTransaction.commit();
+        }
+    }
 
     private void moveDrawerToTop() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
