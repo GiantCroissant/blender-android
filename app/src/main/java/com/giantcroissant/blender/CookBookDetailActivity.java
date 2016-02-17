@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.giantcroissant.blender.realm.RealmHelper;
+
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -30,7 +32,6 @@ public class CookBookDetailActivity extends AppCompatActivity
     private Cookbook cookBook;
     private CookBookDetailInfoFragment cookBookDetailInfoFragment;
     private CookBookDetailToDoFragment cookBookDetailToDoFragment;
-    private Realm realm;
     private RealmQuery<CookBookRealm> cookBookRealmQuery;
     private RealmResults<CookBookRealm> cookBookRealmResult;
     private boolean isNeedStartBlender = false;
@@ -247,6 +248,7 @@ public class CookBookDetailActivity extends AppCompatActivity
 
         } else if (view.getId() == R.id.likeCookBookButton) {
 
+            Realm realm = RealmHelper.getRealmInstance(this);
             realm.beginTransaction();
             CookBookRealm cookBookRealm = cookBookRealmResult.first();
 
@@ -260,6 +262,7 @@ public class CookBookDetailActivity extends AppCompatActivity
                 cookBook.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() - 1);
             }
             realm.commitTransaction();
+            realm.close();
 
             setLikeCookBookButton();
 

@@ -37,6 +37,7 @@ import com.giantcroissant.blender.jsonModel.RecipesCollectionDataJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesIngredientJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesJsonObject;
 import com.giantcroissant.blender.jsonModel.RecipesStepJsonObject;
+import com.giantcroissant.blender.realm.RealmHelper;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -45,14 +46,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.DynamicRealm;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmList;
-import io.realm.RealmMigration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import io.realm.RealmSchema;
 import rx.Subscriber;
 import rx.functions.Func1;
 
@@ -113,7 +110,6 @@ public class MainActivity extends AppCompatActivity
 
     private SharedPreferences preferences;
     private Realm realm;
-    private static final int SCHEMA_VERSION = 1;
 
     private rx.Observable<String> recipesJsonStringData = rx.Observable.create(new rx.Observable.OnSubscribe<String>() {
         @Override
@@ -142,7 +138,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        realm = configureRealm();
+        realm = RealmHelper.getRealmInstance(this);
         loadRecipesFromJson();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -296,30 +292,30 @@ public class MainActivity extends AppCompatActivity
             });
     }
 
-    private Realm configureRealm() {
-        RealmMigration migration = new RealmMigration() {
-            @Override
-            public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
-                RealmSchema schema = realm.getSchema();
-                Log.e(TAG, "oldVersion = " + oldVersion);
-                if (oldVersion == 0) {
-                    schema.get("CookBookRealm").addField("imageName", String.class);
-                    oldVersion++;
-                }
-
-                if (oldVersion == newVersion) {
-                    Log.e(TAG, "migrate complete");
-                }
-            }
-        };
-
-        RealmConfiguration config = new RealmConfiguration.Builder(this)
-            .schemaVersion(SCHEMA_VERSION)
-            .migration(migration)
-            .build();
-
-        return Realm.getInstance(config);
-    }
+//    private Realm configureRealm() {
+//        RealmMigration migration = new RealmMigration() {
+//            @Override
+//            public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+//                RealmSchema schema = realm.getSchema();
+//                Log.e(TAG, "oldVersion = " + oldVersion);
+//                if (oldVersion == 0) {
+//                    schema.get("CookBookRealm").addField("imageName", String.class);
+//                    oldVersion++;
+//                }
+//
+//                if (oldVersion == newVersion) {
+//                    Log.e(TAG, "migrate complete");
+//                }
+//            }
+//        };
+//
+//        RealmConfiguration config = new RealmConfiguration.Builder(this)
+//            .schemaVersion(SCHEMA_VERSION)
+//            .migration(migration)
+//            .build();
+//
+//        return Realm.getInstance(config);
+//    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

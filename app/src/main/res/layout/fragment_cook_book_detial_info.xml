@@ -1,122 +1,116 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/BackgroundColor"
-                android:orientation="vertical"
-                tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/BackgroundColor"
+             tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment">
 
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:background="@color/White"
-        android:elevation="5dp"
-        android:orientation="vertical"
-        tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment">
+        android:layout_height="wrap_content">
 
-        <ScrollView
-            android:id="@+id/scrollView2"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/cookBookIcon"
-                    android:layout_width="296dp"
-                    android:layout_height="222dp"
-                    android:layout_below="@+id/cookBookTitle"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal"
-                    android:clickable="true"
-                    android:src="@drawable/pictures_01"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@color/White"
+                app:cardCornerRadius="@dimen/cardview_default_radius"
+                app:cardElevation="@dimen/cardview_default_elevation"
+                tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/cookBookIcon"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/cookBookIngredientText"
+                    <RelativeLayout
+                        android:id="@+id/cookBookTitle"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:minLines="2"
-                        android:text="材料 ：水蜜桃1 個、蜂蜜50克。"
-                        android:textColor="@color/c87000000"
-                        android:textSize="@dimen/Body1"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        >
 
-                    <TextView
-                        android:id="@+id/cookBookStepsText"
+                        <TextView
+                            android:id="@+id/cookBookNameText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="水蜜桃汁"
+                            android:textColor="@color/ColorPrimaryDark"
+                            android:textSize="@dimen/Headline"/>
+
+                        <ImageButton
+                            android:id="@+id/likeCookBookButton"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="16dp"
+                            android:background="@color/White"
+                            android:clickable="true"
+                            android:onClick="onClick"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/icon_collect_y"/>
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/cookBookIcon"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:minLines="7"
-                        android:text="步驟 ： \n 1. 洗水蜜桃 \n 2. 消水蜜桃皮 \n 3. 去水蜜桃籽 \n 4. 把水蜜桃與蜂蜜一同加入果汁機中 \n 5. 可口水蜜桃汁上桌"
-                        android:textColor="@color/c87000000"
-                        android:textSize="@dimen/Body1"/>
+                        android:layout_height="222dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="16dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/pictures_01"/>
 
-                    <TextView
-                        android:id="@+id/cookBookDescriptionText"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:minLines="3"
-                        android:text="美味的水蜜桃。好吃好吃。做成果汁也很棒喔。"
-                        android:textColor="@color/c87000000"
-                        android:textSize="@dimen/Body1"/>
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:id="@+id/cookBookTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/cookBookNameText"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="水蜜桃汁"
-                        android:textColor="@color/ColorPrimaryDark"
-                        android:textSize="@dimen/Headline"/>
-
-                    <ImageButton
-                        android:id="@+id/likeCookBookButton"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_alignParentBottom="false"
-                        android:layout_alignParentEnd="false"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="false"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
-                        android:background="@color/White"
-                        android:clickable="true"
-                        android:onClick="onClick"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/icon_collect_y"/>
-                </RelativeLayout>
-            </RelativeLayout>
-        </ScrollView>
+                        android:orientation="vertical">
 
-    </RelativeLayout>
+                        <TextView
+                            android:id="@+id/cookBookIngredientText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_weight="1"
+                            android:minLines="2"
+                            android:text="材料 ：水蜜桃1 個、蜂蜜50克。"
+                            android:textColor="@color/c87000000"
+                            android:textSize="@dimen/Body1"/>
 
-</RelativeLayout>
+                        <TextView
+                            android:id="@+id/cookBookStepsText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:minLines="7"
+                            android:text="步驟 ： \n 1. 洗水蜜桃 \n 2. 消水蜜桃皮 \n 3. 去水蜜桃籽 \n 4. 把水蜜桃與蜂蜜一同加入果汁機中 \n 5. 可口水蜜桃汁上桌"
+                            android:textColor="@color/c87000000"
+                            android:textSize="@dimen/Body1"/>
+
+                        <TextView
+                            android:id="@+id/cookBookDescriptionText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:minLines="3"
+                            android:text="美味的水蜜桃。好吃好吃。做成果汁也很棒喔。"
+                            android:textColor="@color/c87000000"
+                            android:textSize="@dimen/Body1"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </FrameLayout>
+    </ScrollView>
+</FrameLayout>

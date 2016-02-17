@@ -26,8 +26,6 @@ import com.bumptech.glide.Glide;
  * create an instance of this fragment.
  */
 public class CookBookDetailInfoFragment extends Fragment {
-
-
     private static final String ARG_SECTION_NUMBER = "section_number";
     private static final String TAG = CookBookDetailInfoFragment.class.getName();
     private OnCookBookDetailInfoFragmentInteractionListener mListener;
@@ -72,19 +70,16 @@ public class CookBookDetailInfoFragment extends Fragment {
 
         TextView cookBookStepsText = (TextView) rootView.findViewById(R.id.cookBookStepsText);
         String tmpSteps = "";
-//        Log.e("XXX",String.valueOf(cookBook.getSteps().size()));
-
         for (int i = 0; i < cookBook.getSteps1().size(); ++ i) {
             CookbookStep cs = cookBook.getSteps1().get(i);
-
             tmpSteps += (i + 1) + " " + cs.getStepDesc() + "";
             int speed = Integer.parseInt(cs.getStepSpeed());
             int time = Integer.parseInt(cs.getStepTime());
             if (speed > 0 && time > 0) {
                 tmpSteps = tmpSteps + "轉速" + cs.getStepSpeed() + "，" + cs.getStepTime() + "秒。";
-                tmpSteps +="\n\n";
-            }
 
+            }
+            tmpSteps +="\n";
         }
 
 //        for (int i = 0; i < cookBook.getSteps().size(); i++) {
