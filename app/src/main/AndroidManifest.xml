@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.giantcroissant.blender" >
+<manifest
+    package="com.giantcroissant.blender"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- Min/target SDK versions (<uses-sdk>) managed by build.gradle -->
 
@@ -15,67 +16,75 @@
     -->
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="true" />
+        android:required="true"/>
 
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".SideMenuActivity"
-            android:label="@string/title_activity_side_menu" >
+            android:label="@string/title_activity_side_menu">
         </activity>
+
         <activity
             android:name=".CompanyItemActivity"
-            android:label="@string/title_activity_company_item" >
+            android:label="@string/title_activity_company_item">
         </activity>
+
         <activity
             android:name=".CookBookDetailActivity"
-            android:label="@string/title_activity_cook_book_detial" >
+            android:label="@string/title_activity_cook_book_detial">
         </activity>
+
         <activity
             android:name=".CookBookDetailVideoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_cook_book_detail_video"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".DeviceScanActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
         </activity>
-        <activity android:name=".DeviceControlActivity" />
+
+        <activity android:name=".DeviceControlActivity"/>
 
         <service
             android:name=".BluetoothLeService"
-            android:enabled="true" />
+            android:enabled="true"/>
 
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
+
         <activity
             android:name=".MessageActivity"
             android:label="@string/title_activity_message"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
         <activity
             android:name=".CompanyItemSystemActivity"
-            android:label="@string/title_activity_company_item_system" >
+            android:label="@string/title_activity_company_item_system">
         </activity>
     </application>
 

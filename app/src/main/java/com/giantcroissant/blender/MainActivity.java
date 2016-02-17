@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity
                             cookbookSteps,
                             10,
                             20,
-                            true,
+                            false,
                             recipeJson.getImage());
 
                         cookbook.setImage(BitmapFactory.decodeResource(getResources(), R.drawable.pictures_01));
@@ -270,7 +270,6 @@ public class MainActivity extends AppCompatActivity
             .subscribe(new Subscriber<List<CookBookRealm>>() {
                 @Override
                 public void onCompleted() {
-                    Log.e(TAG, "onCompleted");
                 }
 
                 @Override
@@ -280,11 +279,8 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public void onNext(List<CookBookRealm> cookbookRealms) {
-                    Log.e(TAG, "onNext cookbookRealms = " + cookbookRealms);
                     realm.beginTransaction();
                     for (CookBookRealm cookBookRealm : cookbookRealms) {
-                        Log.e(TAG, "cookBookRealm getImageName = " + cookBookRealm.getImageName());
-
                         realm.copyToRealmOrUpdate(cookBookRealm);
                     }
                     realm.commitTransaction();

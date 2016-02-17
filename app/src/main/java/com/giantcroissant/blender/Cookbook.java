@@ -2,6 +2,7 @@ package com.giantcroissant.blender;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,10 +31,32 @@ public class Cookbook {
     private int imageID;
     private String imageName;
 
-    public Cookbook()
+    public Cookbook(CookBookRealm result)
     {
+        this.id = result.getId();
+        this.name = result.getName();
+        this.description = result.getDescription();
+        this.url = result.getUrl();
+        this.image_url = result.getImageUrl();
+        this.ingredient = result.getIngredient();
+
+        List<CookbookStep> cookbookSteps = new ArrayList<>();
+        for (CookbookStepRealm cookbookStepRealm : result.getSteps1()) {
+            CookbookStep cookbookStep = new CookbookStep();
+            cookbookStep.setStepDesc(cookbookStepRealm.getStepDesc());
+            cookbookStep.setStepSpeed(cookbookStepRealm.getStepSpeed());
+            cookbookStep.setStepTime(cookbookStepRealm.getStepTime());
+
+            cookbookSteps.add(cookbookStep);
+        }
+        this.steps1 = cookbookSteps;
+
         this.uploadTimestamp = new Date(System.currentTimeMillis());
         this.createTime = new Date(System.currentTimeMillis());
+        this.viewedPeople = result.getViewedPeopleCount();
+        this.collectedPeople = result.getCollectedPeopleCount();
+        this.beCollected = result.getBeCollected();
+        this.imageName = result.getImageName();
     }
 
     public Cookbook(

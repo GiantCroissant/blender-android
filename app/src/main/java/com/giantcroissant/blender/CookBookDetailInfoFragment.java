@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.giantcroissant.blender.realm.RealmHelper;
+
+import io.realm.Realm;
 
 
 /**
@@ -31,10 +33,15 @@ public class CookBookDetailInfoFragment extends Fragment {
     private OnCookBookDetailInfoFragmentInteractionListener mListener;
     private Cookbook cookBook;
     private View rootView;
+    private String recipeId = "";
+    private Realm realm;
 
-    public static CookBookDetailInfoFragment newInstance(int sectionNumber ,Cookbook cookBook) {
+    public static CookBookDetailInfoFragment newInstance(int sectionNumber, Cookbook cookBook) {
         CookBookDetailInfoFragment fragment = new CookBookDetailInfoFragment();
-        fragment.cookBook = cookBook;
+//        fragment.cookBook = cookBook;
+
+        fragment.recipeId = cookBook.getId();
+
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -47,6 +54,23 @@ public class CookBookDetailInfoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        realm = RealmHelper.getRealmInstance(getContext());
+        CookBookRealm result = realm.where(CookBookRealm.class)
+            .equalTo("Id", recipeId)
+            .findAll()
+            .first();
+
+        if (result != null) {
+            cookBook = new Cookbook(result);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        realm.close();
     }
 
     @Override
@@ -56,21 +80,20 @@ public class CookBookDetailInfoFragment extends Fragment {
         return rootView;
     }
 
-    private void setUIValue()
-    {
+    private void setUIValue() {
         TextView cookBookNameText = (TextView) rootView.findViewById(R.id.cookBookNameText);
         cookBookNameText.setText(cookBook.getName());
 
         TextView cookBookIngredientText = (TextView) rootView.findViewById(R.id.cookBookIngredientText);
-        cookBookIngredientText.setText(getResources().getTextArray(R.array.menu_items_labels)[0]+"\n" + cookBook.getIngredient()+"\n", TextView.BufferType.SPANNABLE);
+        cookBookIngredientText.setText(getResources().getTextArray(R.array.menu_items_labels)[0] + "\n" + cookBook.getIngredient() + "\n", TextView.BufferType.SPANNABLE);
         Spannable spanCookBookIngredientText = (Spannable) cookBookIngredientText.getText();
 
         spanCookBookIngredientText.setSpan(new ForegroundColorSpan(0xFF336900), 0, getResources().getTextArray(R.array.menu_items_labels)[0].length(),
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         TextView cookBookStepsText = (TextView) rootView.findViewById(R.id.cookBookStepsText);
         String tmpSteps = "";
-        for (int i = 0; i < cookBook.getSteps1().size(); ++ i) {
+        for (int i = 0; i < cookBook.getSteps1().size(); ++i) {
             CookbookStep cs = cookBook.getSteps1().get(i);
             tmpSteps += (i + 1) + " " + cs.getStepDesc() + "";
             int speed = Integer.parseInt(cs.getStepSpeed());
@@ -79,52 +102,67 @@ public class CookBookDetailInfoFragment extends Fragment {
                 tmpSteps = tmpSteps + "轉速" + cs.getStepSpeed() + "，" + cs.getStepTime() + "秒。";
 
             }
-            tmpSteps +="\n";
+            tmpSteps += "\n";
         }
 
-//        for (int i = 0; i < cookBook.getSteps().size(); i++) {
-//
-//            tmpSteps += (i+1)+" "+cookBook.getSteps().get(i) + "";
-//            if(Integer.parseInt(cookBook.getTimeOfSteps().get(i)) > 0 && Integer.parseInt(cookBook.getSpeedOfSteps().get(i))> 0)
-//            {
-//                tmpSteps = tmpSteps + "轉速" + cookBook.getSpeedOfSteps().get(i) + "，" + cookBook.getTimeOfSteps().get(i) + "秒。";
-//            }
-//            tmpSteps +="\n\n";
-//        }
-
-
-        cookBookStepsText.setText(getResources().getTextArray(R.array.menu_items_labels)[1]+"\n" + tmpSteps, TextView.BufferType.SPANNABLE);
+        cookBookStepsText.setText(getResources().getTextArray(R.array.menu_items_labels)[1] + "\n" + tmpSteps, TextView.BufferType.SPANNABLE);
         Spannable spanCookBookStepsText = (Spannable) cookBookStepsText.getText();
 
         spanCookBookStepsText.setSpan(new ForegroundColorSpan(0xFF336900), 0, getResources().getTextArray(R.array.menu_items_labels)[1].length(),
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
 
         TextView cookBookDescriptionText = (TextView) rootView.findViewById(R.id.cookBookDescriptionText);
         cookBookDescriptionText.setText(getResources().getTextArray(R.array.menu_items_labels)[2] + "\n" + cookBook.getDescription(), TextView.BufferType.SPANNABLE);
         Spannable spanCookBookDescriptionText = (Spannable) cookBookDescriptionText.getText();
         spanCookBookDescriptionText.setSpan(new ForegroundColorSpan(0xFF336900), 0, getResources().getTextArray(R.array.menu_items_labels)[2].length(),
-                Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+            Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        updateLikeButtonImage();
 
         ImageButton likeCookbookButton = (ImageButton) rootView.findViewById(R.id.likeCookBookButton);
-        if(cookBook.getIsCollected())
-        {
-            likeCookbookButton.setImageResource(R.drawable.icon_collect_y) ;
-        }
-        else
-        {
+        likeCookbookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cookBook.setIsCollected(!cookBook.getIsCollected());
+                updateLikeButtonImage();
 
-            likeCookbookButton.setImageResource(R.drawable.icon_collect_n) ;
-        }
+                CookBookRealm cookBookRealm = realm.where(CookBookRealm.class)
+                    .equalTo("Id", recipeId)
+                    .findAll()
+                    .first();
 
+                realm.beginTransaction();
+                cookBookRealm.setBeCollected(cookBook.getIsCollected());
+
+//                if (cookBook.getIsCollected()) {
+//                    cookBookRealm.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() + 1);
+//                    cookBook.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() + 1);
+//
+//                } else {
+//                    cookBookRealm.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() - 1);
+//                    cookBook.setCollectedPeopleCount(cookBook.getCollectedPeopleCount() - 1);
+//                }
+                realm.commitTransaction();
+            }
+        });
 
         ImageView imageView = (ImageView) rootView.findViewById(R.id.cookBookIcon);
         String imagePath = "file:///android_asset/recipe_images/" + cookBook.getImageName();
-        Log.e(TAG, "imagePath = " + imagePath);
 
         Glide.with(this)
-        .load(Uri.parse(imagePath))
-        .centerCrop()
-        .into(imageView);
+            .load(Uri.parse(imagePath))
+            .centerCrop()
+            .into(imageView);
+    }
+
+    private void updateLikeButtonImage() {
+        ImageButton likeCookbookButton = (ImageButton) rootView.findViewById(R.id.likeCookBookButton);
+        if (cookBook.getIsCollected()) {
+            likeCookbookButton.setImageResource(R.drawable.icon_collect_y);
+
+        } else {
+            likeCookbookButton.setImageResource(R.drawable.icon_collect_n);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -141,7 +179,7 @@ public class CookBookDetailInfoFragment extends Fragment {
             mListener = (OnCookBookDetailInfoFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -156,7 +194,7 @@ public class CookBookDetailInfoFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
