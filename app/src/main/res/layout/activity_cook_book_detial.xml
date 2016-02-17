@@ -1,120 +1,119 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.giantcroissant.blender.CookBookDetailInfoFragment">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
-            android:id="@+id/linearLayout2"
-            android:layout_weight="8">
+            android:layout_weight="8"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/BackgroundColor">
+                android:background="@color/BackgroundColor"
+                android:orientation="vertical">
 
                 <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="簡介"
                     android:id="@+id/cook_book_Info_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:background="@color/TabColor"
                     android:clickable="true"
-                    android:onClick="onClick" />
+                    android:onClick="onClick"
+                    android:text="簡介"/>
 
                 <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="6dp"
                     android:id="@+id/cook_book_Info_button_SelectColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
                     android:layout_weight="1"
-                    android:scaleType="matrix"
                     android:background="@color/BackgroundColor"
                     android:clickable="true"
-                    android:onClick="onClick" />
+                    android:onClick="onClick"
+                    android:scaleType="matrix"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/BackgroundColor">
+                android:background="@color/BackgroundColor"
+                android:orientation="vertical">
 
                 <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:text="影片"
                     android:id="@+id/cook_book_video_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:background="@color/TabColor"
                     android:clickable="true"
-                    android:onClick="onClick" />
+                    android:onClick="onClick"
+                    android:text="影片"/>
 
                 <ImageButton
+                    android:id="@+id/cook_book_video_button_SelectColor"
                     android:layout_width="match_parent"
                     android:layout_height="6dp"
-                    android:id="@+id/cook_book_video_button_SelectColor"
                     android:layout_weight="1"
-                    android:scaleType="matrix"
                     android:background="@color/BackgroundColor"
                     android:clickable="true"
-                    android:onClick="onClick" />
+                    android:onClick="onClick"
+                    android:scaleType="matrix"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/BackgroundColor">
+                android:background="@color/BackgroundColor"
+                android:orientation="vertical">
 
                 <Button
+                    android:id="@+id/cook_book_to_do_button"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="製作"
-                    android:id="@+id/cook_book_to_do_button"
                     android:layout_weight="1"
                     android:background="@color/TabColor"
                     android:clickable="true"
-                    android:onClick="onClick" />
+                    android:onClick="onClick"
+                    android:text="製作"/>
 
                 <ImageButton
+                    android:id="@+id/cook_book_to_do_button_SelectColor"
                     android:layout_width="match_parent"
                     android:layout_height="6dp"
-                    android:id="@+id/cook_book_to_do_button_SelectColor"
                     android:layout_weight="1"
-                    android:scaleType="matrix"
                     android:background="@color/BackgroundColor"
-                    android:src="@color/TabSelectColor"
                     android:clickable="true"
-                    android:onClick="onClick" />
+                    android:onClick="onClick"
+                    android:scaleType="matrix"
+                    android:src="@color/TabSelectColor"/>
 
             </LinearLayout>
 
         </LinearLayout>
 
         <RelativeLayout
-            android:orientation="vertical"
+            android:id="@+id/content_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:id="@+id/contentfragment"
-            android:background="@color/BackgroundColor">
-
+            android:background="@color/BackgroundColor"
+            android:orientation="vertical">
         </RelativeLayout>
 
     </LinearLayout>

@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#EEEEEE"
-    android:orientation="horizontal">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#EEEEEE"
+                android:orientation="horizontal">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:background="#EEEEEE"
-        android:elevation="2dp"
-        android:orientation="horizontal"
-        tools:ignore="UnusedAttribute">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#EEEEEE"
+                    android:elevation="2dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UnusedAttribute">
 
         <ImageView
             android:id="@+id/recipe_icon"
             android:layout_width="160dp"
             android:layout_height="124dp"
             android:background="@color/White"
-            android:scaleType="fitCenter"
-            android:src="@drawable/pictures_01"
             android:contentDescription="Recipe Image"
-            tools:ignore="HardcodedText" />
+            android:src="@drawable/pictures_01"
+            tools:ignore="HardcodedText"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="124dp"
             android:layout_toRightOf="@+id/recipe_icon"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:background="@color/White"
             android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:paddingTop="10dp">
 
             <TextView
@@ -46,7 +45,7 @@
                 android:textColor="@color/ColorPrimaryDark"
                 android:textSize="@dimen/Subheader"
                 android:textStyle="bold"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/ingredientTextView"
@@ -56,7 +55,7 @@
                 android:text="Test"
                 android:textColor="@color/c54000000"
                 android:textSize="@dimen/Body1"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText"/>
         </LinearLayout>
 
     </RelativeLayout>

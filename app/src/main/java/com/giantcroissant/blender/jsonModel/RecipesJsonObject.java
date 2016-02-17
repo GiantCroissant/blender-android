@@ -12,6 +12,7 @@ public class RecipesJsonObject {
     private List<RecipesStepJsonObject> steps;
     private String description;
     private String videoCode;
+    private String image;
 
     public String getId() { return id; }
     public void setId(String id) {
@@ -41,5 +42,12 @@ public class RecipesJsonObject {
     public String getVideoCode() { return videoCode; }
     public void setVideoCode(String videoCode) {
         this.videoCode = videoCode;
+    }
+
+    public String getImage() {
+        return image;
+    }
+    public void setImage(String name) {
+        this.image = name;
     }
 }

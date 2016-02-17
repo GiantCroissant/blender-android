@@ -1,6 +1,8 @@
 package com.giantcroissant.blender;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 /**
@@ -16,6 +20,7 @@ import java.util.List;
  */
 public class CookBookAdapter extends ArrayAdapter<Cookbook> {
 
+    private static final String TAG = CookBookAdapter.class.getName();
     // 畫面資源編號
     private int resource;
     // 包裝的記事資料
@@ -37,11 +42,10 @@ public class CookBookAdapter extends ArrayAdapter<Cookbook> {
             // 建立項目畫面元件
             itemView = new LinearLayout(getContext());
             String inflater = Context.LAYOUT_INFLATER_SERVICE;
-            LayoutInflater li = (LayoutInflater)
-                    getContext().getSystemService(inflater);
+            LayoutInflater li = (LayoutInflater) getContext().getSystemService(inflater);
             li.inflate(resource, itemView, true);
-        }
-        else {
+
+        } else {
             itemView = (LinearLayout) convertView;
         }
 
@@ -50,13 +54,23 @@ public class CookBookAdapter extends ArrayAdapter<Cookbook> {
         TextView ingredientTextView = (TextView) itemView.findViewById(R.id.ingredientTextView);
         ImageView cookbookImage = (ImageView) itemView.findViewById(R.id.recipe_icon);
 
-//        new loadImageAsync().execute(cookBook.getImageUrl());
         // 設定標題
         cookBookNameTextView.setText(cookBook.getName());
         ingredientTextView.setText(cookBook.getIngredient());
-        if(cookBook.getImage() != null)
-        {
-            cookbookImage.setImageBitmap(cookBook.getImage());
+
+        // 設定圖片
+        if (cookBook.getImageName() != null) {
+            String imageName = cookBook.getImageName();
+            String imagePath = "file:///android_asset/recipe_images/" + imageName;
+            Glide.with(parent.getContext())
+                .load(Uri.parse(imagePath))
+                .centerCrop()
+                .into(cookbookImage);
+
+            Log.e(TAG, cookBook.getName() + ": imagePath = " + imagePath);
+
+        } else {
+            Log.e(TAG, cookBook.getName() + ": cookBook.getImageName() == null");
         }
 
         return itemView;

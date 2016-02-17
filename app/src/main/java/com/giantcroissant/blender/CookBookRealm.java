@@ -1,12 +1,10 @@
 package com.giantcroissant.blender;
 
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
 
@@ -35,6 +33,7 @@ public class CookBookRealm extends RealmObject {
 //    private String timeOfSteps;
 //    private String speedOfSteps;
     private int imageID;
+    private String imageName;
 
     public String getId() { return Id; }
     public void   setId(String Id) { this.Id = Id; }
@@ -110,5 +109,8 @@ public class CookBookRealm extends RealmObject {
 
     public int getImageID() { return imageID; }
     public void   setImageID(int imageID) { this.imageID = imageID;}
+
+    public String getImageName() { return imageName; }
+    public void setImageName(String imageName) { this.imageName = imageName; }
 }
 

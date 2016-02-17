@@ -2,11 +2,8 @@ package com.giantcroissant.blender;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
@@ -55,7 +51,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 //    private RealmResults<CookBookRealm> newCookBooksRealmResult;
 //    private RealmResults<CookBookRealm> hotCookBooksRealmResult;
 
-    public static CookBooksFragment newInstance(int sectionNumber,  Realm realm) {
+    public static CookBooksFragment newInstance(int sectionNumber, Realm realm) {
         CookBooksFragment cookBooksFragment = new CookBooksFragment();
         cookBooksFragment.realm = realm;
 //        cookBooksFragment.cookBookRealmQuery = cookBookRealmQuery;
@@ -102,90 +98,45 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
         }
     }
 
-    private void getNewCookBooks(Realm realm)
-    {
+    private void getNewCookBooks(Realm realm) {
         RealmResults<CookBookRealm> newCookBooksRealmResult = realm.where(CookBookRealm.class).findAll();
         newCookBooksRealmResult.sort("createTime");
 
-//        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
-//        newCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("createTime");
-        //newCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("createTime",false);
-        newCookBooks = new ArrayList<Cookbook>();
+        newCookBooks = new ArrayList<>();
         for (CookBookRealm cookBookRealm : newCookBooksRealmResult) {
-//            ArrayList<String> tmpSteps = new ArrayList<String>();
-//            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
-//            for (String tmpStepPart : tmpStepParts) {
-//                tmpSteps.add(tmpStepPart);
-//            }
-//            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
-//            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
-//            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-//                tmpTimeOfSteps.add(tmpTimeOfStepPart);
-////            Log.e("XXX", tmpStepPart);
-//            }
-//            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
-//            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
-//            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-//                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-////            Log.e("XXX", tmpStepPart);
-//            }
-
             List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
             for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
                 CookbookStep cookbookStep = new CookbookStep();
                 cookbookStep.setStepDesc(cookbookStepRealm.getStepDesc());
                 cookbookStep.setStepSpeed(cookbookStepRealm.getStepSpeed());
                 cookbookStep.setStepTime(cookbookStepRealm.getStepTime());
-
                 cookbookSteps.add(cookbookStep);
             }
 
             Cookbook newCookBook = new Cookbook(
-                    cookBookRealm.getId(),
-                    cookBookRealm.getName(),
-                    cookBookRealm.getDescription(),
-                    cookBookRealm.getUrl(),
-                    cookBookRealm.getImageUrl(),
-                    cookBookRealm.getIngredient(),
-                    cookbookSteps,
-                    cookBookRealm.getViewedPeopleCount(),
-                    cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected());
+                cookBookRealm.getId(),
+                cookBookRealm.getName(),
+                cookBookRealm.getDescription(),
+                cookBookRealm.getUrl(),
+                cookBookRealm.getImageUrl(),
+                cookBookRealm.getIngredient(),
+                cookbookSteps,
+                cookBookRealm.getViewedPeopleCount(),
+                cookBookRealm.getCollectedPeopleCount(),
+                cookBookRealm.getBeCollected());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
-
-            //newCookBook.setImage(BitmapFactory.decodeResource(getResources(), cookBookRealm.getImageID()));
             newCookBook.setImageID(cookBookRealm.getImageID());
+            newCookBook.setImageName(cookBookRealm.getImageName());
             newCookBooks.add(newCookBook);
         }
     }
 
-    private void getHotCookBooks(Realm realm)
-    {
-//        RealmQuery tmpCookBookRealmQuery = realm.where(CookBookRealm.class);
-//        hotCookBooksRealmResult = tmpCookBookRealmQuery.findAllSorted("viewedPeopleCount",false);
+    private void getHotCookBooks(Realm realm) {
         RealmResults<CookBookRealm> hotCookBooksRealmResult = realm.where(CookBookRealm.class).findAll();
         hotCookBooksRealmResult.sort("viewedPeopleCount");
-        hotCookBooks = new ArrayList<Cookbook>();
+        hotCookBooks = new ArrayList<>();
         for (CookBookRealm cookBookRealm : hotCookBooksRealmResult) {
-//            ArrayList<String> tmpSteps = new ArrayList<String>();
-//            String[] tmpStepParts = cookBookRealm.getSteps().split("\\;");
-//            for (String tmpStepPart : tmpStepParts) {
-//                tmpSteps.add(tmpStepPart);
-//            }
-//            ArrayList<String> tmpTimeOfSteps = new ArrayList<String>();
-//            String[] tmpTimeOfStepParts = cookBookRealm.getTimeOfSteps().split("\\;");
-//            for (String tmpTimeOfStepPart : tmpTimeOfStepParts) {
-//                tmpTimeOfSteps.add(tmpTimeOfStepPart);
-////            Log.e("XXX", tmpTimeOfStepPart);
-//            }
-//            ArrayList<String> tmpSpeedOfSteps = new ArrayList<String>();
-//            String[] tmpSpeedOfStepParts = cookBookRealm.getSpeedOfSteps().split("\\;");
-//            for (String tmpSpeedOfStepPart : tmpSpeedOfStepParts) {
-//                tmpSpeedOfSteps.add(tmpSpeedOfStepPart);
-////            Log.e("XXX", tmpSpeedOfStepPart);
-//            }
-
-            List<CookbookStep> cookbookSteps = new ArrayList<CookbookStep>();
+            List<CookbookStep> cookbookSteps = new ArrayList<>();
             for (CookbookStepRealm cookbookStepRealm : cookBookRealm.getSteps1()) {
                 CookbookStep cookbookStep = new CookbookStep();
                 cookbookStep.setStepDesc(cookbookStepRealm.getStepDesc());
@@ -196,16 +147,16 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
             }
 
             Cookbook newCookBook = new Cookbook(
-                    cookBookRealm.getId(),
-                    cookBookRealm.getName(),
-                    cookBookRealm.getDescription(),
-                    cookBookRealm.getUrl(),
-                    cookBookRealm.getImageUrl(),
-                    cookBookRealm.getIngredient(),
-                    cookbookSteps,
-                    cookBookRealm.getViewedPeopleCount(),
-                    cookBookRealm.getCollectedPeopleCount(),
-                    cookBookRealm.getBeCollected());
+                cookBookRealm.getId(),
+                cookBookRealm.getName(),
+                cookBookRealm.getDescription(),
+                cookBookRealm.getUrl(),
+                cookBookRealm.getImageUrl(),
+                cookBookRealm.getIngredient(),
+                cookbookSteps,
+                cookBookRealm.getViewedPeopleCount(),
+                cookBookRealm.getCollectedPeopleCount(),
+                cookBookRealm.getBeCollected());
             newCookBook.setUploadTimestamp(cookBookRealm.getUploadTimestamp());
 
             // This cause out of memory exception, comment for now.
@@ -215,17 +166,17 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
         }
     }
 
-    public void setCurrentCookBooks(Realm realm,int tabIndex) {
+    public void setCurrentCookBooks(Realm realm, int tabIndex) {
         getNewCookBooks(realm);
         getHotCookBooks(realm);
+
         Button newCookBookButton = (Button) rootView.findViewById(R.id.newCookBookButton);
         Button hotCookBookButton = (Button) rootView.findViewById(R.id.hotCookBookButton);
         ImageButton newCookBookButtonColor = (ImageButton) rootView.findViewById(R.id.newCookBookButton_SelectColor);
         ImageButton hotCookBookButtonColor = (ImageButton) rootView.findViewById(R.id.hotCookBookButton_SelectColor);
-        if (tabIndex == 0)
-        {
+        if (tabIndex == 0) {
             currentCookBooks = newCookBooks;
-            mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
+            mCookBookAdapter = new CookBookAdapter(this.getActivity(), R.layout.cook_book_list_item, currentCookBooks);
             cookbookListView.setAdapter(mCookBookAdapter);
             newCookBookButton.setTextColor(getResources().getColor(R.color.White));
             newCookBookButtonColor.setImageResource(R.color.TabSelectColor);
@@ -234,11 +185,9 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
             hotCookBookButtonColor.setImageResource(R.color.TabNoSelectColor);
 
 //                this.tabIndex = 0;
-        }
-        else if(tabIndex == 1)
-        {
+        } else if (tabIndex == 1) {
             currentCookBooks = hotCookBooks;
-            mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
+            mCookBookAdapter = new CookBookAdapter(this.getActivity(), R.layout.cook_book_list_item, currentCookBooks);
             cookbookListView.setAdapter(mCookBookAdapter);
 
             newCookBookButton.setTextColor(getResources().getColor(R.color.c70White));
@@ -254,17 +203,14 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 
     public void upDateListView(Realm realm) {
 
-        if(currentCookBooks == newCookBooks)
-        {
+        if (currentCookBooks == newCookBooks) {
             getNewCookBooks(realm);
             currentCookBooks = newCookBooks;
-        }
-        else if(currentCookBooks == hotCookBooks)
-        {
+        } else if (currentCookBooks == hotCookBooks) {
             getHotCookBooks(realm);
             currentCookBooks = hotCookBooks;
         }
-        mCookBookAdapter = new CookBookAdapter(this.getActivity() , R.layout.cook_book_list_item, currentCookBooks);
+        mCookBookAdapter = new CookBookAdapter(this.getActivity(), R.layout.cook_book_list_item, currentCookBooks);
         cookbookListView.setAdapter(mCookBookAdapter);
     }
 
@@ -291,7 +237,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 //        intent.putExtra("cookBookImageId",currentCookBooks.get(position).getImageID());
 
         intent.putExtra("requestCode", 103);
-        getActivity().startActivityFromFragment(this,intent, 103);
+        getActivity().startActivityFromFragment(this, intent, 103);
 
     }
 
@@ -299,12 +245,12 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+            getArguments().getInt(ARG_SECTION_NUMBER));
         try {
             mListener = (OnCookBooksFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                + " must implement OnFragmentInteractionListener");
         }
 //        ((SideMenuActivity) activity).onSectionAttached(
 //                getArguments().getInt(ARG_SECTION_NUMBER));
@@ -327,7 +273,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

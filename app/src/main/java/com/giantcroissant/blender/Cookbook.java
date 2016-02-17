@@ -1,9 +1,7 @@
 package com.giantcroissant.blender;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +28,7 @@ public class Cookbook {
     private boolean beCollected;
     private Bitmap image;
     private int imageID;
+    private String imageName;
 
     public Cookbook()
     {
@@ -179,13 +178,20 @@ public class Cookbook {
         this.imageID = imageID;
     }
 
-
     public Bitmap getImage() {
         return image;
     }
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String name) {
+        this.imageName = name;
     }
 
 }
