@@ -422,14 +422,14 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
-        int id = item.getItemId();
-        if (id == R.id.action_search) {
-            if (searchIntent == null) {
-                searchIntent = new Intent(this, SearchActivity.class);
-            }
-            startActivity(searchIntent);
-            return true;
-        }
+//        int id = item.getItemId();
+//        if (id == R.id.action_search) {
+//            if (searchIntent == null) {
+//                searchIntent = new Intent(this, SearchActivity.class);
+//            }
+//            startActivity(searchIntent);
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -858,9 +858,10 @@ public class MainActivity extends AppCompatActivity
         cookbookDetailIntent.putExtra("requestCode", 2);
         cookbookDetailIntent.putExtra("position", resultPosition);
         cookbookDetailIntent.putExtra("cookbook", ConvertToCookbook.convertToParceable(tmpCookBooks.get(0)));
-
         startActivityForResult(cookbookDetailIntent, REQUEST_COOKBOOK);
         resultCode = 0;
+
+
     }
 
     // Handles various events fired by the Service.

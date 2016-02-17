@@ -215,30 +215,13 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
     }
 
     private void selectItem(int position) {
-
         Intent intent = new Intent(this.getActivity(), CookBookDetailActivity.class);
-
         intent.putExtra("position", position);
-
         intent.putExtra("cookbook", ConvertToCookbook.convertToParceable(currentCookBooks.get(position)));
-
-//        intent.putExtra("cookBookListViewID", currentCookBooks.get(position).getId());
-//        intent.putExtra("cookBookListViewName", currentCookBooks.get(position).getName());
-//        intent.putExtra("cookBookListViewDescription", currentCookBooks.get(position).getDescription());
-//        intent.putExtra("cookBookListViewUrl", currentCookBooks.get(position).getUrl());
-//        intent.putExtra("cookBookListViewImageUrl", currentCookBooks.get(position).getImageUrl());
-//        intent.putExtra("cookBookListViewIngredient", currentCookBooks.get(position).getIngredient());
-//        intent.putExtra("cookBookListViewSteps", currentCookBooks.get(position).getSteps());
-//        intent.putExtra("cookBookListViewViewPeople", currentCookBooks.get(position).getViewedPeopleCount());
-//        intent.putExtra("cookBookListViewCollectedPeople", currentCookBooks.get(position).getCollectedPeopleCount());
-//        intent.putExtra("cookBookListIsCollected", currentCookBooks.get(position).getIsCollected());
-//        intent.putExtra("cookBookListViewTimeOfSteps", currentCookBooks.get(position).getTimeOfSteps());
-//        intent.putExtra("cookBookListViewSpeedOfSteps", currentCookBooks.get(position).getSpeedOfSteps());
-//        intent.putExtra("cookBookImageId",currentCookBooks.get(position).getImageID());
-
         intent.putExtra("requestCode", 103);
-        getActivity().startActivityFromFragment(this, intent, 103);
 
+        getActivity().startActivityFromFragment(this, intent, 103);
+        getActivity().overridePendingTransition(R.anim.activity_in, R.anim.activity_out);
     }
 
     @Override

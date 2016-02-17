@@ -1,11 +1,10 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<menu
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.giantcroissant.blender.MainActivity">
 
 
-    <item android:id="@+id/action_search"
-        android:icon="@drawable/icon_search"
-        app:showAsAction="withText|ifRoom"
-        android:title="search" />
+    <!--<item android:id="@+id/action_search"-->
+        <!--android:icon="@drawable/icon_search"-->
+        <!--app:showAsAction="withText|ifRoom"-->
+        <!--android:title="search" />-->
 </menu>

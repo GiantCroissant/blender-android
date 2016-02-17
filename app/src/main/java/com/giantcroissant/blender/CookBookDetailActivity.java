@@ -162,6 +162,7 @@ public class CookBookDetailActivity extends AppCompatActivity
                     }
                     setResult(requestCode);
                     finish();
+                    overridePendingTransition(R.anim.activity_back_in, R.anim.activity_back_out);
                 }
 
             default:
@@ -530,4 +531,11 @@ public class CookBookDetailActivity extends AppCompatActivity
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
 }
