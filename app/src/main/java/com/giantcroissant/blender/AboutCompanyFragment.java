@@ -142,12 +142,13 @@ public class AboutCompanyFragment extends Fragment
     private void createFakeData()
     {
         companyItemSystems = new ArrayList<CompanyItemSystem>();
-        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "专业养生调理机", "磨豆機 很棒喔", BitmapFactory.decodeResource(getResources() ,R.drawable.as_128)));
-        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "冰沙果汁机", "快煮壺 一級棒", BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w)));
-        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "食物料理机", "咖啡機 提神醒腦", BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w)));
+        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "專業養生調理機", "磨豆機", BitmapFactory.decodeResource(getResources() ,R.drawable.as_128)));
+//        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "冰沙果汁機", "快煮壺", BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w)));
+//        companyItemSystems.add(new CompanyItemSystem(UUID.randomUUID().toString(), "食物料理機", "咖啡機", BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w)));
 
         ArrayList<String> tmpContents1 = new ArrayList<String>();
-        tmpContents1.add("電動食品混和器，料理肉品魚泥、醬料、蛋糕、沙拉醬等，方便好用又實惠的廚房好幫手。電動食品混和器，料理肉品魚泥、醬料、蛋糕方便好用又實惠的廚房好幫手。");
+//        tmpContents1.add("電動食品混和器，料理肉品魚泥、醬料、蛋糕、沙拉醬等，方便好用又實惠的廚房好幫手。電動食品混和器，料理肉品魚泥、醬料、蛋糕方便好用又實惠的廚房好幫手。");
+        tmpContents1.add("");
         tmpContents1.add("功  率：1200W");
         tmpContents1.add("電  壓：AC 220V/50Hz");
         tmpContents1.add("容  量：2000cc");
@@ -166,31 +167,31 @@ public class AboutCompanyFragment extends Fragment
 
         companyItems = new ArrayList<CompanyItem>();
         companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-128(灰)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_128),companyItemSystems.get(0).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-128(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(0).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-128(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(0).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-128(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(0).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-128(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(0).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-128(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(0).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-128(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(0).getId()));
         companyItemSystems.get(0).contentIds.add(companyItems.get(0));
-        companyItemSystems.get(0).contentIds.add(companyItems.get(1));
-        companyItemSystems.get(0).contentIds.add(companyItems.get(2));
-        companyItemSystems.get(0).contentIds.add(companyItems.get(3));
+//        companyItemSystems.get(0).contentIds.add(companyItems.get(1));
+//        companyItemSystems.get(0).contentIds.add(companyItems.get(2));
+//        companyItemSystems.get(0).contentIds.add(companyItems.get(3));
 
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-129(灰)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_128),companyItemSystems.get(1).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-129(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(1).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-129(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(1).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-129(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(1).getId()));
-        companyItemSystems.get(1).contentIds.add(companyItems.get(4));
-        companyItemSystems.get(1).contentIds.add(companyItems.get(5));
-        companyItemSystems.get(1).contentIds.add(companyItems.get(6));
-        companyItemSystems.get(1).contentIds.add(companyItems.get(7));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-129(灰)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_128),companyItemSystems.get(1).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-129(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(1).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-129(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(1).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-129(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(1).getId()));
+//        companyItemSystems.get(1).contentIds.add(companyItems.get(4));
+//        companyItemSystems.get(1).contentIds.add(companyItems.get(5));
+//        companyItemSystems.get(1).contentIds.add(companyItems.get(6));
+//        companyItemSystems.get(1).contentIds.add(companyItems.get(7));
 
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-130(灰)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_128),companyItemSystems.get(2).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-130(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(2).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-130(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(2).getId()));
-        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-130(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(2).getId()));
-        companyItemSystems.get(2).contentIds.add(companyItems.get(8));
-        companyItemSystems.get(2).contentIds.add(companyItems.get(9));
-        companyItemSystems.get(2).contentIds.add(companyItems.get(10));
-        companyItemSystems.get(2).contentIds.add(companyItems.get(11));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-130(灰)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_128),companyItemSystems.get(2).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-130(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.as_628_w),companyItemSystems.get(2).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "健康食品調製機", "AS-130(黑)", tmpContents1, BitmapFactory.decodeResource(getResources() ,R.drawable.as_688_w),companyItemSystems.get(2).getId()));
+//        companyItems.add(new CompanyItem(UUID.randomUUID().toString(), "生機食品調製機", "AS-130(白)", tmpContents2, BitmapFactory.decodeResource(getResources() ,R.drawable.bl_1200_r),companyItemSystems.get(2).getId()));
+//        companyItemSystems.get(2).contentIds.add(companyItems.get(8));
+//        companyItemSystems.get(2).contentIds.add(companyItems.get(9));
+//        companyItemSystems.get(2).contentIds.add(companyItems.get(10));
+//        companyItemSystems.get(2).contentIds.add(companyItems.get(11));
 
         CompanyData.getInstance().companyItems = companyItems;
         CompanyData.getInstance().companyItemSystems = companyItemSystems;

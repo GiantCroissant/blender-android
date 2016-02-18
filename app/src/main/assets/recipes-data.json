@@ -5,6 +5,7 @@
       "id": "b138cca5-9b88-4d93-9a0c-9f89b7420fdb",
       "title": "苦瓜降壓汁",
       "image": "1_1.jpg",
+      "viewedCount": 3,
       "ingredients":
       [
         {
@@ -83,6 +84,7 @@
       "id": "c6fce61a-1ed0-41bc-a809-c9027a0a8990",
       "title": "紅蘿蔔鳳梨汁",
       "image": "1_2.jpg",
+      "viewedCount": 12,
       "ingredients": [
         {
           "name": "紅蘿蔔",
@@ -160,6 +162,7 @@
       "id": "7d6a3d43-b7db-4e19-bc64-b56efcf73c8a",
       "title": "酪梨蘋果牛奶",
       "image": "1_3.jpg",
+      "viewedCount": 13,
       "ingredients": [
         {
           "name": "酪梨",
@@ -233,6 +236,7 @@
       "id": "a175e4b5-6eb8-40e9-ae64-c6ab97b0b365",
       "title": "養生杏仁豆漿",
       "image": "2_1.jpg",
+      "viewedCount": 23,
       "ingredients": [
         {
           "name": "煮熟黃豆",
@@ -293,6 +297,7 @@
       "id": "b9029fdb-6e96-44e4-bc77-60803ef88bad",
       "title": "百合銀耳漿",
       "image": "2_2.jpg",
+      "viewedCount": 31,
       "ingredients": [
         {
           "name": "乾白木耳",
@@ -367,6 +372,7 @@
       "id": "83136a96-21d6-4fa8-a75d-bb737453efd0",
       "title": "養生腰果豆漿",
       "image": "2_3.jpg",
+      "viewedCount": 17,
       "ingredients": [
         {
           "name": "煮熟黃豆",
@@ -427,6 +433,7 @@
       "id": "45f3b181-a4d5-446f-b1aa-644a87ef8c41",
       "title": "花椰菜濃湯",
       "image": "3_1.jpg",
+      "viewedCount": 27,
       "ingredients": [
         {
           "name": "煮熟花椰菜",
@@ -515,6 +522,7 @@
       "id": "5144854b-7024-48b6-9572-1adee885d011",
       "title": "南瓜堅果濃湯",
       "image": "3_2.jpg",
+      "viewedCount": 35,
       "ingredients": [
         {
           "name": "煮熟南瓜",
@@ -596,6 +604,7 @@
       "id": "8061e893-84e6-4320-b365-f0e5ac72a08c",
       "title": "甜菜根精力湯",
       "image": "3_3.jpg",
+      "viewedCount": 41,
       "ingredients": [
         {
           "name": "甜菜根",
@@ -677,6 +686,7 @@
       "id": "039d2345-757d-4f90-ae9b-1bcd1a131aa7",
       "title": "綜合精力湯",
       "image": "3_4.jpg",
+      "viewedCount": 45,
       "ingredients": [
         {
           "name": "碗豆苗",
@@ -775,6 +785,7 @@
       "id": "1ce56eec-6141-4647-a3d3-15ae27a04753",
       "title": "高鈣海鮮粥",
       "image": "3_5.jpg",
+      "viewedCount": 48,
       "ingredients": [
         {
           "name": "煮熟鮮蝦",
@@ -842,6 +853,7 @@
       "id": "dd617a26-bceb-4be2-ae5a-abff7d672fe6",
       "title": "紅蘿蔔蘋果泥",
       "image": "3_6.jpg",
+      "viewedCount": 18,
       "ingredients": [
         {
           "name": "紅蘿蔔",
@@ -887,6 +899,7 @@
       "id": "a1d884de-702f-42cf-b79f-77e00dad0407",
       "title": "芝麻核桃糊",
       "image": "4_1.jpg",
+      "viewedCount": 41,
       "ingredients": [
         {
           "name": " 白芝麻",
@@ -960,6 +973,7 @@
       "id": "9fbd01ea-5cc1-4b2a-8e89-f9149d73d828",
       "title": "番石榴西芹汁",
       "image": "4_2.jpg",
+      "viewedCount": 71,
       "ingredients": [
         {
           "name": "番石榴",
@@ -1044,6 +1058,7 @@
       "id": "c55630ab-3394-491b-a657-4843c8f2a956",
       "title": "胡蘿蔔甜椒汁",
       "image": "4_3.jpg",
+      "viewedCount": 48,
       "ingredients": [
         {
           "name": "胡蘿蔔",
@@ -1156,6 +1171,7 @@
       "id": "4e5f974b-9e3a-4132-a503-cbe3662cf941",
       "title": "海帶胡蘿蔔湯",
       "image": "4_4.jpg",
+      "viewedCount": 27,
       "ingredients": [
         {
           "name": "海帶",
@@ -1223,6 +1239,7 @@
       "id": "52ba8a1f-d1c4-49b0-97aa-a90c7b659a28",
       "title": "西洋芹燕麥蝦米湯",
       "image": "4_5.jpg",
+      "viewedCount": 19,
       "ingredients": [
         {
           "name": "燕麥",
@@ -1304,6 +1321,7 @@
       "id": "e94bc574-89dc-44c1-bc96-032446ba95ab",
       "title": "燕麥豆漿",
       "image": "4_6.jpg",
+      "viewedCount": 32,
       "ingredients": [
         {
           "name": "燕麥",
@@ -1371,6 +1389,7 @@
       "id": "0951f435-8153-41e4-9751-419fcf55cbad",
       "title": "香芒腰果沙拉醬",
       "image": "5_1.jpg",
+      "viewedCount": 26,
       "ingredients": [
         {
           "name": "芒果",
@@ -1440,6 +1459,7 @@
       "id": "7bb0b118-50a9-49f7-8640-1c7591e8e168",
       "title": "芝麻綜合醬",
       "image": "5_2.jpg",
+      "viewedCount": 29,
       "ingredients": [
         {
           "name": "熟白芝麻",
@@ -1495,6 +1515,7 @@
       "id": "412e2529-4178-4147-9112-90ae804616c6",
       "title": "花生牛奶冰沙",
       "image": "5_3.jpg",
+      "viewedCount": 20,
       "ingredients": [
         {
           "name": "熟花生",
@@ -1560,6 +1581,7 @@
       "id": "fa078228-934b-4c2f-a0b8-e750a2e06a6a",
       "title": "鳳梨香蕉冰沙",
       "image": "5_4.jpg",
+      "viewedCount": 16,
       "ingredients": [
         {
           "name": "鳳梨",
@@ -1622,6 +1644,7 @@
       "id": "912b08bc-cd7e-44af-9a96-b8b660227395",
       "title": "芒果冰淇淋",
       "image": "5_5.jpg",
+      "viewedCount": 26,
       "ingredients": [
         {
           "name": "冷凍芒果",
@@ -1660,6 +1683,7 @@
       "id": "84231129-e93a-4b01-bb08-ab27cbf7f421",
       "title": "火龍果冰淇淋",
       "image": "5_6.jpg",
+      "viewedCount": 34,
       "ingredients": [
         {
           "name": "冷凍火龍果",

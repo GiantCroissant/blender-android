@@ -13,6 +13,7 @@ public class RecipesJsonObject {
     private String description;
     private String videoCode;
     private String image;
+    private int viewedCount;
 
     public String getId() { return id; }
     public void setId(String id) {
@@ -49,5 +50,12 @@ public class RecipesJsonObject {
     }
     public void setImage(String name) {
         this.image = name;
+    }
+
+    public int getViewedCount() {
+        return viewedCount;
+    }
+    public void setViewedCount(int viewedCount) {
+        this.viewedCount = viewedCount;
     }
 }

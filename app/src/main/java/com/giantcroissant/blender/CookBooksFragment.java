@@ -19,6 +19,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 
 /**
@@ -137,7 +138,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 
     private void getHotCookBooks(Realm realm) {
         RealmResults<CookBookRealm> hotCookBooksRealmResult = realm.where(CookBookRealm.class).findAll();
-        hotCookBooksRealmResult.sort("viewedPeopleCount");
+        hotCookBooksRealmResult.sort("viewedPeopleCount", Sort.DESCENDING);
         hotCookBooks = new ArrayList<>();
         for (CookBookRealm cookBookRealm : hotCookBooksRealmResult) {
             List<CookbookStep> cookbookSteps = new ArrayList<>();

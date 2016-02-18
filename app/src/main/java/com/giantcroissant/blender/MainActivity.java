@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity
                             "",
                             ingredientDesc,
                             cookbookSteps,
-                            10,
+                            recipeJson.getViewedCount(),
                             20,
                             false,
                             recipeJson.getImage(),
