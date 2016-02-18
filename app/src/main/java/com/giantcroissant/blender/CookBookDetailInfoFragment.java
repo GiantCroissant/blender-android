@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,8 @@ public class CookBookDetailInfoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.e(TAG, "onCreate");
+
         realm = RealmHelper.getRealmInstance(getContext());
         CookBookRealm result = realm.where(CookBookRealm.class)
             .equalTo("Id", recipeId)
@@ -71,6 +74,8 @@ public class CookBookDetailInfoFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        Log.e(TAG, "onDestroy");
 
         realm.close();
     }
