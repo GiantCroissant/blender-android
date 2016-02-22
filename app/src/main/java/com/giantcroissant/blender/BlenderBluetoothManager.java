@@ -48,6 +48,8 @@ public class BlenderBluetoothManager {
     public AppCompatActivity currentActicity;
     private static final long SCAN_PERIOD = 1000;
 
+    public static boolean DEBUG_MODE = false;
+
     private static BlenderBluetoothManager uniqueInstance;
     private BlenderBluetoothManager(){} // 使用Private 建構子, 確保類別CameraManager 的物件化只能透過 API:getInstance()
     public static synchronized BlenderBluetoothManager getInstance() { // 使用 synchronized 關鍵字避免同時兩支Thread 進入函數
@@ -57,8 +59,9 @@ public class BlenderBluetoothManager {
 
     public boolean getConnected()
     {
-        return mBluetoothLeService != null && mClickCharacteristic != null;
+        if (DEBUG_MODE) return true;
 
+        return mBluetoothLeService != null && mClickCharacteristic != null;
     }
 
     // Code to manage Service lifecycle.
@@ -142,6 +145,8 @@ public class BlenderBluetoothManager {
 
     public void startBlending(int time,int speed)
     {
+        Log.e("OK", "start blending time = " + time + " speed = " + speed);
+
         byte[] sendmsg = new byte[10];
         sendmsg[0] = (byte) 0xA5;
         sendmsg[1] = (byte) 0x5A;

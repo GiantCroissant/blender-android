@@ -286,15 +286,17 @@ public class CookBookDetailActivity extends AppCompatActivity
                 cookToDoData.getInstance().doing = true;
             }
             startBlenderButton = (Button) findViewById(R.id.StartBlenderButton);
+            BlenderBluetoothManager.getInstance().startBlending(
+                cookBookDetailToDoFragment.getCookBoookTimeOfSteps(),
+                cookBookDetailToDoFragment.getCookBoookSpeedOfSteps()
+            );
+
             cookBookDetailToDoFragment.setConfrim();
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             isFinished = cookBookDetailToDoFragment.getFinished();
             checkButtonState();
             cookToDoData.getInstance().currentStateIndex = cookBookDetailToDoFragment.getCurrentIndex();
-            BlenderBluetoothManager.getInstance().startBlending(
-                cookBookDetailToDoFragment.getCookBoookTimeOfSteps(),
-                cookBookDetailToDoFragment.getCookBoookSpeedOfSteps()
-            );
+
 
         } else if (view.getId() == R.id.SkipBlenderButton) {
             if (!cookToDoData.getInstance().doing) {

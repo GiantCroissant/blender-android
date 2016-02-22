@@ -3,6 +3,7 @@ package com.giantcroissant.blender;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,6 @@ public class CookBookDetailToDoFragment extends Fragment {
         });
 
         checkProgressBar = (ProgressBar) rootView.findViewById(R.id.checkProgressBar);
-//        createFakeData();
 
         setUIValue();
         setStepsList();
@@ -112,21 +112,6 @@ public class CookBookDetailToDoFragment extends Fragment {
             }
         }
         checkProgressBar.setProgress(currentCheckIndex);
-    }
-
-    private void createFakeData() {
-        ArrayList<String> newSteps = new ArrayList<String>();
-        newSteps.add("步驟1");
-        newSteps.add("步驟2");
-        newSteps.add("步驟3");
-        newSteps.add("步驟4");
-        newSteps.add("步驟5");
-
-        newCheckListItems = new ArrayList<CheckListItem>();
-        for (String newStep : newSteps) {
-            newCheckListItems.add(new CheckListItem(UUID.randomUUID().toString(), newStep, false));
-        }
-
     }
 
     public int getCurrentIndex() {
@@ -240,7 +225,10 @@ public class CookBookDetailToDoFragment extends Fragment {
         }
 
         CookbookStep cookbookStep = cookBook.getSteps1().get(currentIndex);
+        
+
         int time = Integer.parseInt(cookbookStep.getStepTime());
+        Log.e("XD", "time = " + time);
 
         return time;
         //return Integer.parseInt(cookBook.getTimeOfSteps().get(currentIndex));
