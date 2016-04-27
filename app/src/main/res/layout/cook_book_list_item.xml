@@ -40,12 +40,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="4dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="葡萄檸檬汁"
                 android:textColor="@color/ColorPrimaryDark"
                 android:textSize="@dimen/Headline"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText"/>
+
+            <TextView
+                android:id="@+id/cookbookCategoryView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="葡萄檸檬汁"
+                android:textColor="@color/Pink"
+                android:textSize="@dimen/Caption"
                 android:textStyle="bold"
                 tools:ignore="HardcodedText"/>
 

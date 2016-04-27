@@ -59,16 +59,18 @@ public class BluetoothLeService extends Service {
                 intentAction = ACTION_GATT_CONNECTED;
                 mConnectionState = STATE_CONNECTED;
                 broadcastUpdate(intentAction);
-                Log.i(TAG, "Connected to GATT server.");
+                Log.w(TAG, "Connected to GATT server.");
                 // Attempts to discover services after successful connection.
-                Log.i(TAG, "Attempting to start service discovery:" +
+                Log.w(TAG, "Attempting to start service discovery:" +
                         mBluetoothGatt.discoverServices());
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 intentAction = ACTION_GATT_DISCONNECTED;
                 mConnectionState = STATE_DISCONNECTED;
-                Log.i(TAG, "Disconnected from GATT server.");
+                Log.w(TAG, "Disconnected from GATT server.");
                 broadcastUpdate(intentAction);
+
+
             }
         }
 
@@ -138,6 +140,11 @@ public class BluetoothLeService extends Service {
 //            }
 //        }
         sendBroadcast(intent);
+    }
+
+    public boolean isConnected() {
+        Log.e("BLS", "connect = " + (mConnectionState == STATE_CONNECTED));
+        return mConnectionState == STATE_CONNECTED;
     }
 
     public class LocalBinder extends Binder {

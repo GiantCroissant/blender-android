@@ -108,8 +108,11 @@ public class AboutCompanyItemFragment extends android.support.v4.app.Fragment  i
     }
     private void selectItem(int position) {
 
+        Log.d("Item", "position = " + position);
+
         Intent intent = new Intent(this.getActivity(), CompanyItemSystemActivity.class);
 
+        intent.putExtra("category", position);
         intent.putExtra("position", position);
         intent.putExtra("itemListViewID", CompanyData.getInstance().companyItemSystems.get(position).getId());
         intent.putExtra("itemListViewTitle", CompanyData.getInstance().companyItemSystems.get(position).getTitle());

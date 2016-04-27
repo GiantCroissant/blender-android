@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -51,11 +52,13 @@ public class CookBookAdapter extends ArrayAdapter<Cookbook> {
 
         // 讀取記事顏色、已選擇、標題與日期時間元件
         TextView cookBookNameTextView = (TextView) itemView.findViewById(R.id.cookbooknameTextView);
+        TextView cookBookCategoryTextView = (TextView) itemView.findViewById(R.id.cookbookCategoryView);
 //        TextView ingredientTextView = (TextView) itemView.findViewById(R.id.ingredientTextView);
         ImageView cookbookImage = (ImageView) itemView.findViewById(R.id.recipe_icon);
 
         // 設定標題
         cookBookNameTextView.setText(cookBook.getName());
+        cookBookCategoryTextView.setText(cookBook.getCategory());
 //        ingredientTextView.setText(cookBook.getIngredient());
 
         // 設定圖片

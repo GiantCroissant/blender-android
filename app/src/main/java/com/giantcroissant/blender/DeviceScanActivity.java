@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -117,6 +118,7 @@ public class DeviceScanActivity extends AppCompatActivity{
 
                 finish();
             case R.id.menu_scan:
+                Log.w("DSA", "onOptionsItemSelected mLeDeviceListAdapter.clear()");
                 mLeDeviceListAdapter.clear();
                 scanLeDevice(true);
                 break;
@@ -170,6 +172,7 @@ public class DeviceScanActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         scanLeDevice(false);
+        Log.w("DSA", "mLeDeviceListAdapter.clear()");
         mLeDeviceListAdapter.clear();
     }
 

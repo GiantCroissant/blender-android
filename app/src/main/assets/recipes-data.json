@@ -3,6 +3,7 @@
   [
     {
       "id": "b138cca5-9b88-4d93-9a0c-9f89b7420fdb",
+      "category": "養生美容蔬果汁",
       "title": "苦瓜降壓汁",
       "image": "1_1.jpg",
       "viewedCount": 3,
@@ -82,6 +83,7 @@
     },
     {
       "id": "c6fce61a-1ed0-41bc-a809-c9027a0a8990",
+      "category": "養生美容蔬果汁",
       "title": "紅蘿蔔鳳梨汁",
       "image": "1_2.jpg",
       "viewedCount": 12,
@@ -160,6 +162,7 @@
     },
     {
       "id": "7d6a3d43-b7db-4e19-bc64-b56efcf73c8a",
+      "category": "養生美容蔬果汁",
       "title": "酪梨蘋果牛奶",
       "image": "1_3.jpg",
       "viewedCount": 13,
@@ -234,6 +237,7 @@
     },
     {
       "id": "a175e4b5-6eb8-40e9-ae64-c6ab97b0b365",
+      "category": "瘦身美容代餐",
       "title": "養生杏仁豆漿",
       "image": "2_1.jpg",
       "viewedCount": 23,
@@ -295,6 +299,7 @@
     },
     {
       "id": "b9029fdb-6e96-44e4-bc77-60803ef88bad",
+      "category": "瘦身美容代餐",
       "title": "百合銀耳漿",
       "image": "2_2.jpg",
       "viewedCount": 31,
@@ -370,6 +375,7 @@
     },
     {
       "id": "83136a96-21d6-4fa8-a75d-bb737453efd0",
+      "category": "瘦身美容代餐",
       "title": "養生腰果豆漿",
       "image": "2_3.jpg",
       "viewedCount": 17,
@@ -431,6 +437,7 @@
     },
     {
       "id": "45f3b181-a4d5-446f-b1aa-644a87ef8c41",
+      "category": "老幼營養餐",
       "title": "花椰菜濃湯",
       "image": "3_1.jpg",
       "viewedCount": 27,
@@ -520,6 +527,7 @@
     },
     {
       "id": "5144854b-7024-48b6-9572-1adee885d011",
+      "category": "老幼營養餐",
       "title": "南瓜堅果濃湯",
       "image": "3_2.jpg",
       "viewedCount": 35,
@@ -602,6 +610,7 @@
     },
     {
       "id": "8061e893-84e6-4320-b365-f0e5ac72a08c",
+      "category": "老幼營養餐",
       "title": "甜菜根精力湯",
       "image": "3_3.jpg",
       "viewedCount": 41,
@@ -684,6 +693,7 @@
     },
     {
       "id": "039d2345-757d-4f90-ae9b-1bcd1a131aa7",
+      "category": "老幼營養餐",
       "title": "綜合精力湯",
       "image": "3_4.jpg",
       "viewedCount": 45,
@@ -783,6 +793,7 @@
     },
     {
       "id": "1ce56eec-6141-4647-a3d3-15ae27a04753",
+      "category": "老幼營養餐",
       "title": "高鈣海鮮粥",
       "image": "3_5.jpg",
       "viewedCount": 48,
@@ -851,6 +862,7 @@
     },
     {
       "id": "dd617a26-bceb-4be2-ae5a-abff7d672fe6",
+      "category": "老幼營養餐",
       "title": "紅蘿蔔蘋果泥",
       "image": "3_6.jpg",
       "viewedCount": 18,
@@ -897,6 +909,7 @@
     },
     {
       "id": "a1d884de-702f-42cf-b79f-77e00dad0407",
+      "category": "對症食療專篇",
       "title": "芝麻核桃糊",
       "image": "4_1.jpg",
       "viewedCount": 41,
@@ -971,6 +984,7 @@
     },
     {
       "id": "9fbd01ea-5cc1-4b2a-8e89-f9149d73d828",
+      "category": "對症食療專篇",
       "title": "番石榴西芹汁",
       "image": "4_2.jpg",
       "viewedCount": 71,
@@ -1056,6 +1070,7 @@
     },
     {
       "id": "c55630ab-3394-491b-a657-4843c8f2a956",
+      "category": "對症食療專篇",
       "title": "胡蘿蔔甜椒汁",
       "image": "4_3.jpg",
       "viewedCount": 48,
@@ -1169,6 +1184,7 @@
     },
     {
       "id": "4e5f974b-9e3a-4132-a503-cbe3662cf941",
+      "category": "對症食療專篇",
       "title": "海帶胡蘿蔔湯",
       "image": "4_4.jpg",
       "viewedCount": 27,
@@ -1237,6 +1253,7 @@
     },
     {
       "id": "52ba8a1f-d1c4-49b0-97aa-a90c7b659a28",
+      "category": "對症食療專篇",
       "title": "西洋芹燕麥蝦米湯",
       "image": "4_5.jpg",
       "viewedCount": 19,
@@ -1319,6 +1336,7 @@
     },
     {
       "id": "e94bc574-89dc-44c1-bc96-032446ba95ab",
+      "category": "對症食療專篇",
       "title": "燕麥豆漿",
       "image": "4_6.jpg",
       "viewedCount": 32,
@@ -1387,6 +1405,7 @@
     },
     {
       "id": "0951f435-8153-41e4-9751-419fcf55cbad",
+      "category": "美味醬料及冰品",
       "title": "香芒腰果沙拉醬",
       "image": "5_1.jpg",
       "viewedCount": 26,
@@ -1457,6 +1476,7 @@
     },
     {
       "id": "7bb0b118-50a9-49f7-8640-1c7591e8e168",
+      "category": "美味醬料及冰品",
       "title": "芝麻綜合醬",
       "image": "5_2.jpg",
       "viewedCount": 29,
@@ -1513,6 +1533,7 @@
     },
     {
       "id": "412e2529-4178-4147-9112-90ae804616c6",
+      "category": "美味醬料及冰品",
       "title": "花生牛奶冰沙",
       "image": "5_3.jpg",
       "viewedCount": 20,
@@ -1579,6 +1600,7 @@
     },
     {
       "id": "fa078228-934b-4c2f-a0b8-e750a2e06a6a",
+      "category": "美味醬料及冰品",
       "title": "鳳梨香蕉冰沙",
       "image": "5_4.jpg",
       "viewedCount": 16,
@@ -1642,6 +1664,7 @@
     },
     {
       "id": "912b08bc-cd7e-44af-9a96-b8b660227395",
+      "category": "美味醬料及冰品",
       "title": "芒果冰淇淋",
       "image": "5_5.jpg",
       "viewedCount": 26,
@@ -1681,6 +1704,7 @@
     },
     {
       "id": "84231129-e93a-4b01-bb08-ab27cbf7f421",
+      "category": "美味醬料及冰品",
       "title": "火龍果冰淇淋",
       "image": "5_6.jpg",
       "viewedCount": 34,

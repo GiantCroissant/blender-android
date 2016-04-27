@@ -17,6 +17,7 @@ public class CookBookRealm extends RealmObject {
     @PrimaryKey
     private String Id;
 
+    private String category;
     private String url;
     private String imageUrl;
     private String name;
@@ -40,6 +41,8 @@ public class CookBookRealm extends RealmObject {
 
     public String getId() { return Id; }
     public void   setId(String Id) { this.Id = Id; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
     public String getUrl() { return url; }
     public void   setUrl(String url) { this.url = url;}
     public String getImageUrl() { return imageUrl; }

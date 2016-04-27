@@ -303,6 +303,9 @@ public class CookBookDetailActivity extends AppCompatActivity
                 cookToDoData.getInstance().doing = true;
             }
             skipBlenderButton = (Button) findViewById(R.id.SkipBlenderButton);
+
+            BlenderBluetoothManager.getInstance().stopBlending();
+
             cookBookDetailToDoFragment.setConfrim();
             isNeedStartBlender = cookBookDetailToDoFragment.getIsNeedStartBlender();
             isFinished = cookBookDetailToDoFragment.getFinished();
@@ -490,8 +493,9 @@ public class CookBookDetailActivity extends AppCompatActivity
         super.onResume();
 
         setDefaultFragment();
-        BlenderBluetoothManager.getInstance().connectBlender(this, mGattUpdateReceiver);
-        BlenderBluetoothManager.getInstance().getConnected();
+        registerReceiver(mGattUpdateReceiver, BlenderBluetoothManager.makeGattUpdateIntentFilter());
+//        BlenderBluetoothManager.getInstance().connectBlender(this, mGattUpdateReceiver);
+//        BlenderBluetoothManager.getInstance().getConnected();
     }
 
     @Override

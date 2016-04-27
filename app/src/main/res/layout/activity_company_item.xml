@@ -1,88 +1,154 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.giantcroissant.blender.CompanyItemActivity">
-
-
-    <ImageView
-        android:layout_width="328dp"
-        android:layout_height="246dp"
-        android:id="@+id/company_item_icon"
-        android:layout_weight="1.4"
-        android:src="@drawable/itemicon"
-        android:scaleType="fitCenter"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_below="@+id/company_item_icon"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentBottom="false">
+        tools:context="com.giantcroissant.blender.CompanyItemActivity">
 
-        <TextView
+
+        <ImageView
+            android:layout_width="328dp"
+            android:layout_height="246dp"
+            android:id="@+id/company_item_icon"
+            android:layout_weight="1.4"
+            android:src="@drawable/itemicon"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_below="@+id/company_item_icon"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentBottom="false">
 
-            android:text="磨豆機"
-            android:id="@+id/company_item_name"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/Headline"
-            android:layout_toRightOf="@+id/company_item_icon"
-            android:layout_toEndOf="@+id/company_item_icon"
-            android:textColor="@color/cFF336900" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:text="New Text"
-            android:id="@+id/company_item_w"
-            android:textColor="@color/c54000000"
-            android:textSize="@dimen/Body1"
-            android:gravity="center_vertical" />
+                android:text="磨豆機"
+                android:id="@+id/company_item_name"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/Headline"
+                android:layout_toRightOf="@+id/company_item_icon"
+                android:layout_toEndOf="@+id/company_item_icon"
+                android:textColor="@color/cFF336900" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:text="New Text"
-            android:id="@+id/company_item_ac"
-            android:textColor="@color/c54000000"
-            android:textSize="@dimen/Body1"
-            android:gravity="center_vertical" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:text="New Text"
+                android:id="@+id/company_item_color"
+                android:textColor="@color/c54000000"
+                android:textSize="@dimen/Body1"
+                android:gravity="center_vertical" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:text="New Text"
-            android:id="@+id/company_item_cc"
-            android:textColor="@color/c54000000"
-            android:textSize="@dimen/Body1"
-            android:gravity="center_vertical" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:text="New Text"
+                android:id="@+id/company_item_size"
+                android:textColor="@color/c54000000"
+                android:textSize="@dimen/Body1"
+                android:gravity="center_vertical" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:text="New Text"
-            android:id="@+id/company_item_mm"
-            android:textColor="@color/c54000000"
-            android:textSize="@dimen/Body1"
-            android:gravity="center_vertical" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:text="New Text"
+                android:id="@+id/company_item_weight"
+                android:textColor="@color/c54000000"
+                android:textSize="@dimen/Body1"
+                android:gravity="center_vertical" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:text="New Text"
-            android:id="@+id/company_item_kg"
-            android:textColor="@color/c54000000"
-            android:textSize="@dimen/Body1"
-            android:gravity="center_vertical" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:text="New Text"
+                android:id="@+id/company_item_nation"
+                android:textColor="@color/c54000000"
+                android:textSize="@dimen/Body1"
+                android:gravity="center_vertical" />
 
-</RelativeLayout>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+
+                    android:text="產品基本電氣規格"
+                    android:id="@+id/company_item_spec_title"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/Headline"
+                    android:layout_toRightOf="@+id/company_item_icon"
+                    android:layout_toEndOf="@+id/company_item_icon"
+                    android:textColor="@color/c54000000" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:text="New Text"
+                android:id="@+id/company_item_voltage"
+                android:textColor="@color/c54000000"
+                android:textSize="@dimen/Body1"
+                android:gravity="center_vertical" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="New Text"
+                    android:id="@+id/company_item_hz"
+                    android:textColor="@color/c54000000"
+                    android:textSize="@dimen/Body1"
+                    android:gravity="center_vertical" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="New Text"
+                    android:id="@+id/company_item_watt"
+                    android:textColor="@color/c54000000"
+                    android:textSize="@dimen/Body1"
+                    android:gravity="center_vertical" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:text="New Text"
+                    android:id="@+id/company_item_volume"
+                    android:textColor="@color/c54000000"
+                    android:textSize="@dimen/Body1"
+                    android:gravity="center_vertical" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+
+                    android:text="重要功能說明"
+                    android:id="@+id/company_item_description_title"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/Headline"
+                    android:layout_toRightOf="@+id/company_item_icon"
+                    android:layout_toEndOf="@+id/company_item_icon"
+                    android:textColor="@color/c54000000" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:id="@+id/company_item_description"
+                    android:textColor="@color/c54000000"
+                    android:textSize="@dimen/Body1"
+                    android:gravity="center_vertical" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

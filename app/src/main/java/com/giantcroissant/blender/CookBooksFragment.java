@@ -117,6 +117,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 
             Cookbook newCookBook = new Cookbook(
                 cookBookRealm.getId(),
+                cookBookRealm.getCategory(),
                 cookBookRealm.getName(),
                 cookBookRealm.getDescription(),
                 cookBookRealm.getUrl(),
@@ -152,6 +153,7 @@ public class CookBooksFragment extends Fragment implements CookBooksDataFragment
 
             Cookbook newCookBook = new Cookbook(
                 cookBookRealm.getId(),
+                cookBookRealm.getCategory(),
                 cookBookRealm.getName(),
                 cookBookRealm.getDescription(),
                 cookBookRealm.getUrl(),

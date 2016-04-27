@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 
 public class CompanyItemSystemActivity extends AppCompatActivity {
 
+    private int category;
     private int position;
     private String itemID;
     private String itemTitle;
@@ -35,6 +36,7 @@ public class CompanyItemSystemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         getView();
 
+        category = intent.getIntExtra("category", 0);
         position = intent.getIntExtra("position", 0);
         itemID = intent.getStringExtra("itemListViewID");
         itemTitle = intent.getStringExtra("itemListViewTitle");
@@ -64,14 +66,14 @@ public class CompanyItemSystemActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CompanyItemActivity.class);
 
         intent.putExtra("position", position);
-        intent.putExtra("itemListViewID", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getId());
-        intent.putExtra("itemListViewTitle", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getTitle());
-        intent.putExtra("itemListViewName", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getName());
-        intent.putExtra("itemListViewContent", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getContents());
-        intent.putExtra("itemListViewIconUrl", CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getIconUrl());
-        byte[] tmpIconByteArray = Bitmap2Bytes(CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position).getIcon());
+        intent.putExtra("itemListViewID", CompanyData.getInstance().companyItemSystems.get(category).contentIds.get(position).getId());
+        intent.putExtra("itemListViewTitle", CompanyData.getInstance().companyItemSystems.get(category).contentIds.get(position).getTitle());
+        intent.putExtra("itemListViewName", CompanyData.getInstance().companyItemSystems.get(category).contentIds.get(position).getName());
+        intent.putExtra("itemListViewContent", CompanyData.getInstance().companyItemSystems.get(category).contentIds.get(position).getContents());
+        intent.putExtra("itemListViewIconUrl", CompanyData.getInstance().companyItemSystems.get(category).contentIds.get(position).getIconUrl());
+        byte[] tmpIconByteArray = Bitmap2Bytes(CompanyData.getInstance().companyItemSystems.get(category).contentIds.get(position).getIcon());
         intent.putExtra("itemListViewIcon", tmpIconByteArray);
-        CompanyData.getInstance().currentCompanyItem = CompanyData.getInstance().companyItemSystems.get(position).contentIds.get(position);
+        CompanyData.getInstance().currentCompanyItem = CompanyData.getInstance().companyItemSystems.get(category).contentIds.get(position);
         startActivityForResult(intent, 0);
 
     }

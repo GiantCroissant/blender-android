@@ -48,6 +48,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:text="葡萄檸檬汁"
+                android:id="@+id/cookbookCategoryView"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/Caption"
+                android:paddingLeft="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/Pink" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="葡萄、檸檬、蜂蜜"
                 android:id="@+id/ingredientTextView"
                 android:layout_weight="1"

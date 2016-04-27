@@ -81,6 +81,8 @@ public class DeviceControlActivity extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
+            Log.e("DCA", "onServiceConnected");
+
             mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
             if (!mBluetoothLeService.initialize()) {
                 Log.e(TAG, "Unable to initialize Bluetooth");
@@ -282,10 +284,10 @@ public class DeviceControlActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Log.d(TAG, "Connect request result=" + result);
-        }
+//        if (mBluetoothLeService != null) {
+//            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+//            Log.e(TAG, "Device Control Activity ===> Connect request result=" + result);
+//        }
     }
 
     @Override
@@ -298,7 +300,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
-        mBluetoothLeService = null;
+//        mBluetoothLeService = null;
     }
 
     @Override

@@ -21,6 +21,7 @@ public class ConvertToCookbook {
 
         return new CookbookParcelable(
             cookbook.getId(),
+            cookbook.getCategory(),
             cookbook.getUrl(),
             cookbook.getImageUrl(),
             cookbook.getName(),
@@ -61,6 +62,7 @@ public class ConvertToCookbook {
 
         return new Cookbook(
             cookbookParcelable.id,
+            cookbookParcelable.category,
             cookbookParcelable.name,
             cookbookParcelable.description,
             cookbookParcelable.url,

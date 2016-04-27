@@ -2,6 +2,7 @@ package com.giantcroissant.blender;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,45 +88,40 @@ public class DeviceScanFragment extends android.support.v4.app.Fragment {
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mListener.onFragmentInteraction("Ok");
-    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-//        mListener.onFragmentInteraction("Ok");
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(String string) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(string);
-        }
-    }
-
-    public void setSwitchIsChecked(boolean isChecked)
-    {
+    public void setSwitchIsChecked(boolean isChecked) {
         blueToothSwitch.setChecked(isChecked);
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
         try {
-            mListener = (OnFragmentInteractionListener) activity;
-//            mListener.onFragmentInteraction("Ok");
+            mListener = (OnFragmentInteractionListener) context;
+            mListener.onFragmentInteraction("Ok");
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
 
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        try {
+//            mListener = (OnFragmentInteractionListener) activity;
+//            mListener.onFragmentInteraction("Ok");
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
+
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener.onFragmentInteraction("Exit");
         mListener = null;
     }
 

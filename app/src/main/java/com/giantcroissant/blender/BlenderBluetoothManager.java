@@ -28,6 +28,7 @@ import java.util.List;
  */
 public class BlenderBluetoothManager {
 
+    public Boolean mBound;
     public String mDeviceName;
     public String mDeviceAddress;
     public BluetoothGattCharacteristic mClickCharacteristic;
@@ -61,19 +62,52 @@ public class BlenderBluetoothManager {
     {
         if (DEBUG_MODE) return true;
 
-        return mBluetoothLeService != null && mClickCharacteristic != null;
+        if (mBluetoothLeService == null) {
+            Log.e("BBM", "mBluetoothLeService == null");
+            return false;
+        }
+
+        if (mClickCharacteristic == null) {
+            Log.e("BBM", "mClickCharacteristic == null");
+            return false;
+        }
+
+        return mBluetoothLeService.isConnected();
+
+
+//        return mBluetoothLeService.isConnected() ;
+
+//        if (mBluetoothLeService == null) {
+//            Log.e("BBM", "mBluetoothLeService == null");
+//        }
+//
+//        if (mClickCharacteristic == null) {
+//            Log.e("BBM", "mClickCharacteristic == null");
+//        }
+//
+//        return mBluetoothLeService != null && mClickCharacteristic != null;
     }
 
     // Code to manage Service lifecycle.
     public ServiceConnection mServiceConnection;
 
-    public void startBlueTooth(AppCompatActivity activity)
-    {
+    public void startBlueTooth(AppCompatActivity activity) {
         currentActicity = activity;
+        bluetoothHandler = new Handler();
+        final android.bluetooth.BluetoothManager bluetoothManager =
+                (android.bluetooth.BluetoothManager) currentActicity.getSystemService(Context.BLUETOOTH_SERVICE);
+        mblueToothManager = bluetoothManager;
+        mBluetoothAdapter = bluetoothManager.getAdapter();
+    }
+
+    // Main Activity
+    public void connectBluetooth(final String deviceAddress, final AppCompatActivity activity) {
         mServiceConnection = new ServiceConnection() {
 
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder service) {
+                Log.e("BBM", "COOOOOMMMMMEEEE");
+
                 mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
                 if (!mBluetoothLeService.initialize()) {
                     Log.e("BlenderBluetoothManager", "Unable to initialize Bluetooth");
@@ -83,32 +117,45 @@ public class BlenderBluetoothManager {
                     }
                 }
                 // Automatically connects to the device upon successful start-up initialization.
-                mBluetoothLeService.connect(mDeviceAddress);
+
+
+                mBluetoothLeService.connect(deviceAddress);
+                mBound = true;
+                Log.e("BBM", "mBluetoothLeService.connect deviceAddress = " + deviceAddress);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
+                Log.e("BBM", "onServiceDisconnected");
                 mBluetoothLeService = null;
+                mGattCharacteristics = null;
+                mBound = false;
             }
         };
-        bluetoothHandler = new Handler();
-        final android.bluetooth.BluetoothManager bluetoothManager =
-                (android.bluetooth.BluetoothManager) currentActicity.getSystemService(Context.BLUETOOTH_SERVICE);
-        mblueToothManager = bluetoothManager;
-        mBluetoothAdapter = bluetoothManager.getAdapter();
+
+        // gatt binding
+        if (mDeviceName != null && mDeviceAddress != null )
+        {
+            Intent gattServiceIntent = new Intent(activity, BluetoothLeService.class);
+            activity.bindService(gattServiceIntent, mServiceConnection, currentActicity.BIND_AUTO_CREATE);
+        }
     }
 
-    public void connectBlender(AppCompatActivity activity,BroadcastReceiver gattUpdateReceiver)
+    // Device Control Activity & CookBookAdapter
+    public void connectBlender(AppCompatActivity activity, BroadcastReceiver gattUpdateReceiver)
     {
         currentActicity = activity;
         activity.registerReceiver(gattUpdateReceiver, makeGattUpdateIntentFilter());
+
+        // connect
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Log.d("Connect request result", "Connect request result=" + result);
+            Log.d("Connect request result", "connectBlender !! Connect request result=" + result);
 
         }
         else
         {
+            // gatt binding
             if (mDeviceName != null && mDeviceAddress != null )
             {
                 Intent gattServiceIntent = new Intent(activity, BluetoothLeService.class);
@@ -118,9 +165,13 @@ public class BlenderBluetoothManager {
     }
 
     public void scanLeDevice(final boolean enable) {
-        if (mBluetoothAdapter == null) return;
+        if (mBluetoothAdapter == null) {
+            Log.e("BBM", "scanLeDevice : mBluetoothAdapter == null");
+            return;
+        }
 
         if (enable) {
+            Log.e("BBM", "scanLeDevice : enable");
             // Stops scanning after a pre-defined scan period.
             bluetoothHandler.postDelayed(new Runnable() {
                 @Override
@@ -137,6 +188,7 @@ public class BlenderBluetoothManager {
             }
 
         } else {
+            Log.e("BBM", "scanLeDevice : disable");
             mScanning = false;
             mBluetoothAdapter.stopLeScan(mLeScanCallback);
         }
@@ -191,11 +243,17 @@ public class BlenderBluetoothManager {
 
     void stopConnectBlueTooth()
     {
-        if(mLeDeviceListAdapter != null)
+        if (mLeDeviceListAdapter != null)
         {
+            Log.w("BBM", "stopConnectBlueTooth mLeDeviceListAdapter.clear()");
             mLeDeviceListAdapter.clear();
             scanLeDevice(false);
             mLeDeviceListAdapter.notifyDataSetChanged();
+        }
+
+        mDeviceAddress = null;
+        if (mBluetoothLeService != null) {
+            mBluetoothLeService.disconnect();
         }
     }
 

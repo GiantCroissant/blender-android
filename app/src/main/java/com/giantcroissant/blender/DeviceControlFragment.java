@@ -151,24 +151,24 @@ public class DeviceControlFragment extends android.support.v4.app.Fragment {
     }
 
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnDeviceControlFragmentInteractionListener) activity;
-//            mListener.onDeviceControlFragmentInteraction("Ok");
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener.onDeviceControlFragmentInteraction("Exit");
-        mListener = null;
-    }
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        try {
+//            mListener = (OnDeviceControlFragmentInteractionListener) activity;
+////            mListener.onDeviceControlFragmentInteraction("Ok");
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+////        mListener.onDeviceControlFragmentInteraction("Exit");
+//        mListener = null;
+//    }
 
     /**
      * This interface must be implemented by activities that contain this

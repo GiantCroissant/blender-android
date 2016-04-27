@@ -88,6 +88,7 @@ public class SearchActivity extends Activity implements SearchView.OnQueryTextLi
 
             Cookbook newCookBook = new Cookbook(
                 cookBookRealm.getId(),
+                cookBookRealm.getCategory(),
                 cookBookRealm.getName(),
                 cookBookRealm.getDescription(),
                 cookBookRealm.getUrl(),

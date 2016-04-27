@@ -16,6 +16,7 @@ public class Cookbook {
 
     private String id;
 
+    private String category;
     private String url;
     private String image_url;
     private String name;
@@ -37,6 +38,7 @@ public class Cookbook {
     public Cookbook(CookBookRealm result)
     {
         this.id = result.getId();
+        this.category = result.getCategory();
         this.name = result.getName();
         this.description = result.getDescription();
         this.url = result.getUrl();
@@ -64,6 +66,7 @@ public class Cookbook {
 
     public Cookbook(
         String id,
+        String category,
         String name,
         String description,
         String url,
@@ -77,6 +80,7 @@ public class Cookbook {
         String videoCode)
     {
         this.id = id;
+        this.category = category;
         this.name = name;
         this.description = description;
         this.url = url;
@@ -132,6 +136,10 @@ public class Cookbook {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
+
+    public String getCategory() { return category; }
+
+    public void setCategory(String category) { this.category = category; }
 
     public String getName() {
         return name;

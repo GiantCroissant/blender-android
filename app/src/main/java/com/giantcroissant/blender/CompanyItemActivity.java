@@ -28,11 +28,15 @@ public class CompanyItemActivity extends AppCompatActivity {
     private ActionBar actionBar;                              // Declaring the Toolbar Object
     TextView titleView ;
     ImageView companyItemIcon ;
-    TextView contentViewW ;
-    TextView contentViewAC;
-    TextView contentViewCC ;
-    TextView contentViewMM ;
-    TextView contentViewKG ;
+    TextView contentViewWColor;
+    TextView contentViewSize;
+    TextView contentViewWeight;
+    TextView contentViewNation;
+    TextView contentViewVoltage;
+    TextView contentViewHz;
+    TextView contentViewWatt;
+    TextView contentViewVolume;
+    TextView contentViewDescription;
     private ImageView iconImage;
     Bitmap icon;
 
@@ -86,12 +90,16 @@ public class CompanyItemActivity extends AppCompatActivity {
 
         // 讀取記事顏色、已選擇、標題與日期時間元件
         titleView = (TextView) findViewById(R.id.company_item_name);
-        contentViewW = (TextView) findViewById(R.id.company_item_w);
-        contentViewAC = (TextView) findViewById(R.id.company_item_ac);
-        contentViewCC = (TextView) findViewById(R.id.company_item_cc);
-        contentViewMM = (TextView) findViewById(R.id.company_item_mm);
-        contentViewKG = (TextView) findViewById(R.id.company_item_kg);
-
+        contentViewWColor = (TextView) findViewById(R.id.company_item_color);
+        contentViewSize = (TextView) findViewById(R.id.company_item_size);
+        contentViewWeight = (TextView) findViewById(R.id.company_item_weight);
+        contentViewNation = (TextView) findViewById(R.id.company_item_nation);
+        //contentViewKG = (TextView) findViewById(R.id.company_item_kg);
+        contentViewVoltage = (TextView) findViewById(R.id.company_item_voltage);
+        contentViewHz = (TextView) findViewById(R.id.company_item_hz);
+        contentViewWatt = (TextView) findViewById(R.id.company_item_watt);
+        contentViewVolume = (TextView) findViewById(R.id.company_item_volume);
+        contentViewDescription = (TextView) findViewById(R.id.company_item_description);
     }
 
 
@@ -100,11 +108,17 @@ public class CompanyItemActivity extends AppCompatActivity {
     {
         // 設定標題
         titleView.setText(itemName);
-        contentViewW.setText(itemContents.get(1));
-        contentViewAC.setText(itemContents.get(2));
-        contentViewCC.setText(itemContents.get(3));
-        contentViewMM.setText(itemContents.get(4));
-        contentViewKG.setText(itemContents.get(5));
+        contentViewWColor.setText(itemContents.get(1));
+        contentViewSize.setText(itemContents.get(2));
+        contentViewWeight.setText(itemContents.get(3));
+        contentViewNation.setText(itemContents.get(4));
+        //contentViewKG.setText(itemContents.get(5));
+        contentViewVoltage.setText(itemContents.get(5));
+        contentViewHz.setText(itemContents.get(6));
+        contentViewWatt.setText(itemContents.get(7));
+        contentViewVolume.setText(itemContents.get(8));
+        contentViewDescription.setText(itemContents.get(9));
+
         iconImage.setImageBitmap(CompanyData.getInstance().currentCompanyItem.getIcon());
 
 
